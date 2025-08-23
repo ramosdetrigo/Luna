@@ -1,0 +1,29 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://sfftfr7d567s"]
+
+[ext_resource type="FontVariation" uid="uid://dmc63aclsoyaf" path="res://assets/resources/fonts/helvetica_bold_fallbacks.tres" id="1_dlh00"]
+[ext_resource type="FontVariation" uid="uid://cr3rx0aldn77n" path="res://assets/resources/fonts/monospace_fallbacks.tres" id="1_fv333"]
+[ext_resource type="FontVariation" uid="uid://bvhiwt0vmrn07" path="res://assets/resources/fonts/helvetica_fallbacks.tres" id="2_h4snt"]
+[ext_resource type="FontVariation" uid="uid://cdbgwvkxr1r37" path="res://assets/resources/fonts/helvetica_italic_fallbacks.tres" id="2_mrmao"]
+[ext_resource type="FontVariation" uid="uid://p72khoqlsa1s" path="res://assets/resources/fonts/helvetica_bold_italic_fallbacks.tres" id="2_ouvxp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mrmao"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ouvxp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4u3cq"]
+
+[resource]
+default_font_size = 46
+RichTextLabel/colors/default_color = Color(0, 0, 0, 1)
+RichTextLabel/fonts/bold_font = ExtResource("1_dlh00")
+RichTextLabel/fonts/bold_italics_font = ExtResource("2_ouvxp")
+RichTextLabel/fonts/italics_font = ExtResource("2_mrmao")
+RichTextLabel/fonts/mono_font = ExtResource("1_fv333")
+RichTextLabel/fonts/normal_font = ExtResource("2_h4snt")
+TextEdit/colors/font_color = Color(1, 1, 1, 1)
+TextEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.6)
+TextEdit/constants/line_spacing = -19
+TextEdit/fonts/font = ExtResource("2_h4snt")
+TextEdit/styles/focus = SubResource("StyleBoxEmpty_mrmao")
+TextEdit/styles/normal = SubResource("StyleBoxEmpty_ouvxp")
+TextEdit/styles/read_only = SubResource("StyleBoxEmpty_4u3cq")

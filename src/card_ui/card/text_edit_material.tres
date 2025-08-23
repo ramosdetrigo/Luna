@@ -1,0 +1,40 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://biqffoglwth28"]
+
+[sub_resource type="Shader" id="Shader_r7tox"]
+code = "shader_type canvas_item;
+
+const int RADIUS = 15; // neighborhood radius
+const int STEP = 3;    // distância entre amostras
+
+void fragment() {
+    vec4 centerTex = texture(TEXTURE, UV);
+    float thr = 1.0 - 1e-8;
+
+    vec2 texSize = vec2(textureSize(TEXTURE, 0));
+    vec2 texel = 1.0 / texSize;
+
+    float all_high = 1.0;
+
+    // percorre apenas deslocamentos positivos
+    for (int dy = STEP; dy <= RADIUS; dy += STEP) {
+        vec2 offset = vec2(0.0, float(dy)) * texel;
+
+        vec4 s1 = texture(TEXTURE, UV + offset) * COLOR;
+        vec4 s2 = texture(TEXTURE, UV - offset) * COLOR;
+
+        bool valid1 = (s1.a <= 0.0) || (s1.r >= thr && s1.g >= thr && s1.b >= thr);
+        bool valid2 = (s2.a <= 0.0) || (s2.r >= thr && s2.g >= thr && s2.b >= thr);
+
+        if (!(valid1 && valid2)) {
+            all_high = 0.0;
+            break; // sai do loop cedo
+        }
+    }
+
+    vec3 outRGB = mix(centerTex.rgb * COLOR.rgb, vec3(0.0), all_high);
+    COLOR = vec4(outRGB, centerTex.a * COLOR.a);
+}
+"
+
+[resource]
+shader = SubResource("Shader_r7tox")

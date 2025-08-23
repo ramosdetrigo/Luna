@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://c36lew5uiwsgp"]
+
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="1_v2brm"]
+[ext_resource type="Script" uid="uid://cdy1g3o0f5vvt" path="res://src/base_ui/floating_button/floating_button.gd" id="2_ru47g"]
+
+[node name="FloatingButton" type="Button"]
+custom_minimum_size = Vector2(200, 48)
+offset_right = 300.0
+offset_bottom = 77.0
+pivot_offset = Vector2(150, 38.5)
+theme = ExtResource("1_v2brm")
+script = ExtResource("2_ru47g")
+animation_speed = 0.5
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = -22.5
+offset_right = 94.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(94, 22.5)
+theme = ExtResource("1_v2brm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

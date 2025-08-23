@@ -1,0 +1,10 @@
+[gd_resource type="FontVariation" load_steps=4 format=3 uid="uid://cdbgwvkxr1r37"]
+
+[ext_resource type="FontFile" uid="uid://dvsklalq6r7m3" path="res://assets/fonts/helvetica/HelveticaNeue Bold.ttf" id="1_1q634"]
+[ext_resource type="FontFile" uid="uid://bkc6bwq1lsni5" path="res://assets/fonts/compat/NotoSansEgyptianHieroglyphs-Regular.ttf" id="2_2mc2s"]
+[ext_resource type="FontFile" uid="uid://blvnrnlqlhlhf" path="res://assets/fonts/compat/NotoColorEmoji-Regular.ttf" id="3_40ihf"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_2mc2s"), ExtResource("3_40ihf")])
+base_font = ExtResource("1_1q634")
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)

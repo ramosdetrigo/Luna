@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2bhxic23hlex"]
+
+[ext_resource type="Script" uid="uid://b5cw8a7s7h4jv" path="res://src/card_ui/card_scroller/card_scroller.gd" id="1_lnn4v"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_asnw0"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_rnyuy"]
+
+[sub_resource type="Resource" id="Resource_gk360"]
+script = ExtResource("3_rnyuy")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_mu0qb"]
+script = ExtResource("3_rnyuy")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[node name="CardScroller" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -640.0
+offset_top = -240.0
+offset_right = -640.0
+offset_bottom = -240.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+script = ExtResource("1_lnn4v")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+script = ExtResource("2_asnw0")
+wheel_scroll_damper = SubResource("Resource_gk360")
+dragging_scroll_damper = SubResource("Resource_mu0qb")
+drag_with_mouse = false
+allow_vertical_scroll = false
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="CardList" type="HBoxContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(0.567519, 0.389396, 1, 1)
+border_width = 3.0
+
+[connection signal="resized" from="." to="." method="_on_resized"]

@@ -1,0 +1,98 @@
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://8b0nu8iueg0s"]
+
+[ext_resource type="FontFile" uid="uid://2n84f3l26n4a" path="res://assets/fonts/other/Jost-Regular.ttf" id="1_gch6j"]
+[ext_resource type="FontFile" uid="uid://dc414c3nnnvnv" path="res://assets/fonts/helvetica/HelveticaNeue Light.ttf" id="2_mvmfk"]
+[ext_resource type="Texture2D" uid="uid://djaw35o0xteft" path="res://assets/images/ui/grabber.png" id="2_wwfp6"]
+[ext_resource type="Texture2D" uid="uid://bkdfqk701yva8" path="res://assets/images/ui/tick.png" id="3_886sd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mfbv7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_alswk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i47bf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5ranj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pow3s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ci2k5"]
+bg_color = Color(0.901961, 0.901961, 0.901961, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p3x88"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hlqvj"]
+bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+shadow_color = Color(0, 0, 0, 0.286275)
+shadow_size = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tfqle"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5wcy"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.419608, 0.352941, 0.909804, 0)
+border_width_bottom = 4
+border_color = Color(0.419608, 0.352941, 0.909804, 1)
+shadow_color = Color(0, 0, 0, 0.0980392)
+shadow_size = 8
+
+[resource]
+default_font = ExtResource("1_gch6j")
+default_font_size = 32
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0.14902, 0.14902, 0.14902, 0.313726)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 8
+Button/font_sizes/font_size = 32
+Button/fonts/font = ExtResource("1_gch6j")
+Button/styles/disabled = SubResource("StyleBoxEmpty_mfbv7")
+Button/styles/focus = SubResource("StyleBoxEmpty_alswk")
+Button/styles/hover = SubResource("StyleBoxEmpty_i47bf")
+Button/styles/normal = SubResource("StyleBoxEmpty_5ranj")
+Button/styles/pressed = SubResource("StyleBoxEmpty_pow3s")
+HSlider/icons/grabber = ExtResource("2_wwfp6")
+HSlider/icons/grabber_disabled = ExtResource("2_wwfp6")
+HSlider/icons/grabber_highlight = ExtResource("2_wwfp6")
+HSlider/icons/tick = ExtResource("3_886sd")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_ci2k5")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_p3x88")
+HSlider/styles/slider = SubResource("StyleBoxFlat_hlqvj")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0.147672, 0.147672, 0.147672, 0.313726)
+Label/constants/outline_size = 8
+Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_gch6j")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/fonts/font = ExtResource("2_mvmfk")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_tfqle")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_p5wcy")
