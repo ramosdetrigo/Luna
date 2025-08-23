@@ -5,12 +5,11 @@ extends AspectRatioContainer
 signal grabbed(Card)
 signal dropped(Card)
 # Signals if the card was clicked on
-# (grabbed + dropped within 0.3s and no drag longer than 50px)
 signal clicked(Card)
 # Signals if the card was toggled to be edited etc.
 signal editing(Card, bool)
-# TODO: should is_interactible make them stop being draggable?
 signal container_resized
+# TODO: should is_interactible make them stop being draggable?
 
 enum CardType {
 	BLACK_CARD,

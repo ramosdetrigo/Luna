@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://beiq3a5m6gw5x"]
+
+[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/base_ui/draggable/draggable.gd" id="1_uonba"]
+
+[node name="Draggable" type="Container"]
+offset_left = 377.0
+offset_top = 139.0
+offset_right = 885.0
+offset_bottom = 544.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_uonba")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.290196, 0.384314, 1, 1)
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
+[connection signal="child_exiting_tree" from="." to="." method="_on_child_exiting_tree"]
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
