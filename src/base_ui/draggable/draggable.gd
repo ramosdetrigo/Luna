@@ -112,7 +112,7 @@ func _input(event: InputEvent) -> void:
 		
 		if drag_distance > drag_threshold:
 			_try_grab = false
-			if absf(drag_cos) < drag_cos_threshold:
+			if absf(drag_cos) <= drag_cos_threshold:
 				# Signals that the card was grabbed
 				_grabbed = true
 				grabbed.emit(self)
@@ -141,7 +141,8 @@ func _on_resized() -> void:
 		return
 	
 	_child.size = size
-	_child.pivot_offset = size/2.0
+	if _child is Control:
+		_child.pivot_offset = size/2.0 # fixes scaling
 
 	if _scale_tween and not _scale_tween.is_running():
 		_child.scale = get_target_scale()
@@ -172,7 +173,8 @@ func _on_child_entered_tree(node: Node) -> void:
 		_child = node
 		_child.position = Vector2(0,0)
 		_child.size = size
-		_child.pivot_offset = size/2.0
+		if _child is Control:
+			_child.pivot_offset = size/2.0 # fixes scaling
 		_child.scale = get_target_scale()
 
 func _on_child_exiting_tree(_node: Node) -> void:
