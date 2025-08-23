@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2bhxic23hlex"]
+[gd_scene load_steps=6 format=3 uid="uid://xsivno8npp4i"]
 
-[ext_resource type="Script" uid="uid://b5cw8a7s7h4jv" path="res://src/card_ui/card_scroller/card_scroller.gd" id="1_lnn4v"]
+[ext_resource type="Script" uid="uid://gg3e0hrxgve4" path="res://src/card_ui/card_scroller/card_scroller.gd" id="1_lnn4v"]
 [ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="2_asnw0"]
 [ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="3_rnyuy"]
 
@@ -18,15 +18,12 @@ rebound_strength = 7.0
 
 [node name="CardScroller" type="Control"]
 layout_mode = 3
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 12
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -640.0
-offset_top = -240.0
-offset_right = -640.0
-offset_bottom = -240.0
+offset_top = -275.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 1

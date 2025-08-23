@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/game_screen/game_screen.gd" id="1_qaexu"]
-[ext_resource type="PackedScene" uid="uid://d2bhxic23hlex" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
+[ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
 [ext_resource type="Theme" uid="uid://sfftfr7d567s" path="res://assets/resources/themes/theme_cards.tres" id="2_noo7h"]
 [ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/base_ui/pulse_button/Pulse_button.tscn" id="3_qrh6e"]
 [ext_resource type="PackedScene" uid="uid://bgei4l44scxyg" path="res://src/card_ui/card/card.tscn" id="4_p62s0"]

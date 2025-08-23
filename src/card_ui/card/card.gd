@@ -1,14 +1,8 @@
 class_name Card
 extends AspectRatioContainer
 
-# Signals if the card was dropped after being dragged by the mouse
-signal grabbed(Card)
-signal dropped(Card)
-# Signals if the card was clicked on
-signal clicked(Card)
 # Signals if the card was toggled to be edited etc.
 signal editing(Card, bool)
-signal container_resized
 # TODO: should is_interactible make them stop being draggable?
 
 enum CardType {
@@ -93,30 +87,10 @@ var text: String
 @export
 var card_type: CardType
 @export
-var is_glowing: bool
-@export
-var is_interactible: bool = true
+var glowing: bool
 
-# Thresholds for card dragging
-@export_range(0.0, 100.0)
-var drag_threshold: float = 5.0
-@export_range(0.0, 1.0, 0.05)
-var drag_cos_threshold: float = 0.85
-
-# True if the card is being held/dragged by the mouse
-var _grabbed: bool = false
-# The local position where the mouse grabbed the card
-var _grab_position: Vector2 = Vector2(0.0, 0.0)
-# The tweener that moves the card image around
-var _card_position_tween: Tween
-# Tweener to change color. Used for fade
-var _card_modulate_tween: Tween
-# Tweener to change card scale
-var _card_scale_tween: Tween
 # Tweener to change glow visibility
 var _edge_modulate_tween: Tween
-# Used for grab detection with dragging thresholds etc
-var _try_grab: bool = false
 
 
 #region METHODS
@@ -232,23 +206,12 @@ func get_text_height() -> float:
 		return (%CardText.get_content_height() + 35) * y_scale
 
 
-func set_card_mouse_filter(filter: MouseFilter) -> void:
-	%ImageContainer.mouse_filter = filter
-
-
 func is_editable() -> bool:
 	return text == "[Carta editável]"
 
 
-# Makes the card image attached or detached from its container
-func toggle_detached(attach: bool) -> void:
-	var previous_coords = %Image.global_position
-	%Image.top_level = attach
-	%Image.global_position = previous_coords
-
-
 func toggle_glow(enable: bool) -> Tween:
-	is_glowing = enable
+	glowing = enable
 	_edge_modulate_tween.kill()
 	_edge_modulate_tween = %Edge.create_tween().set_trans(Tween.TRANS_QUAD)
 	_edge_modulate_tween.set_ease(Tween.EASE_OUT)
@@ -259,34 +222,6 @@ func toggle_glow(enable: bool) -> Tween:
 		_edge_modulate_tween.tween_property(%Edge, "modulate", Color.TRANSPARENT, 0.5)
 		_edge_modulate_tween.finished.connect(%Edge.hide)
 	return _edge_modulate_tween
-
-
-# Animates the image position to a specified target
-func tween_image_position(target: Vector2, duration: float, 
-trans: Tween.TransitionType = Tween.TRANS_BACK) -> Tween:
-	_card_position_tween.kill()
-	_card_position_tween = %Image.create_tween().set_trans(trans)
-	_card_position_tween.set_ease(Tween.EASE_OUT)
-	_card_position_tween.tween_property(%Image, "position", target, duration)
-	return _card_position_tween
-
-
-func tween_image_scale(target: Vector2, duration: float,
-trans: Tween.TransitionType = Tween.TRANS_BACK) -> Tween:
-	_card_scale_tween.kill()
-	_card_scale_tween = %Image.create_tween().set_trans(trans)
-	_card_scale_tween.set_ease(Tween.EASE_OUT)
-	_card_scale_tween.tween_property(%Image, "scale", target, duration)
-	return _card_scale_tween
-
-
-func tween_modulate(target: Color, duration: float,
-trans: Tween.TransitionType = Tween.TRANS_QUINT) -> Tween:
-	_card_modulate_tween.kill()
-	_card_modulate_tween = %Image.create_tween().set_trans(trans)
-	_card_modulate_tween.set_ease(Tween.EASE_OUT)
-	_card_modulate_tween.tween_property(%Image, "modulate", target, duration)
-	return _card_modulate_tween
 
 
 # Generates a random garbled string of text (used for <glitch_text> card)
@@ -305,13 +240,7 @@ static func _random_text() -> String:
 #region CALLBACKS
 func _ready() -> void:
 	# Creates a valid tween by... killing it? Godot is weird sometimes
-	_card_position_tween = create_tween()
-	_card_modulate_tween = create_tween()
-	_card_scale_tween = create_tween()
 	_edge_modulate_tween = create_tween()
-	_card_position_tween.kill()
-	_card_modulate_tween.kill()
-	_card_scale_tween.kill()
 	_edge_modulate_tween.kill()
 	# Update card text, scale, etc.
 	set_text(text)
@@ -324,9 +253,6 @@ func _ready() -> void:
 	var target_scale = card_size / IMG_SIZE
 	%Image.scale = target_scale
 	%Image.show()
-	
-	if OS.get_name() != "Android":
-		drag_cos_threshold = 2.0
 
 
 func _process(delta: float) -> void:
@@ -334,89 +260,6 @@ func _process(delta: float) -> void:
 		%CardText.text = _random_text()
 	if text == "Cubo.":
 		%Cube.rotate_y(0.5 * delta)
-
-
-func _input(event: InputEvent) -> void:
-	# Updates the tween on every mouse movement
-	if ((_grabbed or _try_grab) and (event is InputEventMouseButton)
-	and event.button_index == MOUSE_BUTTON_LEFT and event.is_released()):
-		# Check if it was a click or a drag (signal if clicked)
-		if _try_grab:
-			clicked.emit(self)
-		elif _grabbed:
-			# Reattaches the image to its container.
-			toggle_detached(false)
-			# Go back to the container position
-			var target_pos = Vector2(0,0)
-			tween_image_position(target_pos, 0.2)
-		# Signals that the card was dropped
-		_grabbed = false
-		_try_grab = false
-		dropped.emit(self)
-	
-	if event is not InputEventMouseMotion and event is not InputEventScreenDrag:
-		return
-	
-	if _try_grab:
-		var mouse_pos: Vector2 = get_global_mouse_position()
-		var original_pos: Vector2 = %ImageContainer.global_position + _grab_position
-		var drag_distance = mouse_pos.distance_to(original_pos)
-		
-		var drag_vector: Vector2 = (mouse_pos-original_pos).normalized()
-		var drag_cos: float = Vector2.RIGHT.dot(drag_vector)
-		
-		if drag_distance > drag_threshold:
-			_try_grab = false
-			if absf(drag_cos) < drag_cos_threshold:
-				# Signals that the card was grabbed
-				_grabbed = true
-				grabbed.emit(self)
-				toggle_detached(true)
-	if _grabbed:
-		# Updates card grab coords and starts a tween
-		var target_pos = get_global_mouse_position() - _grab_position
-		tween_image_position(target_pos, 0.2)
-		get_viewport().set_input_as_handled()
-	
-
-
-# TODO: oh shit oh fuck what about touch inputs oh no
-func _on_control_gui_input(event: InputEvent) -> void:
-	# Only respond to left mouse click event and touch
-	if event is InputEventMouseButton:
-		if event.button_index != MOUSE_BUTTON_LEFT:
-			return
-	elif event is not InputEventScreenTouch:
-		return
-	
-	# is_pressed: card grabbed, is_released: card dropped
-	if event.is_pressed():
-		_try_grab = true
-		tween_image_scale(get_container_scale(), 0.2)
-		_grab_position = %ImageContainer.get_local_mouse_position() - IMG_SIZE/2.0*get_container_scale()
-
-
-# If we don't use on_control_resized, the card sometimes gets a bit offset from
-# its container for some reason.
-func _on_control_resized() -> void:
-	container_resized.emit()
-	_on_resized()
-
-func _on_resized() -> void:
-	# Updates card size
-	#_card_scale_tween.kill()
-	if _card_scale_tween and not _card_scale_tween.is_running():
-		var card_size = %ImageContainer.size
-		var target_scale = card_size / IMG_SIZE
-		%Image.scale = target_scale
-	
-	# Updates card position
-	if _card_position_tween and _card_position_tween.is_running():
-		return
-	elif _grabbed:
-		set_image_position(get_global_mouse_position() - _grab_position)
-	else:
-		set_image_position(Vector2(0,0))
 
 
 func _on_text_edit_button_toggled(toggled_on: bool) -> void:
@@ -429,14 +272,3 @@ func _on_text_edit_button_toggled(toggled_on: bool) -> void:
 		%TextEdit.release_focus()
 		editing.emit(self, false)
 #endregion
-
-
-func _on_image_container_mouse_entered() -> void:
-	if is_interactible and not _grabbed:
-		tween_image_scale(get_container_scale()*1.05, 0.2)
-
-func _on_image_container_mouse_exited() -> void:
-	# we need to check %ImageContainer because if the card is queue_free()'d
-	# the image container will be null and this will throw a fatal error
-	if is_interactible and %ImageContainer:
-		tween_image_scale(get_container_scale(), 0.2)

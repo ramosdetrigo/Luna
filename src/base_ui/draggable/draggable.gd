@@ -7,12 +7,6 @@ signal dropped
 # Signals if the container was clicked on
 signal clicked
 
-# Thresholds for card dragging
-@export_range(0.0, 100.0)
-var drag_threshold: float = 5.0
-@export_range(0.0, 1.0, 0.05)
-var drag_cos_threshold: float = 0.85
-
 @export
 var scale_transition: Tween.TransitionType = Tween.TRANS_BACK
 @export
@@ -24,6 +18,10 @@ var modulate_transition: Tween.TransitionType = Tween.TRANS_QUAD
 var target_size: Vector2 = Vector2(1.0, 1.0)
 @export
 var clickable: bool = true
+
+# Thresholds for card dragging
+var drag_threshold: float = 10.0 if OS.get_name() == "Android" else 0.0
+var drag_cos_threshold: float = 0.85 if OS.get_name() == "Android" else 1.0
 
 var _try_grab: bool
 var _grabbed: bool
@@ -37,12 +35,6 @@ var _child: CanvasItem = null
 
 
 #region HELPERS
-func get_target_scale() -> Vector2:
-	if target_size == Vector2(1.0, 1.0):
-		return Vector2(1.0, 1.0)
-	return size / target_size
-
-
 func toggle_detached(detached: bool) -> void:
 	var previous_coords = _child.global_position
 	_child.top_level = detached
@@ -130,22 +122,22 @@ func _on_gui_input(event: InputEvent) -> void:
 	if (_child and event.is_pressed() and event is InputEventMouseButton
 	and event.button_index == MOUSE_BUTTON_LEFT):
 		_try_grab = true
-		tween_child_scale(get_target_scale()) # scale back down
-		_grab_position = _child.get_local_mouse_position() - target_size/2.0*get_target_scale()
+		tween_child_scale(Vector2(1.0, 1.0)) # scale back down
+		_grab_position = _child.get_local_mouse_position()
 #endregion INPUT HANDLING
 
 
-#region INPUT CALLBACKS
+#region CALLBACKS
 func _on_resized() -> void:
 	if _child == null:
 		return
 	
-	_child.size = size
 	if _child is Control:
+		_child.size = size
 		_child.pivot_offset = size/2.0 # fixes scaling
 
 	if _scale_tween and not _scale_tween.is_running():
-		_child.scale = get_target_scale()
+		_child.scale = Vector2(1.0, 1.0)
 	
 	# Updates card position
 	if _position_tween and not _position_tween.is_running():
@@ -158,25 +150,41 @@ func _on_resized() -> void:
 # Grow and shrink if mouse entered
 func _on_mouse_entered() -> void:
 	if _child and clickable and not _grabbed:
-		tween_child_scale(get_target_scale()*1.05)
+		tween_child_scale(Vector2(1.0, 1.0)*1.05)
 
 func _on_mouse_exited() -> void:
 	# we need to check _child because if the node is queue_free()'d
 	# the child will be null and this will throw a fatal error
 	if _child and clickable:
-		tween_child_scale(get_target_scale())
+		tween_child_scale(Vector2(1.0, 1.0))
 
 
 # Change _child if necessary
 func _on_child_entered_tree(node: Node) -> void:
 	if _child == null:
 		_child = node
-		_child.position = Vector2(0,0)
+	_child.position = Vector2(0,0)
+	if _child is Control:
 		_child.size = size
-		if _child is Control:
-			_child.pivot_offset = size/2.0 # fixes scaling
-		_child.scale = get_target_scale()
+		_child.pivot_offset = size/2.0 # fixes scaling
+	_child.scale = Vector2(1.0, 1.0)
 
 func _on_child_exiting_tree(_node: Node) -> void:
 	_child = get_child(0)
-#endregion CALLBACKS
+#endregion
+
+
+func _ready() -> void:
+	child_entered_tree.connect(_on_child_entered_tree)
+	child_exiting_tree.connect(_on_child_exiting_tree)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	gui_input.connect(_on_gui_input)
+	if _child == null and get_child_count() > 0:
+		_child = get_child(0)
+		_child.position = Vector2(0,0)
+		await resized
+		if _child is Control:
+			_child.size = size
+			_child.pivot_offset = size/2.0 # fixes scaling
+		_child.scale = Vector2(1.0, 1.0)

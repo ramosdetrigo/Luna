@@ -81,6 +81,7 @@ func generate_placeholder_cards() -> void:
 func _ready():
 	%CardList.add_child(new_edge())
 	%CardList.add_child(new_edge())
+	generate_placeholder_cards()
 
 
 func _input(event: InputEvent) -> void:
