@@ -10,6 +10,10 @@ func _init(game_state: CAHState, screen_nodes: CAHNodes) -> void:
 	nodes = screen_nodes
 
 
+func animate_label(text: String) -> void:
+	pass
+
+
 func is_card_from_scroller(card: Card) -> bool:
 	return nodes.card_scroller.find_card(card) != -1
 

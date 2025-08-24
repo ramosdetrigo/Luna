@@ -77,6 +77,10 @@ func find_card(card: Card) -> int:
 	return %CardList.get_children().find(card)
 
 
+func get_card_count() -> int:
+	return %CardList.get_child_count() - 2
+
+
 func generate_placeholder_cards() -> void:
 	for i in range(10):
 		var new_card = Global.PACKED_SCENES.card.instantiate()
