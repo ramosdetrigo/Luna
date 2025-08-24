@@ -4280,6 +4280,10 @@
 		"text":"Say my name.",
 		"pick":1
 	},
+	{
+		"text":"O que é o \"+\" em LGBTQIA+?",
+		"pick":1
+	},
   ],
   "whiteCards":[
 	"Muito, MUITO barulho.",

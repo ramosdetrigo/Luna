@@ -66,3 +66,4 @@ border_color = Color(0.567519, 0.389396, 1, 1)
 border_width = 3.0
 
 [connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="child_entered_tree" from="ScrollContainer/CardList" to="." method="_on_card_list_child_entered_tree"]

@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=10 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
 [ext_resource type="Theme" uid="uid://sfftfr7d567s" path="res://assets/resources/themes/theme_cards.tres" id="2_noo7h"]
+[ext_resource type="Script" uid="uid://bm3umaun02ne3" path="res://src/game_screen/fake_card.gd" id="3_drf4n"]
+[ext_resource type="Material" uid="uid://dkpbibxjep4ot" path="res://src/card_ui/card/edge.tres" id="3_p62s0"]
 [ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/base_ui/pulse_button/Pulse_button.tscn" id="3_qrh6e"]
-[ext_resource type="PackedScene" uid="uid://bgei4l44scxyg" path="res://src/card_ui/card/card.tscn" id="4_p62s0"]
+[ext_resource type="PackedScene" uid="uid://d33ravlxtvbru" path="res://src/card_ui/card_group/card_group.tscn" id="5_oc45t"]
+[ext_resource type="Texture2D" uid="uid://cfncsj4ixc2ja" path="res://assets/images/cards/border.png" id="5_pnpbp"]
+[ext_resource type="Script" uid="uid://cy0ft1rbxjbs3" path="res://src/game_screen/sb_control.gd" id="8_pnpbp"]
 
 [node name="GameScreen" type="Control"]
 layout_mode = 3
@@ -33,7 +37,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="TopLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(480, 68)
 layout_mode = 2
@@ -52,10 +56,9 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 20
-split_offset = 40
 drag_area_highlight_in_editor = true
 
-[node name="CHControl" type="Control" parent="MarginContainer/VBoxContainer/VSplitContainer"]
+[node name="CenterControl" type="Control" parent="MarginContainer/VBoxContainer/VSplitContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
@@ -63,7 +66,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="CentralCardContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VSplitContainer/CHControl"]
+[node name="CentralCardContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -75,10 +78,28 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Card" parent="MarginContainer/VBoxContainer/VSplitContainer/CHControl/CentralCardContainer" instance=ExtResource("4_p62s0")]
+[node name="CardSlot" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+ratio = 0.6578
+script = ExtResource("3_drf4n")
+glowing = true
 
-[node name="ReferenceRect" type="ReferenceRect" parent="MarginContainer/VBoxContainer/VSplitContainer/CHControl"]
+[node name="CardSlotEdge" type="TextureRect" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer/CardSlot"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+material = ExtResource("3_p62s0")
+layout_mode = 2
+texture = ExtResource("5_pnpbp")
+expand_mode = 1
+
+[node name="WhiteCardHolder" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer/CardSlot" instance=ExtResource("5_oc45t")]
+unique_name_in_owner = true
+layout_mode = 2
+draggable = false
+
+[node name="ReferenceRect" type="ReferenceRect" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -94,13 +115,23 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SBControl" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="JudgeScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BBControl" type="Control" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("8_pnpbp")
 
-[node name="SendButton" parent="MarginContainer/VBoxContainer/SBControl" instance=ExtResource("3_qrh6e")]
+[node name="BottomButton" parent="MarginContainer/VBoxContainer/BBControl" instance=ExtResource("3_qrh6e")]
 unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(360, 32)
 layout_mode = 1
 offset_left = -180.0
@@ -115,5 +146,3 @@ text = "Confirmar"
 expand_icon = true
 is_toggleable = false
 is_toggled = false
-
-[connection signal="toggled" from="MarginContainer/VBoxContainer/SBControl/SendButton" to="." method="_on_send_button_toggled"]

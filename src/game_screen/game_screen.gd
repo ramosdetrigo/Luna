@@ -1,97 +1,61 @@
 extends Screen
 
-var _selected_black_card: Card
-var _grabbed_card: Card
+var game_info: CAHState = CAHState.new()
+var screen_nodes: CAHNodes = CAHNodes.new()
+var state_handler: CAHStateHandler
+var next_state: CAHState.GameState
 
-enum GameState {
-	CHOOSE_BLACK,
-	CHOOSE_WHITE,
-	JUDGEMENT,
-	WINNER,
-}
-
-
-@export_range(1, 3)
-var white_choices: int = 1
-
-#region STATES
-#endregion
-
-
-#region HELPER METHODS
-#endregion
-
-
-#region CALLBACKS
 func _ready() -> void:
+	#region screen_nodes
+	screen_nodes.top_label = %TopLabel
+	screen_nodes.split_container = %VSplitContainer
+	
+	screen_nodes.bottom_button = %BottomButton
+	screen_nodes.button_controller = %BBControl
+	
+	screen_nodes.judge_scroller = %JudgeScroller
+	screen_nodes.card_scroller = %CardScroller
+	
+	screen_nodes.card_slot = %CardSlot
+	screen_nodes.card_slot_edge = %CardSlotEdge
+	screen_nodes.white_card_holder = %WhiteCardHolder
+	#endregion screen_nodes
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
-	
-	var black_card = Global.PACKED_SCENES.card.instantiate()
-	black_card.set_text("Say my name.")
-	black_card.card_type = Card.CardType.BLACK_CARD
-	black_card.is_interactible = true
-	black_card.clicked.connect(_on_black_card_clicked)
-	%CentralCardContainer.add_child(black_card)
-	%CentralCardContainer.move_child(%WhiteCardHolder, 1)
-	
-	%CardScroller.generate_placeholder_cards()
-	var card_list = %CardScroller.get_card_list()
-	for element in card_list:
-		if element is Card:
-			element.grabbed.connect(func(card: Card): _grabbed_card = card)
-			element.dropped.connect(func(_card: Card): _grabbed_card = null)
-			element.mouse_entered.connect(_on_card_mouse_entered.bind(element))
+	# TODO: wait for new state from server
+	game_info = CAHState.dummy_state()
+	update_state()
+	handle_state()
 
 
-func _on_black_card_clicked(card: Card) -> void:
-	if not card.is_interactible:
-		return
-	
-	if _selected_black_card == card:
-		_selected_black_card.toggle_glow(false)
-		_selected_black_card = null
-	else:
-		if _selected_black_card:
-			_selected_black_card.toggle_glow(false)
-		card.toggle_glow(true)
-		_selected_black_card = card
+func handle_state() -> void:
+	game_info.previous_game_state = game_info.current_game_state
+	game_info.current_game_state = next_state
+	#match next_state:
+		#CAHState.
 
 
+func update_state() -> void:
+	if game_info.debug_state:
+		match game_info.current_game_state: 
+			CAHState.STATE_CHOOSE_BLACK:
+				game_info.player_role = CAHState.ROLE_JUDGE
+				next_state = CAHState.STATE_CHOOSE_WHITE
+			CAHState.STATE_CHOOSE_WHITE:
+				game_info.player_role = CAHState.ROLE_PLAYER
+				next_state = CAHState.STATE_JUDGEMENT
+			CAHState.STATE_WINNER:
+				game_info.player_role = CAHState.ROLE_PLAYER
+				next_state = CAHState.STATE_CHOOSE_BLACK
+			CAHState.STATE_CONNECTING: next_state = CAHState.STATE_CHOOSE_BLACK
+#region BASIC_UI
 func _on_send_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		%SendButton.text = "Cancelar"
 	else:
 		%SendButton.text = "Confirmar"
-#endregion
-
-# Moves cards inside the card scroller
-func _on_card_mouse_entered(card: Card) -> void:
-	if not _grabbed_card:
-		return
-	var card_list = %CardScroller.get_card_list()
-	var entered_index = card_list.find(card)
-	# Switches the grabbed card position with the hovered card
-	if entered_index != -1 and card != _grabbed_card:
-		# Checks if card is in the scroller container
-		if card_list.find(_grabbed_card) == -1:
-			var new_scale = card.get_container_scale()
-			_grabbed_card.tween_image_scale(new_scale, 0.2)
-		%CardScroller.move_card(_grabbed_card, entered_index)
 
 
-func _on_white_card_holder_mouse_entered() -> void:
-	var card = _grabbed_card # Prevents a weird bug where cards becomes null mid-function?
-	if (not card) or card.get_parent() == %WhiteCardHolder:
-		return
-	var old_scale = card.get_container_scale()
-	
-	card.reparent(%WhiteCardHolder, true)
-	await card.container_resized
-	var new_scale = card.get_container_scale()
-	card.set_image_scale(old_scale)
-	card.tween_image_scale(new_scale, 0.2)
-
-
+# TODO: this could definetly be improved.
 # Dynamic resize that matches most resolutions nicely
 func _on_viewport_size_changed() -> void:
 	self.size = get_viewport_rect().size
@@ -99,13 +63,14 @@ func _on_viewport_size_changed() -> void:
 	
 	var width_guess = max(400 * new_scale.y, 400)
 	if size.x > 400 and width_guess < size.x*0.9:
-		%CHControl.custom_minimum_size.x = width_guess
+		%CenterControl.custom_minimum_size.x = width_guess
 	else:
-		%CHControl.custom_minimum_size.x = size.x*0.9
+		%CenterControl.custom_minimum_size.x = size.x*0.9
 	%VSplitContainer.split_offset = %VSplitContainer.size.y/13.0
 	
-	%Label.custom_minimum_size.x = 400 * new_scale.y
-	%Label.add_theme_font_size_override("normal_font_size", 40 * new_scale.y)
+	%TopLabel.custom_minimum_size.x = 400 * new_scale.y
+	%TopLabel.add_theme_font_size_override("normal_font_size", 40 * new_scale.y)
 	
-	%SendButton.custom_minimum_size.x = 360 * new_scale.y
-	%SendButton.add_theme_font_size_override("font_size", 24 * new_scale.y)
+	%BottomButton.custom_minimum_size.x = 360 * new_scale.y
+	%BottomButton.add_theme_font_size_override("font_size", 24 * new_scale.y)
+#endregion

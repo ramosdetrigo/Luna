@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsoby2p5uvm0q"]
+
+[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/base_ui/draggable/draggable.gd" id="1_b6nnh"]
+
+[node name="Teste" type="AspectRatioContainer"]
+offset_left = 267.0
+offset_top = 42.0
+offset_right = 976.0
+offset_bottom = 285.0
+
+[node name="Draggable" type="Container" parent="."]
+layout_mode = 2
+script = ExtResource("1_b6nnh")
+metadata/_custom_type_script = "uid://dkatnti28hcwg"
+
+[node name="ColorRect" type="ColorRect" parent="Draggable"]
+layout_mode = 2
+mouse_filter = 2

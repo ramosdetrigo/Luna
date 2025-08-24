@@ -1,3 +1,4 @@
+class_name CardScroller
 extends Control
 
 
@@ -30,6 +31,11 @@ func new_edge() -> Control:
 	return edge
 
 
+func add_card(card: Card) -> void:
+	card.reparent(%CardList)
+	%CardList.move_child(card, %CardList.get_child_count() - 2)
+
+
 # Animates the card moving from one index to another
 func move_card(card: Card, target_index: int) -> void:
 	var card_list = %CardList.get_children()
@@ -50,12 +56,12 @@ func move_card(card: Card, target_index: int) -> void:
 		var current_card: Card = card_list[i]
 		var next_card: Card = card_list[i+direction]
 		
-		var old_position = current_card.get_container_global_position()
-		var new_position = next_card.get_container_global_position()
+		var old_position = current_card.container.global_position
+		var new_position = next_card.container.global_position
 		var offset = (old_position - new_position)
 		
-		current_card.set_image_position(offset)
-		current_card.tween_image_position(Vector2(0,0), 0.2)
+		current_card.container.set_child_position(offset)
+		current_card.container.tween_child_position(Vector2(0,0), 0.2)
 
 
 # NOTE: is this wrong? 'cause the card fades in place etc
@@ -67,11 +73,21 @@ func remove_card(card: Card) -> void:
 	%CardList.remove_child(card)
 
 
+func find_card(card: Card) -> int:
+	return %CardList.get_children().find(card)
+
+
 func generate_placeholder_cards() -> void:
 	for i in range(10):
 		var new_card = Global.PACKED_SCENES.card.instantiate()
 		new_card.custom_minimum_size = card_size()
-		new_card.set_text("Carta " + str(i+1))
+		new_card.set_text("Carta" + str(i))
+		#var t = CAH.custom_cards.keys().get(i)
+		#if t:
+			#new_card.set_text(t)
+		#else:
+			#new_card.set_text(CAH.gradient_cards.keys()[i])
+			
 		%CardList.add_child(new_card)
 		%CardList.move_child(new_card, %CardList.get_child_count() - 2)
 #endregion
@@ -81,7 +97,7 @@ func generate_placeholder_cards() -> void:
 func _ready():
 	%CardList.add_child(new_edge())
 	%CardList.add_child(new_edge())
-	generate_placeholder_cards()
+	#generate_placeholder_cards()
 
 
 func _input(event: InputEvent) -> void:
@@ -103,3 +119,7 @@ func _on_resized() -> void:
 		else:
 			element.custom_minimum_size.x = edge_size()
 #endregion
+
+
+func _on_card_list_child_entered_tree(_node: Node) -> void:
+	_on_resized()

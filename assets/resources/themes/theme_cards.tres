@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://sfftfr7d567s"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://sfftfr7d567s"]
 
 [ext_resource type="FontVariation" uid="uid://dmc63aclsoyaf" path="res://assets/resources/fonts/helvetica_bold_fallbacks.tres" id="1_dlh00"]
 [ext_resource type="FontVariation" uid="uid://cr3rx0aldn77n" path="res://assets/resources/fonts/monospace_fallbacks.tres" id="1_fv333"]
@@ -11,6 +11,18 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ouvxp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4u3cq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d30cx"]
+content_margin_left = 8.0
+content_margin_top = 0.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
 
 [resource]
 default_font_size = 46
@@ -27,3 +39,4 @@ TextEdit/fonts/font = ExtResource("2_h4snt")
 TextEdit/styles/focus = SubResource("StyleBoxEmpty_mrmao")
 TextEdit/styles/normal = SubResource("StyleBoxEmpty_ouvxp")
 TextEdit/styles/read_only = SubResource("StyleBoxEmpty_4u3cq")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_d30cx")

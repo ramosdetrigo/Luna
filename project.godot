@@ -17,6 +17,7 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 Global="*res://src/global.gd"
+CAH="*res://src/cah.gd"
 
 [display]
 

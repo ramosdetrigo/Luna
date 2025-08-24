@@ -20,7 +20,7 @@ var target_size: Vector2 = Vector2(1.0, 1.0)
 var clickable: bool = true
 
 # Thresholds for card dragging
-var drag_threshold: float = 10.0 if OS.get_name() == "Android" else 0.0
+var drag_threshold: float = 10.0 if OS.get_name() == "Android" else 10.0
 var drag_cos_threshold: float = 0.85 if OS.get_name() == "Android" else 1.0
 
 var _try_grab: bool
@@ -68,6 +68,18 @@ func tween_child_modulate(color: Color, time: float = 0.2) -> void:
 	_modulate_tween.set_ease(Tween.EASE_OUT)
 	_modulate_tween.set_trans(modulate_transition)
 	_modulate_tween.tween_property(_child, "modulate", color, time)
+
+
+func set_child_scale(sc: Vector2):
+	_child.scale = sc
+
+
+func set_child_position(pos: Vector2):
+	_child.position = pos
+
+
+func set_child_modulate(color: Color):
+	_child.modulate = color
 #endregion TWEENS
 
 
@@ -80,7 +92,7 @@ func _input(event: InputEvent) -> void:
 	and event.button_index == MOUSE_BUTTON_LEFT and event.is_released()):
 		# Check if it was a click or a drag (signal if clicked)
 		if _try_grab:
-			clicked.emit(self)
+			clicked.emit()
 		elif _grabbed:
 			# Reattaches the image to its container.
 			toggle_detached(false)
@@ -89,7 +101,7 @@ func _input(event: InputEvent) -> void:
 		# Signals that the card was dropped
 		_grabbed = false
 		_try_grab = false
-		dropped.emit(self)
+		dropped.emit()
 	
 	if event is not InputEventMouseMotion and event is not InputEventScreenDrag:
 		return
@@ -107,7 +119,7 @@ func _input(event: InputEvent) -> void:
 			if absf(drag_cos) <= drag_cos_threshold:
 				# Signals that the card was grabbed
 				_grabbed = true
-				grabbed.emit(self)
+				grabbed.emit()
 				toggle_detached(true)
 	if _grabbed:
 		# Updates card grab coords and starts a tween
@@ -157,34 +169,39 @@ func _on_mouse_exited() -> void:
 	# the child will be null and this will throw a fatal error
 	if _child and clickable:
 		tween_child_scale(Vector2(1.0, 1.0))
+#endregion
 
 
-# Change _child if necessary
-func _on_child_entered_tree(node: Node) -> void:
-	if _child == null:
-		_child = node
-	_child.position = Vector2(0,0)
+func _update_child(_node: Node) -> void:
+	if get_child_count() == 0:
+		_child = null
+		return
+	
+	_child = get_child(0)
+	#_child.position = Vector2(0,0)
 	if _child is Control:
 		_child.size = size
 		_child.pivot_offset = size/2.0 # fixes scaling
 	_child.scale = Vector2(1.0, 1.0)
 
-func _on_child_exiting_tree(_node: Node) -> void:
-	_child = get_child(0)
-#endregion
-
-
 func _ready() -> void:
-	child_entered_tree.connect(_on_child_entered_tree)
-	child_exiting_tree.connect(_on_child_exiting_tree)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
-	if _child == null and get_child_count() > 0:
-		_child = get_child(0)
-		_child.position = Vector2(0,0)
-		await resized
-		if _child is Control:
-			_child.size = size
-			_child.pivot_offset = size/2.0 # fixes scaling
-		_child.scale = Vector2(1.0, 1.0)
+	resized.connect(_on_resized)
+	# Change _child if necessary
+	child_entered_tree.connect(_update_child)
+	child_exiting_tree.connect(_update_child)
+	_update_child(null)
+
+
+func _exit_tree() -> void:
+	var old_pos = global_position
+	await resized
+	var new_pos = global_position
+	
+	if old_pos != new_pos and _position_tween and not _position_tween.is_running():
+		var offset = old_pos - new_pos
+		set_child_position(offset)
+		tween_child_position(Vector2(0,0))
+		pass

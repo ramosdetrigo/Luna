@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dkpbibxjep4ot"]
+
+[ext_resource type="Shader" uid="uid://dhveg1lcrscy6" path="res://src/card_ui/card/edge.gdshader" id="1_7frnv"]
+
+[sub_resource type="Gradient" id="Gradient_msysm"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 2
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tgw1k"]
+gradient = SubResource("Gradient_msysm")
+
+[resource]
+shader = ExtResource("1_7frnv")
+shader_parameter/gradient = SubResource("GradientTexture1D_tgw1k")

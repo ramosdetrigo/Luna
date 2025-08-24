@@ -1,19 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://d33ravlxtvbru"]
+[gd_scene load_steps=3 format=3 uid="uid://d33ravlxtvbru"]
 
 [ext_resource type="Script" uid="uid://cge0bxh5g0lny" path="res://src/card_ui/card_group/card_group.gd" id="1_4v4uj"]
+[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/base_ui/draggable/draggable.gd" id="2_4v4uj"]
 
 [node name="CardGroup" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 655.0
-offset_top = 71.0
-offset_right = 930.0
-offset_bottom = 301.0
+offset_left = 550.0
+offset_top = 211.0
+offset_right = 770.0
+offset_bottom = 351.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 script = ExtResource("1_4v4uj")
 
-[node name="Box" type="BoxContainer" parent="."]
+[node name="Draggable" type="Container" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -21,12 +23,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("2_4v4uj")
+clickable = false
+metadata/_custom_type_script = "uid://dkatnti28hcwg"
+
+[node name="Box" type="BoxContainer" parent="Draggable"]
+unique_name_in_owner = true
+layout_mode = 2
 mouse_filter = 2
-vertical = true
 
 [node name="ReferenceRect" type="ReferenceRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -34,5 +41,8 @@ grow_vertical = 2
 mouse_filter = 2
 border_color = Color(0.974478, 0.84692, 0, 1)
 border_width = 3.0
+editor_only = false
 
 [connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="dropped" from="Draggable" to="." method="_on_draggable_dropped"]
+[connection signal="grabbed" from="Draggable" to="." method="_on_draggable_grabbed"]
