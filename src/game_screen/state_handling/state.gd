@@ -27,11 +27,12 @@ var player_role: PlayerRole = PlayerRole.ROLE_PLAYER
 var previous_game_state: GameState = GameState.STATE_CONNECTING
 var current_game_state: GameState = GameState.STATE_CONNECTING
 
-var black_cards: Array[String] = []
-var white_cards: Array[String] = []
-var choice_groups: Array[Array] = []
+var black_cards = []
+var white_cards = []
+var choice_groups = []
 
 var white_choices: int = 0
+var winner_name: String = ""
 var debug_state: bool = false
 
 
@@ -39,14 +40,15 @@ static func dummy_state() -> CAHState:
 	var state = CAHState.new()
 	state.player_role = PlayerRole.ROLE_JUDGE
 	state.previous_game_state = GameState.STATE_CONNECTING
-	state.current_game_state = GameState.STATE_CHOOSE_BLACK
+	state.current_game_state = GameState.STATE_WINNER
 	
-	state.black_cards = ["Carta 1", "Carta 2"]
+	state.black_cards = ["Say my name."]
 	state.white_cards = []
-	state.choice_groups = []
+	state.choice_groups = [["Joaquim.", "Joaquim.", "Joaquim."]]
 	for i in range(10): state.white_cards.push_back("Carta %d" % i)
 	
 	state.white_choices = 0
+	state.winner_name = "Joaquim"
 	
 	state.debug_state = true
 	return state

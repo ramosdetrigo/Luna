@@ -1,5 +1,8 @@
 extends Node
 
+const CARD_SCENE: PackedScene = preload("res://src/card_ui/card/card.tscn")
+const CARD_GROUP_SCENE: PackedScene = preload("res://src/card_ui/card_group/card_group.tscn")
+
 # 534,812: base card image resolution
 const CARD_IMAGE_SIZE: Vector2 = Vector2(534, 812)
 

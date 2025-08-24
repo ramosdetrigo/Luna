@@ -43,31 +43,34 @@ func toggle_detached(detached: bool) -> void:
 
 
 #region TWEENS
-func tween_child_scale(sc: Vector2, time: float = 0.2) -> void:
+func tween_child_scale(sc: Vector2, time: float = 0.2) -> Tween:
 	if _scale_tween:
 		_scale_tween.kill()
 	_scale_tween = create_tween()
 	_scale_tween.set_ease(Tween.EASE_OUT)
 	_scale_tween.set_trans(scale_transition)
 	_scale_tween.tween_property(_child, "scale", sc, time)
+	return _scale_tween
 
 
-func tween_child_position(pos: Vector2, time: float = 0.2) -> void:
+func tween_child_position(pos: Vector2, time: float = 0.2) -> Tween:
 	if _position_tween:
 		_position_tween.kill()
 	_position_tween = create_tween()
 	_position_tween.set_ease(Tween.EASE_OUT)
 	_position_tween.set_trans(position_transition)
 	_position_tween.tween_property(_child, "position", pos, time)
+	return _position_tween
 
 
-func tween_child_modulate(color: Color, time: float = 0.2) -> void:
+func tween_child_modulate(color: Color, time: float = 0.2) -> Tween:
 	if _modulate_tween:
 		_modulate_tween.kill()
 	_modulate_tween = create_tween()
 	_modulate_tween.set_ease(Tween.EASE_OUT)
 	_modulate_tween.set_trans(modulate_transition)
 	_modulate_tween.tween_property(_child, "modulate", color, time)
+	return _modulate_tween
 
 
 func set_child_scale(sc: Vector2):

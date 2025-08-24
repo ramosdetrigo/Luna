@@ -41,7 +41,6 @@ grow_vertical = 2
 mouse_filter = 2
 border_color = Color(0.974478, 0.84692, 0, 1)
 border_width = 3.0
-editor_only = false
 
 [connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="dropped" from="Draggable" to="." method="_on_draggable_dropped"]

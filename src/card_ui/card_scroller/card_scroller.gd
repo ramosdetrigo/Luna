@@ -31,37 +31,34 @@ func new_edge() -> Control:
 	return edge
 
 
-func add_card(card: Card) -> void:
+func add_card(card: Card, index: int = -1) -> void:
 	card.reparent(%CardList)
 	%CardList.move_child(card, %CardList.get_child_count() - 2)
+	if index != -1:
+		move_card(card, index)
 
 
 # Animates the card moving from one index to another
-func move_card(card: Card, target_index: int) -> void:
+func move_card(card: Card, index: int) -> void:
 	var card_list = %CardList.get_children()
 	var old_index = card_list.find(card)
-	# Adds the card to the end of the list and moves it behind the edge
-	if old_index == -1:
-		card.reparent(%CardList)
-		%CardList.move_child(card, len(card_list) - 2)
-		old_index = len(card_list) - 2
 	# Skips the animations if the card is already at the right index
-	if old_index == target_index:
+	if old_index == index:
 		return
 	
-	%CardList.move_child(card, target_index)
-	var direction = sign(old_index - target_index)
-	# This should skip the moved/inserted/"grabbed" card
-	for i in range(target_index, old_index, direction):
+	%CardList.move_child(card, index)
+	var direction = sign(old_index - index)
+	# This should skip the moved card
+	for i in range(index, old_index, direction):
 		var current_card: Card = card_list[i]
 		var next_card: Card = card_list[i+direction]
 		
-		var old_position = current_card.container.global_position
-		var new_position = next_card.container.global_position
+		var old_position = current_card.dragger.global_position
+		var new_position = next_card.dragger.global_position
 		var offset = (old_position - new_position)
 		
-		current_card.container.set_child_position(offset)
-		current_card.container.tween_child_position(Vector2(0,0), 0.2)
+		current_card.dragger.set_child_position(offset)
+		current_card.dragger.tween_child_position(Vector2(0,0), 0.2)
 
 
 # NOTE: is this wrong? 'cause the card fades in place etc
@@ -102,14 +99,6 @@ func _ready():
 	%CardList.add_child(new_edge())
 	%CardList.add_child(new_edge())
 	#generate_placeholder_cards()
-
-
-func _input(event: InputEvent) -> void:
-	if event is not InputEventKey:
-		return
-	var key = event as InputEventKey
-	if key.keycode == KEY_SPACE and key.is_released():
-		remove_card(%CardList.get_children()[1])
 
 
 func _on_resized() -> void:

@@ -15,7 +15,7 @@ var dragger: Draggable = %Draggable
 var _size_x_tween: Tween
 
 #region CARD MANIPULATION
-func add_card(card: Card) -> void:
+func add_card(card: Card, index: int = -1) -> void:
 	var container = new_card_container()
 	
 	card.reparent(container)
@@ -24,15 +24,22 @@ func add_card(card: Card) -> void:
 	card.size = get_card_size()
 	card.custom_minimum_size = get_card_size()
 	container.resized.connect(card._on_image_container_resized)
+	
 	if draggable:
 		card.mouse_filter = MOUSE_FILTER_IGNORE
-		card.container.mouse_filter = MOUSE_FILTER_IGNORE
+		card.dragger.mouse_filter = MOUSE_FILTER_IGNORE
+	else:
+		card.mouse_filter = MOUSE_FILTER_PASS
+		card.dragger.mouse_filter = MOUSE_FILTER_PASS
+	card.dragger.resized.connect(func():
+		if %Box.vertical:
+			container.custom_minimum_size.y = card.get_text_height()
+	)
 	
 	%Box.add_child(container)
 	
-	await card.container.resized
-	if %Box.vertical:
-		container.custom_minimum_size.y = card.get_text_height()
+	if index != -1:
+		move_card(card, index)
 
 
 func update_card_sizes() -> void:
@@ -50,10 +57,35 @@ func update_card_sizes() -> void:
 			container.custom_minimum_size.y = card.get_text_height()
 
 
-func move_card(card: Card, target_index: int) -> void:
-	# TODO: smooth moving
-	var card_container = %Box.get_child(find_card(card))
-	%Box.move_child(card_container, target_index)
+func get_cards() -> Array[Card] :
+	var cards: Array[Card]
+	for container in %Box.get_children():
+		cards.push_back(get_container_card(container))
+	return cards
+
+
+func move_card(card: Card, index: int) -> void:
+	var container_list = %Box.get_children()
+	var old_index = find_card(card)
+	# Skips the animations if the card is already at the right index
+	if old_index == index:
+		return
+	
+	var card_container = container_list[old_index]
+	%Box.move_child(card_container, index)
+	var direction = sign(old_index - index)
+	# This should skip the moved card
+	for i in range(index, old_index, direction):
+		var current_card: Card = get_container_card(container_list[i])
+		var next_card: Card = get_container_card(container_list[i+direction])
+		
+		var old_position = current_card.dragger.global_position
+		var new_position = next_card.dragger.global_position
+		var offset = (old_position - new_position)
+		
+		current_card.dragger.set_child_position(offset)
+		current_card.dragger.tween_child_position(Vector2(0,0), 0.2)
+
 
 func remove_card(card: Card) -> void:
 	for container in %Box.get_children():
@@ -89,7 +121,7 @@ func set_vertical(toggle: bool) -> void:
 	var old_card_scales: Array[Vector2] = []
 	for i in range(len(container_list)):
 		var card: Card = get_container_card(container_list[i])
-		old_card_positions.push_back(card.container.global_position)
+		old_card_positions.push_back(card.dragger.global_position)
 		old_card_scales.push_back(card.get_image_scale())
 	
 	%Box.vertical = toggle
@@ -97,10 +129,10 @@ func set_vertical(toggle: bool) -> void:
 	
 	for i in range(1,len(container_list)):
 		var card: Card = get_container_card(container_list[i])
-		var pos_offset = old_card_positions[i] - card.container.global_position
+		var pos_offset = old_card_positions[i] - card.dragger.global_position
 		
-		card.container.set_child_position(pos_offset)
-		card.container.tween_child_position(Vector2(0,0), 0.5)
+		card.dragger.set_child_position(pos_offset)
+		card.dragger.tween_child_position(Vector2(0,0), 0.5)
 
 
 func set_draggable(enabled: bool) -> void:
@@ -109,10 +141,10 @@ func set_draggable(enabled: bool) -> void:
 	for container in %Box.get_children():
 		var card = get_container_card(container)
 		if draggable:
-			card.container.mouse_filter = MOUSE_FILTER_IGNORE
+			card.dragger.mouse_filter = MOUSE_FILTER_IGNORE
 			card.mouse_filter = MOUSE_FILTER_IGNORE
 		else:
-			card.container.mouse_filter = MOUSE_FILTER_PASS
+			card.dragger.mouse_filter = MOUSE_FILTER_PASS
 			card.mouse_filter = MOUSE_FILTER_PASS
 
 func set_clickable(enabled: bool) -> void:

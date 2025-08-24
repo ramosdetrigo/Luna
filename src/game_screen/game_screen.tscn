@@ -1,20 +1,45 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=15 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
 [ext_resource type="Theme" uid="uid://sfftfr7d567s" path="res://assets/resources/themes/theme_cards.tres" id="2_noo7h"]
-[ext_resource type="Script" uid="uid://bm3umaun02ne3" path="res://src/game_screen/fake_card.gd" id="3_drf4n"]
-[ext_resource type="Material" uid="uid://dkpbibxjep4ot" path="res://src/card_ui/card/edge.tres" id="3_p62s0"]
+[ext_resource type="Script" uid="uid://bij5ja7dxuyh" path="res://src/game_screen/top_label.gd" id="3_lfrdv"]
 [ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/base_ui/pulse_button/Pulse_button.tscn" id="3_qrh6e"]
+[ext_resource type="PackedScene" uid="uid://ch8liwgnieqw7" path="res://src/card_ui/card_slot/card_slot.tscn" id="4_drf4n"]
+[ext_resource type="Script" uid="uid://jok1u3fl30wj" path="res://src/game_screen/split_container.gd" id="4_pnpbp"]
 [ext_resource type="PackedScene" uid="uid://d33ravlxtvbru" path="res://src/card_ui/card_group/card_group.tscn" id="5_oc45t"]
-[ext_resource type="Texture2D" uid="uid://cfncsj4ixc2ja" path="res://assets/images/cards/border.png" id="5_pnpbp"]
-[ext_resource type="Script" uid="uid://cy0ft1rbxjbs3" path="res://src/game_screen/sb_control.gd" id="8_pnpbp"]
+[ext_resource type="Script" uid="uid://cy0ft1rbxjbs3" path="res://src/game_screen/bb_control.gd" id="8_pnpbp"]
+[ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="10_lfrdv"]
+[ext_resource type="Script" uid="uid://of1q8s48itpc" path="res://src/game_screen/connecting_panel.gd" id="11_1mmlo"]
+
+[sub_resource type="Gradient" id="Gradient_lfrdv"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.6, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 5
+
+[sub_resource type="Gradient" id="Gradient_1mmlo"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.95, 0.728333, 0.285, 1, 1, 0.44, 0.645333, 1, 0.666667, 0.6, 1, 1)
+metadata/_snap_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_lfrdv"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.483146), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="GameScreen" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1280.0
-offset_bottom = 720.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_qaexu")
@@ -37,26 +62,44 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
-[node name="TopLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="LabelControl" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(480, 68)
+custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
+
+[node name="TopLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LabelControl"]
+unique_name_in_owner = true
+clip_contents = false
+custom_minimum_size = Vector2(510, 68)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -255.0
+offset_right = 255.0
+offset_bottom = 68.0
+grow_horizontal = 2
 size_flags_horizontal = 4
 theme = ExtResource("2_noo7h")
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 40
-text = "Escolha sua carta."
+text = "Placeholder text"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("3_lfrdv")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 20
+split_offset = 250
+dragging_enabled = false
+dragger_visibility = 1
 drag_area_highlight_in_editor = true
+script = ExtResource("4_pnpbp")
 
 [node name="CenterControl" type="Control" parent="MarginContainer/VBoxContainer/VSplitContainer"]
 unique_name_in_owner = true
@@ -65,6 +108,20 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 mouse_filter = 1
+
+[node name="CenterCardSlot" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl" instance=ExtResource("4_drf4n")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="CentralCardContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl"]
 unique_name_in_owner = true
@@ -78,23 +135,15 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 alignment = 1
 
-[node name="CardSlot" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer"]
+[node name="LeftCardSlot" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer" instance=ExtResource("4_drf4n")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-ratio = 0.6578
-script = ExtResource("3_drf4n")
-glowing = true
 
-[node name="CardSlotEdge" type="TextureRect" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer/CardSlot"]
+[node name="RightCardSlot" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer" instance=ExtResource("4_drf4n")]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-material = ExtResource("3_p62s0")
 layout_mode = 2
-texture = ExtResource("5_pnpbp")
-expand_mode = 1
 
-[node name="WhiteCardHolder" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer/CardSlot" instance=ExtResource("5_oc45t")]
+[node name="WhiteCardHolder" parent="MarginContainer/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer/RightCardSlot" instance=ExtResource("5_oc45t")]
 unique_name_in_owner = true
 layout_mode = 2
 draggable = false
@@ -146,3 +195,74 @@ text = "Confirmar"
 expand_icon = true
 is_toggleable = false
 is_toggled = false
+
+[node name="ParticlesPosition" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = 8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Confetti" type="CPUParticles2D" parent="ParticlesPosition"]
+unique_name_in_owner = true
+emitting = false
+amount = 150
+texture = ExtResource("10_lfrdv")
+lifetime = 12.0
+one_shot = true
+explosiveness = 0.9
+randomness = 1.0
+lifetime_randomness = 0.3
+local_coords = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector2(0, -1)
+spread = 30.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 250.0
+initial_velocity_max = 550.0
+angular_velocity_min = -109.83
+angular_velocity_max = 85.42
+damping_min = 75.0
+damping_max = 95.0
+angle_min = -80.0
+angle_max = 80.0
+scale_amount_max = 1.5
+color_ramp = SubResource("Gradient_lfrdv")
+color_initial_ramp = SubResource("Gradient_1mmlo")
+hue_variation_min = -0.25
+hue_variation_max = 0.25
+hue_variation_curve = SubResource("Curve_lfrdv")
+
+[node name="ConnectingPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_1mmlo")
+
+[node name="ConnectingLabel" type="Label" parent="ConnectingPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -153.5
+offset_top = -28.0
+offset_right = 153.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_noo7h")
+text = "Conectando..."

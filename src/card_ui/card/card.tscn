@@ -45,7 +45,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 ratio = 0.6576
 script = ExtResource("1_of7fp")
-text = "[Carta editável]"
+text = "PIROCA!!! KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
 card_type = 1
 
 [node name="ImageContainer" type="Container" parent="."]
@@ -179,7 +179,6 @@ texture_off = ExtResource("5_feltw")
 layout_mode = 2
 mouse_filter = 2
 border_width = 3.0
-editor_only = false
 
 [connection signal="resized" from="." to="." method="_on_image_container_resized"]
 [connection signal="resized" from="ImageContainer" to="." method="_on_image_container_resized"]

@@ -33,7 +33,7 @@ var _edge_modulate_tween: Tween
 # Tweener to change image scale
 var _scale_tween: Tween
 
-@onready var container: Draggable = %ImageContainer
+@onready var dragger: Draggable = %ImageContainer
 
 
 #region METHODS
@@ -210,4 +210,4 @@ func is_clickable() -> bool:
 
 func set_clickable(clickable: bool) -> void:
 	%ImageContainer.clickable = clickable
-#endregion CALLBACKS
+#endregion EXPOSE
