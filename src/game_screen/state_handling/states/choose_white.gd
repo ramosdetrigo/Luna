@@ -7,6 +7,8 @@ func _ready() -> void:
 	nodes.button_controller.toggle_button(false)
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(false)
+	nodes.judge_scroller.toggle_visible(false)
+	nodes.card_scroller.toggle_visible(true)
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.right_card_slot.toggle_glow(true)
 		if state.white_choices == 1:
@@ -16,6 +18,9 @@ func _ready() -> void:
 	else:
 		nodes.top_label.animate_text("Aguarde os jogadores.")
 		nodes.right_card_slot.toggle_glow(false)
+	for card in nodes.white_card_holder.get_cards():
+			nodes.white_card_holder.remove_card(card)
+	nodes.bottom_button.toggle_mode = true
 	
 	# show card scroller
 	nodes.split_container.set_expanded(false)
@@ -34,14 +39,14 @@ func _ready() -> void:
 			clean_right_slot()
 		
 		# Move a carta pro local certo (pro centro se não for jogador)
-		var old_pos = right_black_card.dragger.global_position
+		var old_pos = selected_black_card.dragger.global_position
 		if state.player_role != CAHState.ROLE_PLAYER:
 			selected_black_card.reparent(nodes.center_card_slot)
 			clean_left_slot()
 			clean_right_slot()
 		else:
 			selected_black_card.reparent(nodes.left_card_slot)
-		tween_card_to_new(right_black_card, old_pos)
+		tween_card_to_new(selected_black_card, old_pos)
 	else: # The player just entered the game or whatever
 		clean_card_slots()
 		var black_card = CAH.CARD_SCENE.instantiate()
@@ -69,6 +74,7 @@ func _ready() -> void:
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.white_card_holder.mouse_entered.connect(_on_card_holder_mouse_entered)
 		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)
+	
 
 
 func _on_card_grabbed(card: Card) -> void:
@@ -84,7 +90,7 @@ func _on_card_clicked(card: Card) -> void:
 	if is_card_from_holder(card):
 		var old_pos = card.dragger.global_position
 		# add to center of the screen
-		var slot = floor(nodes.card_scroller.get_scroll_percentage() * nodes.card_scroller.get_card_count()) + 1
+		var slot = round(nodes.card_scroller.get_scroll_percentage() * nodes.card_scroller.get_card_count()) + 1
 		add_card_to_scroller(card, slot)
 		# we need to wait it to resize to do the animation cause reasons
 		await card.dragger.resized
@@ -154,7 +160,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 
 
 #region OVERRIDES
-func add_card_to_holder(card: Card, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
+func add_card_to_holder(card: Control, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
 	super(card, index, skip_anim, tween)
 	var card_count = nodes.white_card_holder.get_card_count()
 	if card_count == 1:
@@ -163,7 +169,7 @@ func add_card_to_holder(card: Card, index: int = -1, skip_anim: bool = false, tw
 		nodes.button_controller.toggle_button(true)
 
 
-func add_card_to_scroller(card: Card, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
+func add_card_to_scroller(card: Control, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
 	super(card, index, skip_anim, tween)
 	var card_count = nodes.white_card_holder.get_card_count()
 	if card_count == 0:

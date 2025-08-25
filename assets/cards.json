@@ -942,7 +942,7 @@
 	},
 	{
 	  "pick":1,
-	  "text":"Por que você não faz sexo comigo mais? É porque _?"
+	  "text":"Por que você não faz mais sexo comigo? É porque _?"
 	},
 	{
 	  "pick":1,
@@ -1557,7 +1557,7 @@
 	  "text":"\"Não é entrega domiciliar. É _.\""
 	},
 	{
-	  "text":"Um homem inteligente uma vez disse: \"Tudo, TUDO é sobre sexo. Exceto sexo. Sexo é sobre _.\"",
+	  "text":"Um homem sábio uma vez disse: \"Tudo, TUDO é sobre sexo. Exceto sexo. Sexo é sobre _.\"",
 	  "pick":1
 	},
 	{
@@ -4284,6 +4284,14 @@
 		"text":"O que é o \"+\" em LGBTQIA+?",
 		"pick":1
 	},
+	{
+		"text":"Qual a melhor parte da terapia hormonal feminizante?",
+		"pick":1
+	},
+	{
+		"text":"Qual a melhor parte da terapia hormonal masculinizante?",
+		"pick":1
+	},
   ],
   "whiteCards":[
 	"Muito, MUITO barulho.",
@@ -4295,6 +4303,7 @@
 	"Mãos de Jazz vigorosas.",
 	"Pássaros que não voam.",
 	"Fotos de peitos.",
+	"Seios fartos.",
 	"Fazer a coisa certa.",
 	"A violação dos mais básicos direitos humanos.",
 	"Viagra.",
@@ -4728,6 +4737,7 @@
 	"Cuidados de hospícios.",
 	"Uma pirâmide de cabeças cortadas.",
 	"Se casar, ter alguns filhos, comprar algumas coisas, se aposentar na Flórida e morrer.",
+	"Florida man.",
 	"Uma assinatura da revista Playboy.",
 	"Crucificação.",
 	"Um porquinho vestindo uma capinha de chuva e umas botinhas fofinhas.",
@@ -5722,7 +5732,7 @@
 	"Descobrir que o Papai Noel não é real.",
 	"Cortar um presunto num silêncio gelado.",
 	"A versão judaica mais merda do Natal.",
-	"A deusa havaiana Kapo e sua vagina voadora separável.",
+	"A deusa havaiana Kapo e sua vagina voadora desacoplável.",
 	"Ter opiniões fortes sobre o SUS.",
 	"O pós-parto real.",
 	"Os pênis flácidos do congresso apodrecendo entre as calças de seus ternos.",

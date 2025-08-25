@@ -13,6 +13,7 @@ var clickable: bool = false
 var dragger: Draggable = %Draggable
 
 var _size_x_tween: Tween
+var collapsed: bool = false
 
 #region CARD MANIPULATION
 func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
@@ -40,16 +41,27 @@ func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
 	)
 	
 	%Box.add_child(container)
+	update_container_size()
 	
 	if index != -1:
 		move_card(card, index, skip_anim)
 
 
-func update_card_sizes() -> void:
+func update_container_size() -> void:
+	var card_count = %Box.get_child_count()
 	if %Box.vertical:
-		%Box.size.y = get_card_size().y*3
+		%Box.size.y = get_card_size().y*card_count
+		size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	else:
 		%Box.size.y = size.y
+		size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		var card_size = get_card_size()
+		var width = card_size.x * card_count - 20 * card_count
+		custom_minimum_size = Vector2(width, 0)
+
+
+func update_card_sizes() -> void:
+	update_container_size()
 	
 	var container_list = %Box.get_children()
 	for container in container_list:
@@ -121,6 +133,11 @@ func set_vertical(toggle: bool) -> void:
 	if %Box.vertical == toggle:
 		return
 	
+	if dragger._grabbed:
+		if vertical:
+			dragger._grab_position.x *= %Box.get_child_count()
+		else:
+			dragger._grab_position.x /= %Box.get_child_count()
 	var container_list = %Box.get_children()
 	# Anota os tamanhos antigos pra refazer a trajetória depois com um tween
 	var old_card_positions: Array[Vector2] = []
@@ -131,7 +148,7 @@ func set_vertical(toggle: bool) -> void:
 		old_card_scales.push_back(card.get_image_scale())
 	
 	%Box.vertical = toggle
-	update_card_sizes()
+	#update_card_sizes()
 	
 	for i in range(1,len(container_list)):
 		var card: Card = get_container_card(container_list[i])
@@ -139,6 +156,12 @@ func set_vertical(toggle: bool) -> void:
 		
 		card.dragger.set_child_position(pos_offset)
 		card.dragger.tween_child_position(Vector2(0,0), 0.5)
+	
+	if collapsed:
+		if not dragger._grabbed:
+			toggle_box_collapsed(false)
+		else:
+			toggle_box_collapsed(true)
 
 
 func set_draggable(enabled: bool) -> void:
@@ -200,45 +223,44 @@ func _ready() -> void:
 
 # TODO: is this needed?
 func _on_resized() -> void:
+	update_container_size()
 	update_card_sizes()
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.get_keycode_with_modifiers() == KEY_SPACE and event.is_released():
-		if not is_vertical():
-			size = Vector2(140, 220)
-		else:
-			size = Vector2(220, 140)
-		set_vertical(not is_vertical())
+#func _input(event: InputEvent) -> void:
+	#if event is InputEventKey and event.get_keycode_with_modifiers() == KEY_SPACE and event.is_released():
+		##if not is_vertical():
+			##size = Vector2(140, 220)
+		##else:
+			##size = Vector2(220, 140)
+		#set_vertical(not is_vertical())
 #endregion CALLBACKS
 
 
 func _on_draggable_grabbed() -> void:
+	toggle_box_collapsed(true)
 	if not is_vertical() and %Box.get_child_count() > 1:
-		if _size_x_tween:
-			_size_x_tween.kill()
-		_size_x_tween = create_tween()
-		_size_x_tween.set_ease(Tween.EASE_OUT)
-		_size_x_tween.set_trans(Tween.TRANS_QUAD)
-		var target = get_card_size()
-		target.x /= %Box.get_child_count()
-		target.x *= 1.1
-		_size_x_tween.tween_property(%Box, "size", target, 0.25)
-	pass # Replace with function body.
+		dragger._grab_position.x /= %Box.get_child_count()
 
 
 func _on_draggable_dropped() -> void:
-	if not is_vertical() and %Box.get_child_count() > 1:
-		if _size_x_tween:
-			_size_x_tween.kill()
-		_size_x_tween = create_tween()
-		_size_x_tween.set_ease(Tween.EASE_OUT)
-		_size_x_tween.set_trans(Tween.TRANS_QUAD)
-		var target = get_card_size()
+	toggle_box_collapsed(false)
+	#if not is_vertical() and %Box.get_child_count() > 1:
+
+
+func toggle_box_collapsed(toggle: bool) -> void:
+	collapsed = toggle
+	if _size_x_tween:
+		_size_x_tween.kill()
+	_size_x_tween = create_tween()
+	_size_x_tween.set_ease(Tween.EASE_OUT)
+	_size_x_tween.set_trans(Tween.TRANS_QUAD)
+	var target = size
+	if toggle:
+		target = get_card_size()
 		target.x /= %Box.get_child_count()
 		target.x *= 1.1
-		_size_x_tween.tween_property(%Box, "size", size, 0.2)
-	pass # Replace with function body.
+	_size_x_tween.tween_property(%Box, "size", target, 0.2)
 
 
 func _process(_delta: float) -> void:

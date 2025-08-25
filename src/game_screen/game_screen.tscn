@@ -159,12 +159,13 @@ mouse_filter = 2
 border_color = Color(0.0943737, 0.615227, 0.571761, 1)
 border_width = 3.0
 
-[node name="CardScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
+[node name="JudgeScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="JudgeScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
+[node name="CardScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

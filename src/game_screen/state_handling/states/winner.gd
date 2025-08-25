@@ -17,7 +17,7 @@ func _ready() -> void:
 	clean_card_slots()
 	nodes.white_card_holder.get_cards()
 	
-	# Cria a carta preta
+	# TODO: não criar a carta preta se ela já existe
 	black_card = CAH.CARD_SCENE.instantiate()
 	black_card.text = state.black_cards[0]
 	black_card.card_type = Card.BLACK_CARD

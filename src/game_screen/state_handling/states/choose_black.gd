@@ -7,7 +7,10 @@ var black_cards: Array[Card] = []
 func _ready() -> void:
 	nodes.right_card_slot.toggle_glow(false)
 	nodes.button_controller.toggle_button(false)
-	nodes.white_card_holder.dragger.tween_child_modulate(Color.TRANSPARENT)
+	var wch_tween = nodes.white_card_holder.dragger.tween_child_modulate(Color.TRANSPARENT)
+	wch_tween.finished.connect(func():
+		for card in nodes.white_card_holder.get_cards():
+			nodes.white_card_holder.remove_card(card))
 	# hide card scroller
 	nodes.split_container.set_expanded(true)
 	

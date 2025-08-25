@@ -43,7 +43,20 @@ static func dummy_state() -> CAHState:
 	state.current_game_state = GameState.STATE_CHOOSE_WHITE
 	
 	state.black_cards = ["Say my name."]
-	state.choice_groups = [["A1.", "A2.", "A3."], ["B1.", "B2.", "B3."], ["C1.", "C2.", "C3."]]
+	state.choice_groups = [
+		["A1.", "A2.\nA2", "A3.\nA3\nA3"],
+		["B1.", "B2.\nB2", "B3.\nB3\nB3"],
+		["C1.", "C2.\nC2", "C3.\nC3\nC3"],
+		["D1.", "D2.\nD2", "D3.\nD3\nD3"],
+		["E1.", "E2.\nE2", "E3.\nE3\nE3"],
+		["F1.", "F2.\nF2", "F3.\nF3\nF3"],
+		["G1.", "G2.\nG2", "G3.\nG3\nG3"],
+		["H1.", "H2.\nH2", "H3.\nH3\nH3"],
+		["I1.", "I2.\nI2", "I3.\nI3\nI3"],
+		["J1.", "J2.\nJ2", "J3.\nJ3\nJ3"]
+	]
+
+
 	for i in range(10): state.new_white_cards.push_back("Carta %d" % (i+1))
 	
 	state.white_choices = 3

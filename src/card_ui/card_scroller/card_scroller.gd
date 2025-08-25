@@ -2,6 +2,23 @@ class_name CardScroller
 extends Control
 
 
+var _fade_tween: Tween
+
+
+func toggle_visible(enable: bool) -> Tween:
+	if _fade_tween:
+		_fade_tween.kill()
+	_fade_tween = create_tween().set_trans(Tween.TRANS_QUAD)
+	_fade_tween.set_ease(Tween.EASE_OUT)
+	if enable:
+		show()
+		_fade_tween.tween_property(self, "modulate", Color.WHITE, 0.5)
+	else:
+		_fade_tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
+		_fade_tween.finished.connect(self.hide)
+	return _fade_tween
+
+
 #region METHODS
 func get_card_list() -> Array[Node]:
 	return %CardList.get_children()
@@ -31,7 +48,7 @@ func new_edge() -> Control:
 	return edge
 
 
-func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
+func add_card(card: Control, index: int = -1, skip_anim: bool = false) -> void:
 	if card.get_parent() == null:
 		%CardList.add_child(card)
 	else:
@@ -42,7 +59,7 @@ func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
 
 
 # Animates the card moving from one index to another
-func move_card(card: Card, index: int, skip_anim: bool = false) -> void:
+func move_card(card: Control, index: int, skip_anim: bool = false) -> void:
 	var card_list = %CardList.get_children()
 	var old_index = card_list.find(card)
 	# Skips the animations if the card is already at the right index
@@ -56,10 +73,8 @@ func move_card(card: Card, index: int, skip_anim: bool = false) -> void:
 	# This should skip the moved card
 	var direction = sign(old_index - index)
 	for i in range(index, old_index, direction):
-		if i == len(card_list) - 3: # don't ask me. the last card is fucked up. and i dont know why.
-			continue
-		var current_card: Card = card_list[i]
-		var next_card: Card = card_list[i+direction]
+		var current_card: Control = card_list[i]
+		var next_card: Control = card_list[i+direction]
 		
 		var old_position = current_card.dragger.global_position
 		var new_position = next_card.dragger.global_position
@@ -71,17 +86,20 @@ func move_card(card: Card, index: int, skip_anim: bool = false) -> void:
 
 # NOTE: is this wrong? 'cause the card fades in place etc
 # instead of moving with the scroll
-func remove_card(card: Card) -> void:
+func remove_card(card: Control) -> void:
 	var card_list = %CardList.get_children()
 	move_card(card, len(card_list)-2)
 	%CardList.remove_child(card)
 
 
 func get_scroll_percentage() -> float:
-	return ($ScrollContainer.scroll_horizontal / %CardList.size.x) * 2.0
+	var available_scroll = %CardList.size.x - $ScrollContainer.size.x
+	if available_scroll == 0:
+		return 0
+	return ($ScrollContainer.scroll_horizontal / available_scroll)
 
 
-func find_card(card: Card) -> int:
+func find_card(card: Control) -> int:
 	return %CardList.get_children().find(card)
 
 
