@@ -31,15 +31,18 @@ func new_edge() -> Control:
 	return edge
 
 
-func add_card(card: Card, index: int = -1) -> void:
-	card.reparent(%CardList)
+func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
+	if card.get_parent() == null:
+		%CardList.add_child(card)
+	else:
+		card.reparent(%CardList)
 	%CardList.move_child(card, %CardList.get_child_count() - 2)
 	if index != -1:
-		move_card(card, index)
+		move_card(card, index, skip_anim)
 
 
 # Animates the card moving from one index to another
-func move_card(card: Card, index: int) -> void:
+func move_card(card: Card, index: int, skip_anim: bool = false) -> void:
 	var card_list = %CardList.get_children()
 	var old_index = card_list.find(card)
 	# Skips the animations if the card is already at the right index
@@ -47,15 +50,20 @@ func move_card(card: Card, index: int) -> void:
 		return
 	
 	%CardList.move_child(card, index)
-	var direction = sign(old_index - index)
+	if skip_anim:
+		return
+		
 	# This should skip the moved card
+	var direction = sign(old_index - index)
 	for i in range(index, old_index, direction):
+		if i == len(card_list) - 3: # don't ask me. the last card is fucked up. and i dont know why.
+			continue
 		var current_card: Card = card_list[i]
 		var next_card: Card = card_list[i+direction]
 		
 		var old_position = current_card.dragger.global_position
 		var new_position = next_card.dragger.global_position
-		var offset = (old_position - new_position)
+		var offset = old_position - new_position
 		
 		current_card.dragger.set_child_position(offset)
 		current_card.dragger.tween_child_position(Vector2(0,0), 0.2)
@@ -65,9 +73,12 @@ func move_card(card: Card, index: int) -> void:
 # instead of moving with the scroll
 func remove_card(card: Card) -> void:
 	var card_list = %CardList.get_children()
-	card.toggle_detached(true)
 	move_card(card, len(card_list)-2)
 	%CardList.remove_child(card)
+
+
+func get_scroll_percentage() -> float:
+	return ($ScrollContainer.scroll_horizontal / %CardList.size.x) * 2.0
 
 
 func find_card(card: Card) -> int:

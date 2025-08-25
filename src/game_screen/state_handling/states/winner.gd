@@ -5,16 +5,13 @@ var timers: Array[SceneTreeTimer] = []
 var black_card: Card
 
 func _ready() -> void:
-	nodes.confetti.emitting = false
 	nodes.button_controller.toggle_button(false)
 	nodes.right_card_slot.toggle_glow(false)
 	var wch_tweener = nodes.white_card_holder.dragger.tween_child_modulate(Color.TRANSPARENT)
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(true)
-	
-	# Set up split container height
-	var target_offset = (nodes.split_container.size.y - 20.0) / 2.0
-	nodes.split_container.tween_offset(target_offset, 1.0)
+	# hide cardscroller
+	nodes.split_container.set_expanded(true)
 	
 	# Erase old cards from the card slots
 	clean_card_slots()

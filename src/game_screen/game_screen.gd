@@ -88,9 +88,13 @@ func _on_viewport_size_changed() -> void:
 		%CenterControl.custom_minimum_size.x = width_guess
 	else:
 		%CenterControl.custom_minimum_size.x = size.x*0.9
-	if (game_state.current_game_state != CAHState.STATE_CHOOSE_BLACK
-	and game_state.current_game_state != CAHState.STATE_WINNER):
-		%VSplitContainer.split_offset = %VSplitContainer.size.y/13.0
+	
+	# Set up split container height
+	var normal_offset = %VSplitContainer.size.y/13.0
+	var expanded_offset = (%VSplitContainer.size.y - 20.0) / 2.0
+	%VSplitContainer.normal_offset = normal_offset
+	%VSplitContainer.expanded_offset = expanded_offset
+	%VSplitContainer.update_offset()
 	
 	%TopLabel.custom_minimum_size.x = 510 * new_scale.y
 	%TopLabel.add_theme_font_size_override("normal_font_size", 40 * new_scale.y)

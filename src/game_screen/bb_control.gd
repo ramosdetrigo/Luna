@@ -7,6 +7,7 @@ func toggle_button(enable: bool) -> Tween:
 		_edge_modulate_tween.kill()
 	_edge_modulate_tween = %BottomButton.create_tween().set_trans(Tween.TRANS_QUAD)
 	_edge_modulate_tween.set_ease(Tween.EASE_OUT)
+	%BottomButton.disabled = not enable
 	if enable:
 		%BottomButton.show()
 		_edge_modulate_tween.tween_property(%BottomButton, "modulate", Color.WHITE, 0.5)

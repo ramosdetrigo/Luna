@@ -16,7 +16,6 @@ glowing = false
 
 [node name="CardSlotEdge" type="TextureRect" parent="."]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
 material = ExtResource("2_ryv0p")
 layout_mode = 2
 mouse_filter = 2

@@ -176,6 +176,8 @@ func _ready() -> void:
 	await %ImageContainer.resized
 	%Image.scale = get_image_target_scale()
 	%Image.show()
+	%ImageContainer.set_child_modulate(Color.TRANSPARENT)
+	%ImageContainer.tween_child_modulate(Color.WHITE)
 
 
 func _on_image_container_resized() -> void:

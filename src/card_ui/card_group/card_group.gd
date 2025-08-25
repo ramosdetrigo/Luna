@@ -15,10 +15,13 @@ var dragger: Draggable = %Draggable
 var _size_x_tween: Tween
 
 #region CARD MANIPULATION
-func add_card(card: Card, index: int = -1) -> void:
+func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
 	var container = new_card_container()
 	
-	card.reparent(container)
+	if card.get_parent() == null:
+		container.add_child(card)
+	else:
+		card.reparent(container)
 	card.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	card.set_position(Vector2(0,0))
 	card.size = get_card_size()
@@ -39,7 +42,7 @@ func add_card(card: Card, index: int = -1) -> void:
 	%Box.add_child(container)
 	
 	if index != -1:
-		move_card(card, index)
+		move_card(card, index, skip_anim)
 
 
 func update_card_sizes() -> void:
@@ -64,7 +67,7 @@ func get_cards() -> Array[Card] :
 	return cards
 
 
-func move_card(card: Card, index: int) -> void:
+func move_card(card: Card, index: int, skip_anim: bool = false) -> void:
 	var container_list = %Box.get_children()
 	var old_index = find_card(card)
 	# Skips the animations if the card is already at the right index
@@ -73,8 +76,11 @@ func move_card(card: Card, index: int) -> void:
 	
 	var card_container = container_list[old_index]
 	%Box.move_child(card_container, index)
-	var direction = sign(old_index - index)
+	if skip_anim:
+		return
+	
 	# This should skip the moved card
+	var direction = sign(old_index - index)
 	for i in range(index, old_index, direction):
 		var current_card: Card = get_container_card(container_list[i])
 		var next_card: Card = get_container_card(container_list[i+direction])
