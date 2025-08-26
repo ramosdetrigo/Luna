@@ -24,6 +24,7 @@ func _ready() -> void:
 		for group in state.choice_groups:
 			var card_group = create_card_group(group)
 			nodes.judge_scroller.add_card(card_group)
+			card_group.dragger.set_child_modulate(Color.TRANSPARENT)
 			# TODO: drag card
 	)
 	
@@ -62,6 +63,7 @@ func _ready() -> void:
 	var timer2 = get_tree().create_timer(3)
 	timer2.timeout.connect(func():
 		for card_group in nodes.judge_scroller.get_card_list():
+			if card_group is not CardGroup: continue
 			card_group.dragger.set_child_modulate(Color.WHITE)
 		
 		var winner_name = state.choice_groups[0].player

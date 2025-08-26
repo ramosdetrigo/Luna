@@ -1,9 +1,9 @@
-[gd_resource type="FontVariation" load_steps=4 format=3 uid="uid://cr3rx0aldn77n"]
+[gd_resource type="FontVariation" load_steps=4 format=3 uid="uid://jrjellmto2y1"]
 
-[ext_resource type="FontFile" uid="uid://dcmdv1tartwmu" path="res://assets/fonts/monospace/ChivoMono-Bold.ttf" id="1_crxai"]
-[ext_resource type="FontFile" uid="uid://bkc6bwq1lsni5" path="res://assets/fonts/compat/NotoSansEgyptianHieroglyphs-Regular.ttf" id="2_th8rk"]
-[ext_resource type="FontFile" uid="uid://blvnrnlqlhlhf" path="res://assets/fonts/compat/NotoColorEmoji-Regular.ttf" id="3_opjkm"]
+[ext_resource type="FontFile" uid="uid://d0rf2ww2d4nnj" path="res://assets/fonts/monospace/ChivoMono-Regular.ttf" id="1_p0gkb"]
+[ext_resource type="FontFile" uid="uid://bkc6bwq1lsni5" path="res://assets/fonts/compat/NotoSansEgyptianHieroglyphs-Regular.ttf" id="2_jdh1j"]
+[ext_resource type="FontFile" uid="uid://blvnrnlqlhlhf" path="res://assets/fonts/compat/NotoColorEmoji-Regular.ttf" id="3_s5cjc"]
 
 [resource]
-fallbacks = Array[Font]([ExtResource("2_th8rk"), ExtResource("3_opjkm")])
-base_font = ExtResource("1_crxai")
+fallbacks = Array[Font]([ExtResource("2_jdh1j"), ExtResource("3_s5cjc")])
+base_font = ExtResource("1_p0gkb")

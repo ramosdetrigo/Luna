@@ -14,6 +14,8 @@ class Player:
 	var choice_white: Dictionary = {}
 	# if the player is ready or not
 	var ready: bool
+	# player chat color (in hex)
+	var color: String = "ffffff"
 
 # All cards from the cards.json file
 # whiteCards: [string]
@@ -228,7 +230,11 @@ func name_changed(new_name: String) -> void:
 	player.username = new_name
 	change_role(player, CAHState.ROLE_PLAYER)
 	# Adds player to queue of next judges
-	judge_queue.push_back(player)
+	if len(judge_queue) == 1:
+		# Prevents a player from being judge twice in a row
+		judge_queue.push_front(player)
+	else:
+		judge_queue.push_back(player)
 	if len(role_judges) == 0:
 		set_game_state(CAHState.STATE_CHOOSE_BLACK)
 	# Adds player to player list
@@ -240,14 +246,21 @@ func name_changed(new_name: String) -> void:
 	# Sends the info to the player
 	add_cards.rpc_id(id, new_cards)
 	update_state.rpc_id(id, dict_from_state(player.role))
+	# generates a chat color for the player
+	var lgbt: Gradient = CAH.gradients[6]
+	var color = lgbt.colors.get(randi_range(0, lgbt.get_point_count() - 1))
+	var hex = color.to_html(false)
+	player.color = hex
 	# Notifies everyone that a player has joined
-	notify.rpc("%s entrou no jogo.")
+	notify.rpc("[code][color=#71b7ff]SERVER: %s entrou no jogo.[/color][/code]" % player.username)
 	send_players_to_all()
 
 
 @rpc("any_peer", "call_remote", "reliable")
 func message_sent(message: String) -> void:
-	add_message.rpc(message)
+	var player = player_list.get(multiplayer.get_remote_sender_id())
+	if player:
+		add_message.rpc("[b][color=#%s]%s[/color][/b]: %s" % [player.color, player.username, message])
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -323,6 +336,16 @@ func cancel_ready() -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player and game_state.current_game_state != CAHState.STATE_WINNER:
 		player.ready = false
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func new_cards_request(card_num: int) -> void:
+	var player = player_list.get(multiplayer.get_remote_sender_id())
+	if player:
+		var new_cards = []
+		for i in range(card_num):
+			new_cards.push_back(random_white())
+		add_cards.rpc_id(player.id, new_cards)
 #endregion SERVER RPC
 
 # TODO: toggle_spectator
@@ -366,4 +389,5 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	# resets the game if the player was the only remaining judge
 	elif old_player_role == CAHState.ROLE_JUDGE and len(role_judges) == 0:
 		set_game_state(CAHState.STATE_CHOOSE_BLACK)
+	notify.rpc("[code][color=#71b7ff]SERVER: %s saiu do jogo.[/color][/code]" % player.username)
 #endregion

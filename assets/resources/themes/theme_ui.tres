@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=15 format=3 uid="uid://8b0nu8iueg0s"]
 
-[ext_resource type="FontFile" uid="uid://2n84f3l26n4a" path="res://assets/fonts/other/Jost-Regular.ttf" id="1_gch6j"]
+[ext_resource type="FontFile" uid="uid://2n84f3l26n4a" path="res://assets/fonts/jost/Jost-Regular.ttf" id="1_gch6j"]
 [ext_resource type="FontFile" uid="uid://dc414c3nnnvnv" path="res://assets/fonts/helvetica/HelveticaNeue Light.ttf" id="2_mvmfk"]
 [ext_resource type="Texture2D" uid="uid://djaw35o0xteft" path="res://assets/images/ui/grabber.png" id="2_wwfp6"]
 [ext_resource type="Texture2D" uid="uid://bkdfqk701yva8" path="res://assets/images/ui/tick.png" id="3_886sd"]

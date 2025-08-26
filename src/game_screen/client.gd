@@ -2,6 +2,7 @@ extends Node
 class_name Client
 
 signal state_updated
+signal disconnected(reason: String)
 signal new_cards_added(card: Array[Card])
 var game_state: CAHState = CAHState.dummy_state()
 
@@ -40,11 +41,15 @@ func add_cards(new_cards: Array) -> void:
 
 # TODO:
 @rpc("authority", "call_remote", "reliable")
-func add_message(_message: String) -> void: pass
+func add_message(message: String) -> void:
+	if not %ChatPanel.visible:
+		%NotifyBall.show()
+	%ChatText.text += "\n%s" % message
 
 # TODO:
 @rpc("authority", "call_remote", "reliable")
-func notify(_message: String) -> void: pass
+func notify(message: String) -> void:
+	add_message(message)
 
 # TODO: fix error where white cards kind of... disappear...
 # from the card scroller... when the scene changes...
@@ -83,6 +88,9 @@ func winner_ready() -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
 func cancel_ready() -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func new_cards_request(card_num: int) -> void: pass
 #endregion SERVER RPC
 
 
@@ -100,9 +108,26 @@ func _on_connected_ok() -> void:
 
 func _on_connected_fail() -> void:
 	print("Client: Connection failed ;(")
-	# TODO: handle connection failed
+	disconnected.emit("Connection failed.")
 
 func _on_server_disconnected() -> void:
 	print("Client: Server disconnected")
-	# TODO: handle disconnect
+	disconnected.emit("Disconnected.")
 #endregion MULTIPLAYER CALLBACKS
+
+
+func _on_chat_send_button_pressed() -> void:
+	if len(%ChatTextEdit.text) > 0:
+		message_sent.rpc_id(1, %ChatTextEdit.text)
+		%ChatTextEdit.clear()
+
+
+func _on_chat_text_edit_text_submitted(_new_text: String) -> void:
+	_on_chat_send_button_pressed()
+
+
+func _on_reset_cards_button_pressed() -> void:
+	for card in %CardScroller.get_card_list():
+		if card is not Card: continue
+		%CardScroller.remove_card(card)
+	new_cards_request.rpc_id(1, 10)

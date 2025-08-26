@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=32 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
@@ -12,8 +12,19 @@
 [ext_resource type="Script" uid="uid://cy0ft1rbxjbs3" path="res://src/game_screen/bb_control.gd" id="8_pnpbp"]
 [ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="10_lfrdv"]
 [ext_resource type="Script" uid="uid://of1q8s48itpc" path="res://src/game_screen/connecting_panel.gd" id="11_1mmlo"]
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="12_6a6n1"]
 [ext_resource type="Script" uid="uid://cgputfm08k270" path="res://src/game_screen/client.gd" id="12_0461g"]
+[ext_resource type="Script" uid="uid://8pj7nkbaicpd" path="res://src/game_screen/chat_panel.gd" id="12_jsh81"]
 [ext_resource type="Script" uid="uid://crf41ebthy3bw" path="res://src/server/server.gd" id="13_8bhmj"]
+[ext_resource type="FontVariation" uid="uid://d1gk6q8f0lufe" path="res://assets/resources/fonts/jost_fallbacks.tres" id="13_mjo2e"]
+[ext_resource type="Texture2D" uid="uid://cpfmq0frwg4iw" path="res://assets/images/ui/send.png" id="13_uer05"]
+[ext_resource type="FontVariation" uid="uid://c68gysw3rl5o6" path="res://assets/resources/fonts/jost_italic_fallbacks.tres" id="14_3va2r"]
+[ext_resource type="FontVariation" uid="uid://jrjellmto2y1" path="res://assets/resources/fonts/monospace_fallbacks.tres" id="14_iq0tn"]
+[ext_resource type="FontVariation" uid="uid://q4yw12go71aa" path="res://assets/resources/fonts/jost_bold_fallbacks.tres" id="15_iq0tn"]
+[ext_resource type="FontVariation" uid="uid://hdrhiyulp1x4" path="res://assets/resources/fonts/jost_bold_italic_fallbacks.tres" id="16_jsh81"]
+[ext_resource type="Texture2D" uid="uid://btot01ow8qsw8" path="res://assets/images/ui/return.png" id="20_5aqem"]
+[ext_resource type="Texture2D" uid="uid://b4p14y2p8a1gl" path="res://assets/images/ui/exit.png" id="21_7n8ay"]
+[ext_resource type="Texture2D" uid="uid://dxshxsxjqnn1q" path="res://assets/images/ui/massiveMultiplayer.png" id="21_mqnxu"]
 
 [sub_resource type="Gradient" id="Gradient_lfrdv"]
 interpolation_mode = 2
@@ -36,6 +47,19 @@ _limits = [-1.0, 1.0, 0.0, 1.0]
 _data = [Vector2(0, 0.483146), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epe2y"]
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_duxnk"]
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqnxu"]
+bg_color = Color(0.823529, 0.0588235, 0.223529, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="GameScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -46,6 +70,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_qaexu")
+animation_speed = null
 metadata/_custom_type_script = "uid://i24r776wg103"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -250,6 +275,122 @@ hue_variation_min = -0.25
 hue_variation_max = 0.25
 hue_variation_curve = SubResource("Curve_lfrdv")
 
+[node name="ChatPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_epe2y")
+script = ExtResource("12_jsh81")
+
+[node name="ChatVBox" type="VBoxContainer" parent="ChatPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ChatTopPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_duxnk")
+
+[node name="ChatCenterMargin" type="MarginContainer" parent="ChatPanel/ChatVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ChatText" type="RichTextLabel" parent="ChatPanel/ChatVBox/ChatCenterMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("12_6a6n1")
+theme_override_fonts/normal_font = ExtResource("13_mjo2e")
+theme_override_fonts/mono_font = ExtResource("14_iq0tn")
+theme_override_fonts/italics_font = ExtResource("14_3va2r")
+theme_override_fonts/bold_italics_font = ExtResource("16_jsh81")
+theme_override_fonts/bold_font = ExtResource("15_iq0tn")
+bbcode_enabled = true
+scroll_following = true
+
+[node name="ChatBottomPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_duxnk")
+
+[node name="ChatBottomMargin" type="MarginContainer" parent="ChatPanel/ChatVBox/ChatBottomPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ChatBottomHBox" type="HBoxContainer" parent="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ChatTextEdit" type="LineEdit" parent="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("12_6a6n1")
+theme_override_font_sizes/font_size = 28
+clear_button_enabled = true
+
+[node name="ChatSendButton" parent="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox" instance=ExtResource("3_qrh6e")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_on = ExtResource("13_uer05")
+texture_off = ExtResource("13_uer05")
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Control" type="Control" parent="ChatPanel/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ChatPanel/MarginContainer/Control"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_bottom = 60.0
+grow_horizontal = 0
+
+[node name="ResetCardsButton" parent="ChatPanel/MarginContainer/Control/HBoxContainer" instance=ExtResource("3_qrh6e")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+is_toggleable = false
+is_toggled = false
+texture_on = ExtResource("20_5aqem")
+texture_off = ExtResource("20_5aqem")
+
 [node name="ConnectingPanel" type="Panel" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -278,6 +419,60 @@ grow_vertical = 2
 theme = ExtResource("2_noo7h")
 text = "Conectando..."
 
+[node name="ButtonsMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Control" type="Control" parent="ButtonsMargin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopLeftButtons" type="HBoxContainer" parent="ButtonsMargin/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -130.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="ChatButton" parent="ButtonsMargin/Control/TopLeftButtons" instance=ExtResource("3_qrh6e")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_on = ExtResource("21_mqnxu")
+texture_off = ExtResource("21_mqnxu")
+
+[node name="NotifyBall" type="Panel" parent="ButtonsMargin/Control/TopLeftButtons/ChatButton"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mqnxu")
+
+[node name="ExitButton" parent="ButtonsMargin/Control/TopLeftButtons" instance=ExtResource("3_qrh6e")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture_on = ExtResource("21_7n8ay")
+texture_off = ExtResource("21_7n8ay")
+
 [node name="Client" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("12_0461g")
@@ -287,25 +482,11 @@ unique_name_in_owner = true
 script = ExtResource("13_8bhmj")
 metadata/_custom_type_script = "uid://crf41ebthy3bw"
 
-[node name="ClientButton" type="Button" parent="."]
-visible = false
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 0
-offset_left = 25.0
-offset_right = 50.0
-offset_bottom = 52.0
-text = "c"
-
-[node name="ServerButton" type="Button" parent="."]
-visible = false
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 0
-offset_right = 25.0
-offset_bottom = 52.0
-text = "s"
-
 [connection signal="drag_ended" from="MarginContainer/VBoxContainer/VSplitContainer" to="MarginContainer/VBoxContainer/VSplitContainer" method="_on_drag_ended"]
 [connection signal="resized" from="MarginContainer/VBoxContainer/VSplitContainer/ScrollerSplit" to="MarginContainer/VBoxContainer/VSplitContainer/ScrollerSplit" method="update_offset"]
+[connection signal="text_submitted" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatTextEdit" to="Client" method="_on_chat_text_edit_text_submitted"]
+[connection signal="pressed" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatSendButton" to="Client" method="_on_chat_send_button_pressed"]
+[connection signal="pressed" from="ChatPanel/MarginContainer/Control/HBoxContainer/ResetCardsButton" to="Client" method="_on_reset_cards_button_pressed"]
+[connection signal="pressed" from="ButtonsMargin/Control/TopLeftButtons/ChatButton" to="." method="_on_chat_button_pressed"]
+[connection signal="disconnected" from="Client" to="." method="exit_game"]
 [connection signal="state_updated" from="Client" to="." method="_on_client_state_updated"]
-[connection signal="pressed" from="ClientButton" to="Client" method="create_client"]
-[connection signal="pressed" from="ServerButton" to="Server" method="create_server"]

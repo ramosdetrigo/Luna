@@ -8,6 +8,7 @@ func _ready() -> void:
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(false)
 	nodes.scroller_split.update_offset(false)
+	nodes.white_card_holder.dragger.set_child_modulate(Color.WHITE)
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.right_card_slot.toggle_glow(true)
 		var white_choices = state.black_cards[0].pick

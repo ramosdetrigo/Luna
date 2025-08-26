@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=10 format=3 uid="uid://sfftfr7d567s"]
 
 [ext_resource type="FontVariation" uid="uid://dmc63aclsoyaf" path="res://assets/resources/fonts/helvetica_bold_fallbacks.tres" id="1_dlh00"]
-[ext_resource type="FontVariation" uid="uid://cr3rx0aldn77n" path="res://assets/resources/fonts/monospace_fallbacks.tres" id="1_fv333"]
+[ext_resource type="FontVariation" uid="uid://cr3rx0aldn77n" path="res://assets/resources/fonts/monospace_bold_fallbacks.tres" id="1_fv333"]
 [ext_resource type="FontVariation" uid="uid://bvhiwt0vmrn07" path="res://assets/resources/fonts/helvetica_fallbacks.tres" id="2_h4snt"]
 [ext_resource type="FontVariation" uid="uid://cdbgwvkxr1r37" path="res://assets/resources/fonts/helvetica_italic_fallbacks.tres" id="2_mrmao"]
 [ext_resource type="FontVariation" uid="uid://p72khoqlsa1s" path="res://assets/resources/fonts/helvetica_bold_italic_fallbacks.tres" id="2_ouvxp"]

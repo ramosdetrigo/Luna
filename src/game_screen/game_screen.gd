@@ -39,15 +39,15 @@ func _ready() -> void:
 	screen_nodes.client = %Client
 	#endregion screen_nodes
 	
-	#%ConnectingPanel.toggle_visible(true)
-	#%Client.game_state = game_state
-	#%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
-	#%Client.create_client()
+	%ConnectingPanel.toggle_visible(true)
+	%Client.game_state = game_state
+	%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
+	%Client.create_client()
 	
-	game_state = CAHState.dummy_state()
-	%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
-	_on_client_state_updated()
-	%ConnectingPanel.toggle_visible(false)
+	#game_state = CAHState.dummy_state()
+	#%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
+	#_on_client_state_updated()
+	#%ConnectingPanel.toggle_visible(false)
 	
 	_on_viewport_size_changed()
 
@@ -75,8 +75,9 @@ func _on_viewport_size_changed() -> void:
 		%CenterControl.custom_minimum_size.x = size.x*0.9
 	
 	# Set up split container height
+	await %VSplitContainer.resized
 	var normal_offset = %VSplitContainer.size.y/13.0
-	var expanded_offset = (%VSplitContainer.size.y - 20.0) / 2.0
+	var expanded_offset = %VSplitContainer.size.y / 2.0
 	%VSplitContainer.normal_offset = normal_offset
 	%VSplitContainer.expanded_offset = expanded_offset
 	%VSplitContainer.update_offset()
@@ -99,3 +100,12 @@ func _on_viewport_size_changed() -> void:
 			%Confetti.amount = 150 * new_scale.y
 		)
 #endregion
+
+func exit_game(reason: String = "Disconnected.") -> void:
+	# TODO:
+	get_tree().quit()
+
+
+func _on_chat_button_pressed() -> void:
+	%NotifyBall.hide()
+	%ChatPanel.toggle_visible(not %ChatPanel.visible)

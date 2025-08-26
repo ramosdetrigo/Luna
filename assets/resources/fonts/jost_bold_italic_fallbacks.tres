@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=4 format=3 uid="uid://hdrhiyulp1x4"]
+
+[ext_resource type="FontFile" uid="uid://dxoemsty1q6qj" path="res://assets/fonts/jost/Jost-BoldItalic.ttf" id="1_yg6o2"]
+[ext_resource type="FontFile" uid="uid://bkc6bwq1lsni5" path="res://assets/fonts/compat/NotoSansEgyptianHieroglyphs-Regular.ttf" id="2_y0oml"]
+[ext_resource type="FontFile" uid="uid://blvnrnlqlhlhf" path="res://assets/fonts/compat/NotoColorEmoji-Regular.ttf" id="3_14q8u"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_y0oml"), ExtResource("3_14q8u")])
+base_font = ExtResource("1_yg6o2")

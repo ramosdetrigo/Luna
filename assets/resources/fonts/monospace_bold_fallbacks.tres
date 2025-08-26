@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=4 format=3 uid="uid://cr3rx0aldn77n"]
+
+[ext_resource type="FontFile" uid="uid://d0rf2ww2d4nnj" path="res://assets/fonts/monospace/ChivoMono-Regular.ttf" id="1_q1onv"]
+[ext_resource type="FontFile" uid="uid://bkc6bwq1lsni5" path="res://assets/fonts/compat/NotoSansEgyptianHieroglyphs-Regular.ttf" id="2_6m73x"]
+[ext_resource type="FontFile" uid="uid://blvnrnlqlhlhf" path="res://assets/fonts/compat/NotoColorEmoji-Regular.ttf" id="3_ge0on"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_6m73x"), ExtResource("3_ge0on")])
+base_font = ExtResource("1_q1onv")
