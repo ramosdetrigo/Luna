@@ -8,7 +8,6 @@ const CARD_IMAGE_SIZE: Vector2 = Vector2(534, 812)
 
 # Shader material that fixes that stupid emoji bug
 const TEXTEDIT_MATERIAL = preload("res://src/card_ui/card/text_edit_material.tres")
-
 # Base gradient material for special cards
 const BASE_GRADIENT_MATERIAL = preload("res://src/card_ui/card/gradient_material.tres")
 
@@ -25,7 +24,6 @@ const gradients: Array[Gradient] = [
 	preload("res://src/card_ui/card/gradients/pansexual.tres"),  # 8
 	preload("res://src/card_ui/card/gradients/trans.tres")       # 9
 ]
-
 # Lookup table for special cards that use gradients
 const gradient_cards: Dictionary[String, Gradient] = {
 	"Aroaces.": gradients[0],
@@ -58,7 +56,6 @@ const textures: Array[CompressedTexture2D] = [
 	preload("res://assets/images/cards/felps_bombado.png"), # 9
 	preload("res://assets/images/cards/pau.png"),           # 10
 ]
-
 # Lookup table for custom cards that use specific textures.
 const custom_cards: Dictionary[String, Dictionary] = {
 	"<glitch_text>": {"text": "r@^^()5", "texture": textures[2]},
@@ -70,3 +67,8 @@ const custom_cards: Dictionary[String, Dictionary] = {
 	"<Felps bombado>": {"text": "", "texture": textures[9]},
 	"<Pau>": {"text": "", "texture": textures[10]}
 }
+
+# All cards from the cards.json file
+# whiteCards: [string]
+# blackCards: [{text: string, pick: number}]
+var cards_dict: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/cards.json"))

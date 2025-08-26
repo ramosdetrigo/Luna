@@ -44,14 +44,9 @@ func add_card_to_scroller(card: Control, index: int = -1, skip_anim: bool = fals
 		nodes.white_card_holder.remove_card(card)
 	var last_index = nodes.card_scroller.get_card_count() + 1
 	nodes.card_scroller.add_card(card, last_index, true)
-	# i hate these stupid fixes
-	var f = func():
-		nodes.card_scroller.move_card(card, index, skip_anim)
-		if tween and not card.dragger._grabbed:
-			# I HATE THIS!!!
-			tween_card_to_new.call_deferred(card, old_pos)
-	# I HATE THIS!!!
-	f.call_deferred()
+	nodes.card_scroller.move_card(card, index, skip_anim)
+	if tween and not card.dragger._grabbed:
+		tween_card_to_new(card, old_pos)
 
 
 func add_card_to_holder(card: Control, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
@@ -64,11 +59,11 @@ func add_card_to_holder(card: Control, index: int = -1, skip_anim: bool = false,
 		tween_card_to_new(card, old_pos)
 
 
-func tween_card_to_new(card: Control, old_pos: Vector2) -> void:
+func tween_card_to_new(card: Control, old_pos: Vector2, time: float = 0.2) -> void:
 	var new_pos = card.dragger.global_position
 	var offset = old_pos - new_pos
 	card.dragger.set_child_position(offset)
-	card.dragger.tween_child_position(Vector2(0,0))
+	card.dragger.tween_child_position(Vector2(0,0), time)
 
 
 func create_card_group(cards: Array,

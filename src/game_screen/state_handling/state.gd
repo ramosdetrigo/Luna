@@ -42,7 +42,7 @@ static func dummy_state() -> CAHState:
 	state.previous_game_state = GameState.STATE_CONNECTING
 	state.current_game_state = GameState.STATE_CHOOSE_WHITE
 	
-	state.black_cards = ["Say my name."]
+	state.black_cards = ["Say my name.", "What's my name?"]
 	state.choice_groups = [
 		["A1.", "A2.\nA2", "A3.\nA3\nA3"],
 		["B1.", "B2.\nB2", "B3.\nB3\nB3"],

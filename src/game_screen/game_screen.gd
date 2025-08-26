@@ -68,14 +68,9 @@ func update_state() -> void:
 		return
 
 
+
+
 #region BASIC_UI
-func _on_send_button_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		%SendButton.text = "Cancelar"
-	else:
-		%SendButton.text = "Confirmar"
-
-
 # TODO: this could definetly be improved.
 # Dynamic resize that matches most resolutions nicely
 func _on_viewport_size_changed() -> void:
@@ -83,8 +78,8 @@ func _on_viewport_size_changed() -> void:
 	#size = get_viewport_rect().size
 	var new_scale = size / Vector2(1280, 720)
 	
-	var width_guess = max(400 * new_scale.y, 400)
-	if size.x > 400 and width_guess < size.x*0.9:
+	var width_guess = max(450 * new_scale.y, 450)
+	if size.x > 450 and width_guess < size.x*0.9:
 		%CenterControl.custom_minimum_size.x = width_guess
 	else:
 		%CenterControl.custom_minimum_size.x = size.x*0.9
@@ -95,6 +90,10 @@ func _on_viewport_size_changed() -> void:
 	%VSplitContainer.normal_offset = normal_offset
 	%VSplitContainer.expanded_offset = expanded_offset
 	%VSplitContainer.update_offset()
+	var width = size.x
+	var margin_size = (2.0/5.0) * width
+	%VSplitContainer.drag_area_margin_begin = margin_size
+	%VSplitContainer.drag_area_margin_end = margin_size
 	
 	%TopLabel.custom_minimum_size.x = 510 * new_scale.y
 	%TopLabel.add_theme_font_size_override("normal_font_size", 40 * new_scale.y)
@@ -110,3 +109,23 @@ func _on_viewport_size_changed() -> void:
 			%Confetti.amount = 150 * new_scale.y
 		)
 #endregion
+
+
+#region MULTIPLAYER CALLBACKS
+func _on_peer_connected(peer_id: int) -> void:
+	print("Client: Peer connected: %d" % peer_id)
+
+func _on_peer_disconnected(peer_id: int) -> void:
+	print("Client: Peer disconnected: %d" % peer_id)
+
+func _on_connected_ok() -> void:
+	print("Client: Connection ok!")
+
+func _on_connected_fail() -> void:
+	print("Client: Connection failed ;(")
+	# TODO: handle connection failed
+
+func _on_server_disconnected() -> void:
+	print("Client: Server disconnected")
+	# TODO: handle disconnect
+#endregion MULTIPLAYER CALLBACKS

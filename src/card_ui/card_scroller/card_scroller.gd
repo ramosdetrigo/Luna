@@ -73,11 +73,12 @@ func move_card(card: Control, index: int, skip_anim: bool = false) -> void:
 	# This should skip the moved card
 	var direction = sign(old_index - index)
 	for i in range(index, old_index, direction):
-		var current_card: Control = card_list[i]
-		var next_card: Control = card_list[i+direction]
+		var current_card = card_list[i]
+		#var next_card: Card = get_container_card(container_list[i+direction])
 		
 		var old_position = current_card.dragger.global_position
-		var new_position = next_card.dragger.global_position
+		var off_x = current_card.size.x + %CardList.get_theme_constant("separation")
+		var new_position = old_position + Vector2(off_x * direction, 0.0)
 		var offset = old_position - new_position
 		
 		current_card.dragger.set_child_position(offset)
@@ -90,6 +91,10 @@ func remove_card(card: Control) -> void:
 	var card_list = %CardList.get_children()
 	move_card(card, len(card_list)-2)
 	%CardList.remove_child(card)
+
+
+func get_scroll() -> float:
+	return $ScrollContainer.scroll_horizontal
 
 
 func get_scroll_percentage() -> float:

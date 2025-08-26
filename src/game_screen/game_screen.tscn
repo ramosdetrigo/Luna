@@ -96,8 +96,8 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 20
 split_offset = 250
-dragging_enabled = false
-dragger_visibility = 1
+drag_area_margin_begin = 500
+drag_area_margin_end = 500
 drag_area_highlight_in_editor = true
 script = ExtResource("4_pnpbp")
 
@@ -211,6 +211,8 @@ grow_vertical = 0
 
 [node name="Confetti" type="CPUParticles2D" parent="ParticlesPosition"]
 unique_name_in_owner = true
+z_index = 1
+z_as_relative = false
 emitting = false
 amount = 150
 texture = ExtResource("10_lfrdv")

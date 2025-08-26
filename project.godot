@@ -36,7 +36,8 @@ folder_colors={
 "res://src/card_ui/": "teal",
 "res://src/card_ui/card/": "teal",
 "res://src/game_screen/": "red",
-"res://src/game_screen/state_handling/": "orange"
+"res://src/game_screen/state_handling/": "orange",
+"res://src/server/": "purple"
 }
 
 [gui]

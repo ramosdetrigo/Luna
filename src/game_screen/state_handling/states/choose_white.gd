@@ -68,7 +68,8 @@ func _ready() -> void:
 		new_card.mouse_entered.connect(_on_card_mouse_entered.bind(new_card))
 		new_card.grabbed.connect(_on_card_grabbed.bind(new_card))
 		new_card.dropped.connect(_on_card_dropped.bind(new_card))
-		new_card.clicked.connect(_on_card_clicked.bind(new_card))
+		if state.player_role == CAHState.ROLE_PLAYER:
+			new_card.clicked.connect(_on_card_clicked.bind(new_card))
 		new_card_text = state.new_white_cards.pop_front()
 	
 	if state.player_role == CAHState.ROLE_PLAYER:

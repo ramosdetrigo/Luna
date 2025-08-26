@@ -84,6 +84,7 @@ func _on_group_clicked(group: CardGroup) -> void:
 	var confirmed: bool = nodes.bottom_button.button_pressed
 	# move a carta pra dentro do slot
 	if get_right_slot_group() == null:
+		nodes.right_card_slot.toggle_glow(false)
 		var old_pos = group.dragger.global_position
 		# animates the card scroller
 		nodes.judge_scroller.move_card(group, nodes.judge_scroller.get_card_count())
@@ -96,7 +97,7 @@ func _on_group_clicked(group: CardGroup) -> void:
 		var new_pos = nodes.white_card_holder.dragger.global_position
 		var offset = old_pos - new_pos
 		group.dragger.set_child_position(offset)
-		group.dragger.tween_child_position(Vector2(0,0), 0.5)
+		group.dragger.tween_child_position(Vector2(0,0))
 		nodes.button_controller.toggle_button(true)
 	elif not confirmed:
 		# tira a carta do slot e bota no scroller
@@ -114,11 +115,35 @@ func _on_group_clicked(group: CardGroup) -> void:
 			tween_card_to_new(group, old_pos)
 			
 			nodes.button_controller.toggle_button(false)
-		# troca a carta com a carta do slot
+		# troca a carta do scroll com a carta do slot
 		else:
-			grabbed_group = group
-			_on_group_mouse_entered(get_right_slot_group())
-			grabbed_group = null
+			# moves scroll card into slot
+			var clicked_group = group
+			var scroller_index = nodes.judge_scroller.find_card(clicked_group)
+			var clicked_old_pos = clicked_group.dragger.global_position
+			clicked_group.set_vertical(true)
+			clicked_group.custom_minimum_size = nodes.right_card_slot.size
+			clicked_group.size = nodes.right_card_slot.size
+			clicked_group.reparent(nodes.right_card_slot)
+			# hacky tween cause stuff is shit
+			var clicked_new_pos = nodes.white_card_holder.dragger.global_position
+			var clicked_offset = clicked_old_pos - clicked_new_pos
+			clicked_group.dragger.set_child_position(clicked_offset)
+			clicked_group.dragger.tween_child_position(Vector2(0,0))
+			
+			# moves slot card into scroller
+			var selected_group = get_right_slot_group()
+			var old_pos = selected_group.dragger.global_position
+			selected_group.set_vertical(false)
+			nodes.judge_scroller.add_card(selected_group, scroller_index, true)
+			# this is the worst fucking fix of my life. i don't care if it works. holy shit.
+			await selected_group.resized
+			await selected_group.resized # yes. await twice.
+			selected_group.toggle_box_collapsed(false)
+			tween_card_to_new(selected_group, old_pos)
+			
+			await clicked_group.resized
+			selected_group.update_card_sizes()
 
 
 func _on_group_mouse_entered(group: CardGroup) -> void:
@@ -138,35 +163,31 @@ func _on_group_mouse_entered(group: CardGroup) -> void:
 			await selected_group.resized
 			nodes.judge_scroller.move_card(selected_group, target_index)
 			nodes.button_controller.toggle_button(false)
+			nodes.right_card_slot.toggle_glow(true)
 		# switch scroller (grabbed_group) with slot (entered card)
 		else:
 			var scroller_group = grabbed_group
 			var scroller_old_pos = scroller_group.dragger.global_position
 			var scroller_index = nodes.judge_scroller.find_card(grabbed_group)
-			
 			# moves grabbed card to slot
 			scroller_group.set_vertical(true)
 			scroller_group.custom_minimum_size = nodes.right_card_slot.size
 			scroller_group.size = nodes.right_card_slot.size
 			scroller_group.reparent(nodes.right_card_slot)
-			
 			# hacky tween cause stuff is shit
 			if not scroller_group.dragger._grabbed:
-				var f = func():
-					var scroller_new_pos = scroller_group.dragger.global_position
-					var scroller_offset = scroller_old_pos - scroller_new_pos
-					scroller_group.dragger.set_child_position(scroller_offset)
-					scroller_group.dragger.tween_child_position(Vector2(0,0), 0.5)
-				f.call_deferred()
+				tween_card_to_new(scroller_group, scroller_old_pos, 1.0)
 			
 			# moves slot card into scroller
 			var old_pos = selected_group.dragger.global_position
 			selected_group.set_vertical(false)
 			nodes.judge_scroller.add_card(selected_group, scroller_index, true)
 			
-			# hacky tween cause stuff is shit
+			# this is the worst fucking fix of my life. i don't care if it works. holy shit.
 			await selected_group.resized
-			tween_card_to_new(group, old_pos)
+			await selected_group.resized # yes. await twice.
+			selected_group.toggle_box_collapsed(false)
+			tween_card_to_new(selected_group, old_pos)
 			
 			await scroller_group.resized
 			selected_group.update_card_sizes()
