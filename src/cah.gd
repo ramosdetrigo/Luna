@@ -67,8 +67,3 @@ const custom_cards: Dictionary[String, Dictionary] = {
 	"<Felps bombado>": {"text": "", "texture": textures[9]},
 	"<Pau>": {"text": "", "texture": textures[10]}
 }
-
-# All cards from the cards.json file
-# whiteCards: [string]
-# blackCards: [{text: string, pick: number}]
-var cards_dict: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/cards.json"))

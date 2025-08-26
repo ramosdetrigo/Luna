@@ -8,11 +8,8 @@ func _ready() -> void:
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(false)
 	# switch between the card scroller and the judge scroller
-	if nodes.card_scroller.visible:
-		var cs_tween = nodes.card_scroller.toggle_visible(false)
-		cs_tween.finished.connect(func(): nodes.judge_scroller.toggle_visible(true))
-	else:
-		nodes.judge_scroller.toggle_visible(true)
+	nodes.card_scroller.toggle_visible(false)
+	nodes.judge_scroller.toggle_visible(true)
 	
 	if state.player_role == CAHState.ROLE_JUDGE:
 		nodes.right_card_slot.toggle_glow(true)
@@ -49,7 +46,7 @@ func _ready() -> void:
 		clean_card_slots()
 		var black_card = CAH.CARD_SCENE.instantiate()
 		black_card.card_type = Card.BLACK_CARD
-		black_card.text = state.black_cards[0]
+		black_card.text = state.black_cards[0].text
 		black_card.set_clickable(false)
 		# Move pro centro se não for juiz
 		if state.player_role == CAHState.ROLE_JUDGE:

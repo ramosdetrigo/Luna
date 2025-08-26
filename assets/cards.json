@@ -2337,7 +2337,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"Perceber, tarde demais, as consequências do seu interesse em _ quando criança.",
+	  "text":"É duro perceber, agora tarde demais, as consequências do seu interesse em _ quando criança.",
 	  "pick":1
 	},
 	{
@@ -4292,6 +4292,10 @@
 		"text":"Qual a melhor parte da terapia hormonal masculinizante?",
 		"pick":1
 	},
+	{
+		"text":"ATENÇÃO! Não confunda _ com _!",
+		"pick":2
+	},
   ],
   "whiteCards":[
 	"Muito, MUITO barulho.",
@@ -4550,6 +4554,8 @@
 	"Um homem de meia-idade andando de patins.",
 	"Putas.",
 	"Sid, o Cientista.",
+	"Jimmy Neutron.",
+	"Doki e seus amigos",
 	"Italianos.",
 	"Um moinho cheio de cadáveres.",
 	"Rivotril®.",
@@ -6986,6 +6992,9 @@
 	"Ambientalistas.",
 	"Raul Seixas.",
 	"Caetano Veloso.",
+	"Selvagens à procura de lei.",
+	"O grilo.",
+	"Um grilo.",
 	"O Cazuza.",
 	"Colocar seu amigo numa coleira.",
 	"O golpe da barriga.",
@@ -7232,6 +7241,11 @@
 	"JOHN CENA!!!",
 	"1m³ de tungstênio.",
 	"",
+	"Hollow Knight: Silksong®",
+	"DOOM Eternal®",
+	"Animal Crossing.",
+	"O picasso do mestre de obras.",
+	"A obra do mestre Picasso.",
 	"Gozar abelhas. Abelhas com [color=#b30000]raiva.[/color]",
 	"[color=#edc40c]A[/color]b[color=#edc40c]e[/color]l[color=#edc40c]h[/color]a[color=#edc40c]s[/color]",
 	"[color=#b30000][b]SANGUE.[/b][/color]",

@@ -16,6 +16,9 @@ var handlers = {
 func _ready() -> void:
 	# or else the resizing won't work for some reason
 	await %VSplitContainer.resized
+	%TopLabel.set_text_instant("")
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
+	
 	#region screen_nodes
 	screen_nodes.top_label = %TopLabel
 	screen_nodes.split_container = %VSplitContainer
@@ -32,42 +35,28 @@ func _ready() -> void:
 	screen_nodes.white_card_holder = %WhiteCardHolder
 	
 	screen_nodes.confetti = %Confetti
+	screen_nodes.client = %Client
 	#endregion screen_nodes
-	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	
-	%TopLabel.set_text_instant("")
+	%ConnectingPanel.toggle_visible(true)
+	%Client.game_state = game_state
+	#%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
+	#%Client.create_client()
+	
 	game_state = CAHState.dummy_state()
-	server_update()
+	%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
+	_on_client_state_updated()
+	%ConnectingPanel.toggle_visible(false)
 	
 	_on_viewport_size_changed()
 
 
-# TODO: wait for new state from server
-func server_update() -> void:
-	update_state()
-	switch_state_handler()
-
-
-func stop_state_handler() -> void:
+func _on_client_state_updated() -> void:
 	if state_handler:
 		remove_child(state_handler)
 		state_handler.queue_free()
-
-
-func switch_state_handler() -> void:
-	stop_state_handler()
-	game_state.previous_game_state = game_state.current_game_state
-	game_state.current_game_state = next_state
-	state_handler = handlers[next_state].new(game_state, screen_nodes)
+	state_handler = handlers[game_state.current_game_state].new(game_state, screen_nodes)
 	add_child(state_handler)
-
-
-func update_state() -> void:
-	if game_state.debug_state:
-		next_state = game_state.current_game_state
-		return
-
-
 
 
 #region BASIC_UI
@@ -109,23 +98,3 @@ func _on_viewport_size_changed() -> void:
 			%Confetti.amount = 150 * new_scale.y
 		)
 #endregion
-
-
-#region MULTIPLAYER CALLBACKS
-func _on_peer_connected(peer_id: int) -> void:
-	print("Client: Peer connected: %d" % peer_id)
-
-func _on_peer_disconnected(peer_id: int) -> void:
-	print("Client: Peer disconnected: %d" % peer_id)
-
-func _on_connected_ok() -> void:
-	print("Client: Connection ok!")
-
-func _on_connected_fail() -> void:
-	print("Client: Connection failed ;(")
-	# TODO: handle connection failed
-
-func _on_server_disconnected() -> void:
-	print("Client: Server disconnected")
-	# TODO: handle disconnect
-#endregion MULTIPLAYER CALLBACKS

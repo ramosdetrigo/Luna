@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=17 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://cy0ft1rbxjbs3" path="res://src/game_screen/bb_control.gd" id="8_pnpbp"]
 [ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="10_lfrdv"]
 [ext_resource type="Script" uid="uid://of1q8s48itpc" path="res://src/game_screen/connecting_panel.gd" id="11_1mmlo"]
+[ext_resource type="Script" uid="uid://cgputfm08k270" path="res://src/game_screen/client.gd" id="12_0461g"]
+[ext_resource type="Script" uid="uid://crf41ebthy3bw" path="res://src/server/server.gd" id="13_8bhmj"]
 
 [sub_resource type="Gradient" id="Gradient_lfrdv"]
 interpolation_mode = 2
@@ -269,3 +271,31 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_noo7h")
 text = "Conectando..."
+
+[node name="Client" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("12_0461g")
+
+[node name="Server" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("13_8bhmj")
+metadata/_custom_type_script = "uid://crf41ebthy3bw"
+
+[node name="ClientButton" type="Button" parent="."]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 0
+offset_left = 25.0
+offset_right = 50.0
+offset_bottom = 52.0
+text = "c"
+
+[node name="ServerButton" type="Button" parent="."]
+custom_minimum_size = Vector2(25, 25)
+offset_right = 25.0
+offset_bottom = 52.0
+text = "s"
+
+[connection signal="drag_ended" from="MarginContainer/VBoxContainer/VSplitContainer" to="MarginContainer/VBoxContainer/VSplitContainer" method="_on_drag_ended"]
+[connection signal="state_updated" from="Client" to="." method="_on_client_state_updated"]
+[connection signal="pressed" from="ClientButton" to="Client" method="create_client"]
+[connection signal="pressed" from="ServerButton" to="Server" method="create_server"]

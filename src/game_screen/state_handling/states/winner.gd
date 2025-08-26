@@ -12,6 +12,8 @@ func _ready() -> void:
 	nodes.white_card_holder.set_draggable(true)
 	# hide cardscroller
 	nodes.split_container.set_expanded(true)
+	nodes.card_scroller.toggle_visible(false)
+	nodes.judge_scroller.toggle_visible(true)
 	
 	# Erase old cards from the card slots
 	clean_card_slots()
@@ -19,7 +21,7 @@ func _ready() -> void:
 	
 	# TODO: não criar a carta preta se ela já existe
 	black_card = CAH.CARD_SCENE.instantiate()
-	black_card.text = state.black_cards[0]
+	black_card.text = state.black_cards[0].text
 	black_card.card_type = Card.BLACK_CARD
 	nodes.left_card_slot.add_child(black_card)
 	black_card.set_clickable(false)
@@ -30,7 +32,7 @@ func _ready() -> void:
 	wch_tweener.finished.connect(func():
 		for card in nodes.white_card_holder.get_cards():
 			nodes.white_card_holder.remove_card(card)
-		for card_text in state.choice_groups[0]:
+		for card_text in state.choice_groups[0].cards:
 			var new_card = CAH.CARD_SCENE.instantiate()
 			new_card.text = card_text
 			nodes.white_card_holder.add_child(new_card)
@@ -48,7 +50,8 @@ func _ready() -> void:
 	# Anuncia o vencedor
 	var timer2 = get_tree().create_timer(3)
 	timer2.timeout.connect(func():
-		nodes.top_label.animate_text("O vencedor é... " + state.winner_name + "!")
+		var winner_name = state.choice_groups[0].player
+		nodes.top_label.animate_text("O vencedor é... " + winner_name + "!")
 		nodes.top_label._erasing = false
 		nodes.confetti.emitting = true
 		nodes.right_card_slot.toggle_glow(false)

@@ -19,3 +19,4 @@ var bottom_button: PulseButton
 var label_timer: Timer
 
 var confetti: CPUParticles2D
+var client: Client

@@ -11,7 +11,8 @@ func _ready() -> void:
 	nodes.card_scroller.toggle_visible(true)
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.right_card_slot.toggle_glow(true)
-		if state.white_choices == 1:
+		var white_choices = state.black_cards[0].pick
+		if white_choices == 1:
 			nodes.top_label.animate_text("Selecione sua carta.")
 		else:
 			nodes.top_label.animate_text("Selecione suas cartas.")
@@ -32,7 +33,7 @@ func _ready() -> void:
 		# Assumes the selected card is the left one then checks
 		var selected_black_card: Card = nodes.left_card_slot.get_cards()[0]
 		var right_black_card: Card = nodes.right_card_slot.get_cards()[0]
-		if right_black_card.text == state.black_cards[0]:
+		if right_black_card.text == state.black_cards[0].text:
 			selected_black_card = right_black_card
 			clean_left_slot()
 		else:
@@ -51,7 +52,7 @@ func _ready() -> void:
 		clean_card_slots()
 		var black_card = CAH.CARD_SCENE.instantiate()
 		black_card.card_type = Card.BLACK_CARD
-		black_card.text = state.black_cards[0]
+		black_card.text = state.black_cards[0].text
 		black_card.set_clickable(false)
 		# Move pro centro se não for jogador
 		if state.player_role != CAHState.ROLE_PLAYER:
@@ -59,23 +60,30 @@ func _ready() -> void:
 		else:
 			nodes.left_card_slot.add_child(black_card)
 	
-	# Adds new cards to the card scroller
-	var new_card_text = state.new_white_cards.pop_front()
-	while new_card_text != null:
-		var new_card: Card = CAH.CARD_SCENE.instantiate()
-		new_card.text = new_card_text
-		nodes.card_scroller.add_card(new_card)
-		new_card.mouse_entered.connect(_on_card_mouse_entered.bind(new_card))
-		new_card.grabbed.connect(_on_card_grabbed.bind(new_card))
-		new_card.dropped.connect(_on_card_dropped.bind(new_card))
+	# linking cards to functions etc
+	var max_index = nodes.card_scroller.get_card_count()
+	var card_list = nodes.card_scroller.get_card_list()
+	for i in range(1, max_index+1):
+		var card = card_list[i]
+		card.grabbed.connect(_on_card_grabbed.bind(card))
+		card.dropped.connect(_on_card_dropped.bind(card))
 		if state.player_role == CAHState.ROLE_PLAYER:
-			new_card.clicked.connect(_on_card_clicked.bind(new_card))
-		new_card_text = state.new_white_cards.pop_front()
+			card.clicked.connect(_on_card_clicked.bind(card))
+		card.mouse_entered.connect(_on_card_mouse_entered.bind(card))
 	
+	nodes.client.new_cards_added.connect(link_new_cards)
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.white_card_holder.mouse_entered.connect(_on_card_holder_mouse_entered)
 		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)
-	
+
+
+func link_new_cards(cards: Array[Card]):
+	for card in cards:
+		card.grabbed.connect(_on_card_grabbed.bind(card))
+		card.dropped.connect(_on_card_dropped.bind(card))
+		if state.player_role == CAHState.ROLE_PLAYER:
+			card.clicked.connect(_on_card_clicked.bind(card))
+		card.mouse_entered.connect(_on_card_mouse_entered.bind(card))
 
 
 func _on_card_grabbed(card: Card) -> void:
@@ -119,7 +127,8 @@ func _on_card_mouse_entered(card: Card) -> void:
 	# Moving from scroller to holder
 	if not confirmed and is_card_from_scroller(grabbed_card) and is_card_from_holder(card):
 		# Adds card to holder. Only switches if the holder is full.
-		if nodes.white_card_holder.get_card_count() < state.white_choices:
+		var white_choices = state.black_cards[0].pick
+		if nodes.white_card_holder.get_card_count() < white_choices:
 			add_card_to_holder(grabbed_card)
 			just_moved = true
 		else:
@@ -153,7 +162,8 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		nodes.white_card_holder.set_draggable(true)
 		nodes.top_label.animate_text("Aguarde os outros.")
 	else:
-		if state.white_choices == 1:
+		var white_choices = state.black_cards[0].pick
+		if white_choices == 1:
 			nodes.top_label.animate_text("Selecione sua carta.")
 		else:
 			nodes.top_label.animate_text("Selecione suas cartas.")
@@ -164,18 +174,20 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 func add_card_to_holder(card: Control, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
 	super(card, index, skip_anim, tween)
 	var card_count = nodes.white_card_holder.get_card_count()
+	var white_choices = state.black_cards[0].pick
 	if card_count == 1:
 		nodes.right_card_slot.toggle_glow(false)
-	if card_count == state.white_choices:
+	if card_count == white_choices:
 		nodes.button_controller.toggle_button(true)
 
 
 func add_card_to_scroller(card: Control, index: int = -1, skip_anim: bool = false, tween: bool = true) -> void:
 	super(card, index, skip_anim, tween)
 	var card_count = nodes.white_card_holder.get_card_count()
+	var white_choices = state.black_cards[0].pick
 	if card_count == 0:
 		nodes.right_card_slot.toggle_glow(true)
-	if card_count < state.white_choices:
+	if card_count < white_choices:
 		nodes.button_controller.toggle_button(false)
 		nodes.bottom_button.set_pressed(false)
 		nodes.bottom_button._pressed()

@@ -9,6 +9,7 @@ signal pulse_toggled(bool)
 @export var texture_off : CompressedTexture2D
 
 func _ready():
+	if not $Icon: return
 	if is_toggleable:
 		$Icon.texture = texture_on if is_toggled else texture_off
 	else:

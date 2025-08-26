@@ -29,3 +29,13 @@ func update_offset() -> void:
 		split_offset = expanded_offset
 	else:
 		split_offset = normal_offset
+
+
+# saves the new "normal" offset :>
+func _on_drag_ended() -> void:
+	if split_offset < expanded_offset - 75:
+		normal_offset = split_offset
+		expanded = false
+	else: # snap!
+		split_offset = expanded_offset
+		expanded = true
