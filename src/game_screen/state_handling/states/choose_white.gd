@@ -7,8 +7,7 @@ func _ready() -> void:
 	nodes.button_controller.toggle_button(false)
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(false)
-	nodes.judge_scroller.toggle_visible(false)
-	nodes.card_scroller.toggle_visible(true)
+	nodes.scroller_split.update_offset(false)
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.right_card_slot.toggle_glow(true)
 		var white_choices = state.black_cards[0].pick
@@ -22,6 +21,7 @@ func _ready() -> void:
 	for card in nodes.white_card_holder.get_cards():
 			nodes.white_card_holder.remove_card(card)
 	nodes.bottom_button.toggle_mode = true
+	nodes.bottom_button.set_pressed_no_signal(false)
 	
 	# show card scroller
 	nodes.split_container.set_expanded(false)
@@ -32,7 +32,7 @@ func _ready() -> void:
 		clean_center_slot()
 		# Assumes the selected card is the left one then checks
 		var selected_black_card: Card = nodes.left_card_slot.get_cards()[0]
-		var right_black_card: Card = nodes.right_card_slot.get_cards()[0]
+		var right_black_card: Card = get_right_slot_card()
 		if right_black_card.text == state.black_cards[0].text:
 			selected_black_card = right_black_card
 			clean_left_slot()
@@ -75,6 +75,14 @@ func _ready() -> void:
 	if state.player_role == CAHState.ROLE_PLAYER:
 		nodes.white_card_holder.mouse_entered.connect(_on_card_holder_mouse_entered)
 		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)
+
+
+func get_right_slot_card() -> Card:
+	for card in nodes.right_card_slot.get_cards():
+		if card != nodes.white_card_holder:
+			return card
+	# not found
+	return null
 
 
 func link_new_cards(cards: Array[Card]):
@@ -157,11 +165,22 @@ func _on_card_holder_mouse_entered() -> void:
 		add_card_to_holder(card)
 
 
+# TODO: editable black card with more than 1 choice... ugh...
 func _on_bottom_button_toggled(toggled: bool) -> void:
 	if toggled:
 		nodes.white_card_holder.set_draggable(true)
 		nodes.top_label.animate_text("Aguarde os outros.")
+		
+		var cards: Array[String] = []
+		for card in nodes.white_card_holder.get_cards():
+			if card.is_editable():
+				cards.push_back(card.get_display_text())
+			else:
+				cards.push_back(card.text)
+		var card_group = CAHState.new_choice_group(cards, Global.USERNAME)
+		nodes.client.choose_white.rpc_id(1, card_group)
 	else:
+		nodes.client.cancel_ready.rpc_id(1)
 		var white_choices = state.black_cards[0].pick
 		if white_choices == 1:
 			nodes.top_label.animate_text("Selecione sua carta.")

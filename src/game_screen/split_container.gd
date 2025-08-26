@@ -6,13 +6,14 @@ var expanded: bool = false
 var expanded_offset: int = 250
 var normal_offset: int = 55
 
-func tween_offset(target: float, time: float = 0.5) -> void:
+func tween_offset(target: float, time: float = 0.5) -> Tween:
 	if _offset_tween:
 		_offset_tween.kill()
 	_offset_tween = create_tween()
 	_offset_tween.set_ease(Tween.EASE_OUT)
 	_offset_tween.set_trans(Tween.TRANS_QUINT)
 	_offset_tween.tween_property(self, "split_offset", target, time)
+	return _offset_tween
 
 
 func set_expanded(toggle: bool) -> Tween:

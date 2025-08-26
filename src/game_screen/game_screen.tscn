@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=18 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ch8liwgnieqw7" path="res://src/card_ui/card_slot/card_slot.tscn" id="4_drf4n"]
 [ext_resource type="Script" uid="uid://jok1u3fl30wj" path="res://src/game_screen/split_container.gd" id="4_pnpbp"]
 [ext_resource type="PackedScene" uid="uid://d33ravlxtvbru" path="res://src/card_ui/card_group/card_group.tscn" id="5_oc45t"]
+[ext_resource type="Script" uid="uid://df5dlokrsx6ah" path="res://src/game_screen/scroller_split.gd" id="7_epe2y"]
 [ext_resource type="Script" uid="uid://cy0ft1rbxjbs3" path="res://src/game_screen/bb_control.gd" id="8_pnpbp"]
 [ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="10_lfrdv"]
 [ext_resource type="Script" uid="uid://of1q8s48itpc" path="res://src/game_screen/connecting_panel.gd" id="11_1mmlo"]
@@ -97,7 +98,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 20
-split_offset = 250
 drag_area_margin_begin = 500
 drag_area_margin_end = 500
 drag_area_highlight_in_editor = true
@@ -163,15 +163,22 @@ border_width = 3.0
 
 [node name="JudgeScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="CardScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollerSplit" type="VSplitContainer" parent="MarginContainer/VBoxContainer/VSplitContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+dragging_enabled = false
+dragger_visibility = 2
+script = ExtResource("7_epe2y")
 
 [node name="BBControl" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -282,6 +289,7 @@ script = ExtResource("13_8bhmj")
 metadata/_custom_type_script = "uid://crf41ebthy3bw"
 
 [node name="ClientButton" type="Button" parent="."]
+visible = false
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 0
 offset_left = 25.0
@@ -290,12 +298,15 @@ offset_bottom = 52.0
 text = "c"
 
 [node name="ServerButton" type="Button" parent="."]
+visible = false
 custom_minimum_size = Vector2(25, 25)
+layout_mode = 0
 offset_right = 25.0
 offset_bottom = 52.0
 text = "s"
 
 [connection signal="drag_ended" from="MarginContainer/VBoxContainer/VSplitContainer" to="MarginContainer/VBoxContainer/VSplitContainer" method="_on_drag_ended"]
+[connection signal="resized" from="MarginContainer/VBoxContainer/VSplitContainer/ScrollerSplit" to="MarginContainer/VBoxContainer/VSplitContainer/ScrollerSplit" method="update_offset"]
 [connection signal="state_updated" from="Client" to="." method="_on_client_state_updated"]
 [connection signal="pressed" from="ClientButton" to="Client" method="create_client"]
 [connection signal="pressed" from="ServerButton" to="Server" method="create_server"]

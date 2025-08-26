@@ -12,6 +12,7 @@ var white_card_holder: CardGroup
 
 var card_scroller: CardScroller
 var judge_scroller: CardScroller
+var scroller_split: VSplitContainer
 
 var button_controller: Control
 var bottom_button: PulseButton

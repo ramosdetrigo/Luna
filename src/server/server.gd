@@ -9,9 +9,11 @@ class Player:
 	# The player's username
 	var username: String = ""
 	# Black card chosen
-	var choice_black: String = ""
+	var choice_black: Dictionary = {}
 	# White cards sent or judge choice
-	var choice_white: Dictionary
+	var choice_white: Dictionary = {}
+	# if the player is ready or not
+	var ready: bool
 
 # All cards from the cards.json file
 # whiteCards: [string]
@@ -28,6 +30,7 @@ var judge_queue = []
 
 var game_state: CAHState = CAHState.new()
 
+
 func _ready() -> void:
 	# We work by shuffling the arrays and taking cards from the top.
 	# When we reach a threshold, we shuffle everything again
@@ -41,10 +44,7 @@ func _ready() -> void:
 	
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	multiplayer.connected_to_server.connect(_on_connected_ok)
-	multiplayer.connection_failed.connect(_on_connected_fail)
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	#
+	
 	#print(random_black())
 	#print(random_white())
 
@@ -55,6 +55,7 @@ func create_server() -> void:
 	var error = peer.create_server(Global.PORT)
 	if error:
 		print(error)
+		return # TODO: handle error
 	multiplayer.multiplayer_peer = peer
 	print("Server created!")
 
@@ -104,6 +105,63 @@ func random_white() -> String:
 		white_cards_pile = CARDS.white_cards.duplicate()
 		white_cards_pile.shuffle()
 	return white_cards_pile.pop_back()
+
+func send_players_to_all() -> void:
+	var players_array: Array[Dictionary] = []
+	for player: Player in player_list.values():
+		players_array.push_back({
+			"username": player.username,
+			"role": player.role
+		})
+	update_player_list.rpc(players_array)
+
+func all_category_players_ready(category: Dictionary[int, Player]) -> bool:
+	for player: Player in category.values():
+		if not player.ready:
+			return false
+	return true
+
+func set_all_players_ready(r: bool) -> void:
+	for player: Player in player_list.values():
+		player.ready = r
+
+func get_highest_voted_white() -> Dictionary:
+	var counting_dict: Dictionary[String, int] = {}
+	var reverse_dict: Dictionary[String, Dictionary] = {}
+	for judge: Player in role_judges.values():
+		var key = str(judge.choice_white)
+		if counting_dict.get(key) == null:
+			counting_dict.set(key, 0) # set serialized dict as key
+			reverse_dict.set(key, judge.choice_white)
+		counting_dict[key] += 1
+	
+	var max_count = 0
+	var max_group = {}
+	for key in counting_dict.keys():
+		var count = counting_dict[key]
+		if count > max_count:
+			max_count = count
+			max_group = reverse_dict[key]
+	return max_group
+
+func get_highest_voted_black() -> Dictionary:
+	var counting_dict: Dictionary[String, int] = {}
+	var reverse_dict: Dictionary[String, Dictionary] = {}
+	for judge: Player in role_judges.values():
+		var key = str(judge.choice_black)
+		if counting_dict.get(key) == null:
+			counting_dict.set(key, 0) # set serialized dict as key
+			reverse_dict.set(key, judge.choice_black)
+		counting_dict[key] += 1
+	
+	var max_count = 0
+	var max_group = {}
+	for key in counting_dict.keys():
+		var count = counting_dict[key]
+		if count > max_count:
+			max_count = count
+			max_group = reverse_dict[key]
+	return max_group
 #endregion HELPER
 
 
@@ -120,7 +178,7 @@ func set_game_state(state: CAHState.GameState) -> void:
 			# Changes everyone back into a player and chooses a new judge
 			for judge: Player in role_judges.values():
 				change_role(judge, CAHState.ROLE_PLAYER)
-			# Takes the next from the queue and puts it back at the end
+			# Takes the next judge from the queue and puts it back at the end
 			var new_judge = judge_queue.pop_front()
 			judge_queue.push_back(new_judge)
 			change_role(new_judge, CAHState.ROLE_JUDGE)
@@ -133,19 +191,23 @@ func set_game_state(state: CAHState.GameState) -> void:
 			game_state.black_cards = [game_state.black_cards[0]]
 			game_state.choice_groups = []
 			for player: Player in role_players.values():
-				game_state.choice_groups.append(player.choice_white)
+				game_state.choice_groups.push_back(player.choice_white)
 		CAHState.STATE_WINNER:
 			# We define the first one as the one that has been selected
 			game_state.black_cards = [game_state.black_cards[0]]
-			game_state.choice_groups = [game_state.choice_groups[0]]
 
 func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 	return {
 		"player_role": player_role,
 		"current_game_state": game_state.current_game_state,
 		"black_cards": game_state.black_cards,
-		"choice_groups": CAHState.new_choice_group(["1"], "p"),
+		"choice_groups": game_state.choice_groups,
 	}
+
+func send_state_to_all() -> void:
+	for player: Player in player_list.values():
+		print(game_state.choice_groups)
+		update_state.rpc_id(player.id, dict_from_state(player.role))
 #endregion STATE
 
 
@@ -156,26 +218,31 @@ func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 func name_changed(new_name: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	# If player is already in player list, just change its name
-	print(id)
 	if id in player_list.keys():
 		player_list[id].name = new_name
 		# TODO: update player list
 		return
 	# Else, the player just joined. Create a new player!
-	
 	var player = Player.new()
 	player.id = id
 	player.username = new_name
 	change_role(player, CAHState.ROLE_PLAYER)
+	# Adds player to queue of next judges
 	judge_queue.push_back(player)
 	if len(role_judges) == 0:
 		set_game_state(CAHState.STATE_CHOOSE_BLACK)
+	# Adds player to player list
 	player_list.set(id, player)
+	# Generates their new cards
 	var new_cards = []
 	for i in range(10):
 		new_cards.push_back(random_white())
+	# Sends the info to the player
 	add_cards.rpc_id(id, new_cards)
 	update_state.rpc_id(id, dict_from_state(player.role))
+	# Notifies everyone that a player has joined
+	notify.rpc("%s entrou no jogo.")
+	send_players_to_all()
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -186,13 +253,79 @@ func message_sent(message: String) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func choose_black(black_card: Dictionary) -> void:
 	# TODO: modo democrático
-	game_state.black_cards[0] = black_card
-	set_game_state(CAHState.STATE_CHOOSE_WHITE)
-	for player: Player in player_list.values():
-		update_state.rpc_id(player.id, dict_from_state(player.role))
+	if game_state.current_game_state != CAHState.STATE_CHOOSE_BLACK:
+		return
+	var player = player_list.get(multiplayer.get_remote_sender_id())
+	if player == null or player.role != CAHState.ROLE_JUDGE:
+		return
+	player.ready = true
+	player.choice_black = black_card
+	# Only continue if all judges are ready
+	if all_category_players_ready(role_judges):
+		set_all_players_ready(false)
+		# Conta pra ver qual foi a carta preta mais escolhida
+		var max_black = get_highest_voted_black()
+		game_state.black_cards = [max_black]
+		set_game_state(CAHState.STATE_CHOOSE_WHITE)
+		send_state_to_all()
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func choose_white(white_group: Dictionary) -> void:
+	var player = player_list.get(multiplayer.get_remote_sender_id())
+	if player == null:
+		return
+	# Checks if we're either in choose_white or judgement state
+	var curr_state = game_state.current_game_state
+	match curr_state:
+		CAHState.STATE_CHOOSE_WHITE:
+			print("choose_white")
+			if player.role != CAHState.ROLE_PLAYER:
+				return
+			player.ready = true
+			player.choice_white = white_group
+			if all_category_players_ready(role_players):
+				set_all_players_ready(false)
+				# The adding of player cards to choice_groups is already handled by set_game_State
+				set_game_state(CAHState.STATE_JUDGEMENT)
+				send_state_to_all()
+		CAHState.STATE_JUDGEMENT:
+			print("judgement")
+			if player.role != CAHState.ROLE_JUDGE:
+				return
+			player.ready = true
+			player.choice_white = white_group
+			if all_category_players_ready(role_judges):
+				set_all_players_ready(false)
+				# Conta pra ver qual foi o grupo mais escolhido
+				var max_group = get_highest_voted_white()
+				# Move o mais votado pra frente
+				var index = game_state.choice_groups.find(max_group)
+				game_state.choice_groups.remove_at(index)
+				game_state.choice_groups.push_front(max_group)
+				set_game_state(CAHState.STATE_WINNER)
+				send_state_to_all()
+		_: return # Player calling in an invalid state
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func winner_ready() -> void:
+	var player = player_list.get(multiplayer.get_remote_sender_id())
+	if player and game_state.current_game_state == CAHState.STATE_WINNER:
+		player.ready = true
+		if all_category_players_ready(role_judges) and all_category_players_ready(role_players):
+			set_game_state(CAHState.STATE_CHOOSE_BLACK)
+			send_state_to_all()
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func cancel_ready() -> void:
+	var player = player_list.get(multiplayer.get_remote_sender_id())
+	if player and game_state.current_game_state != CAHState.STATE_WINNER:
+		player.ready = false
 #endregion SERVER RPC
 
-
+# TODO: toggle_spectator
 #region CLIENT RPC
 @rpc("authority", "call_remote", "reliable")
 func add_cards(_new_cards: Array) -> void: pass
@@ -201,10 +334,13 @@ func add_cards(_new_cards: Array) -> void: pass
 func add_message(_message: String) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
+func notify(_message: String) -> void: pass
+
+@rpc("authority", "call_remote", "reliable")
 func update_state(_new_state: Dictionary) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
-func update_player_list(_new_players: Array[Dictionary]) -> void: pass
+func update_player_list(_players: Array[Dictionary]) -> void: pass
 #endregion CLIENT RPC
 
 
@@ -212,16 +348,22 @@ func update_player_list(_new_players: Array[Dictionary]) -> void: pass
 func _on_peer_connected(peer_id: int) -> void:
 	print("Server: Peer connected: %d" % peer_id)
 
+# TODO: reset if all players are spectators too, etc.
 func _on_peer_disconnected(peer_id: int) -> void:
 	print("Server: Peer disconnected: %d" % peer_id)
-	# TODO: add player to disconnected list
-
-func _on_connected_ok() -> void:
-	print("Server: Connection ok!")
-
-func _on_connected_fail() -> void:
-	print("Server: Connection failed ;(")
-
-func _on_server_disconnected() -> void:
-	print("Server: Server disconnected")
+	var player = player_list.get(peer_id)
+	if player == null:
+		return
+	
+	var old_player_role = player.role
+	# removes players from our lists
+	change_role(player, CAHState.ROLE_CONNECTING) # erases player from role_lists
+	player_list.erase(peer_id)
+	judge_queue.erase(player)
+	# the game will reset itself when someone joins.
+	if len(player_list) == 0:
+		return
+	# resets the game if the player was the only remaining judge
+	elif old_player_role == CAHState.ROLE_JUDGE and len(role_judges) == 0:
+		set_game_state(CAHState.STATE_CHOOSE_BLACK)
 #endregion

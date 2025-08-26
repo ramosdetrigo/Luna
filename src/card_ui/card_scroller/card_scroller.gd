@@ -87,9 +87,10 @@ func move_card(card: Control, index: int, skip_anim: bool = false) -> void:
 
 # NOTE: is this wrong? 'cause the card fades in place etc
 # instead of moving with the scroll
-func remove_card(card: Control) -> void:
+func remove_card(card: Control, skip_anim: bool = false) -> void:
 	var card_list = %CardList.get_children()
-	move_card(card, len(card_list)-2)
+	if not skip_anim:
+		move_card(card, len(card_list)-2)
 	%CardList.remove_child(card)
 
 
@@ -150,3 +151,16 @@ func _on_resized() -> void:
 
 func _on_card_list_child_entered_tree(_node: Node) -> void:
 	_on_resized()
+
+
+func _on_scroll_container_mouse_entered() -> void:
+	print(name)
+	print(size)
+
+
+func _on_scroll_container_scroll_started() -> void:
+	print("started")
+
+
+func _on_scroll_container_scroll_ended() -> void:
+	print("ended")

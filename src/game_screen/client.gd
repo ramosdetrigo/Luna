@@ -21,6 +21,7 @@ func create_client() -> void:
 	var error = peer.create_client("ws://%s:%d" % [Global.IP_ADDR, Global.PORT])
 	if error:
 		print(error)
+		return # TODO: handle error
 	multiplayer.multiplayer_peer = peer
 	print("Client created!")
 
@@ -28,7 +29,6 @@ func create_client() -> void:
 #region CLIENT RPC
 @rpc("authority", "call_remote", "reliable")
 func add_cards(new_cards: Array) -> void:
-	print(new_cards)
 	var card_nodes: Array[Card] = []
 	for card_text in new_cards:
 		var card = CAH.CARD_SCENE.instantiate()
@@ -38,23 +38,30 @@ func add_cards(new_cards: Array) -> void:
 		card_nodes.push_back(card)
 	new_cards_added.emit(card_nodes)
 
+# TODO:
 @rpc("authority", "call_remote", "reliable")
-func add_message(message: String) -> void: pass
+func add_message(_message: String) -> void: pass
+
+# TODO:
+@rpc("authority", "call_remote", "reliable")
+func notify(_message: String) -> void: pass
 
 # TODO: fix error where white cards kind of... disappear...
 # from the card scroller... when the scene changes...
 @rpc("authority", "call_remote", "reliable")
 func update_state(new_state: Dictionary) -> void:
 	game_state.player_role = new_state.player_role
+	game_state.previous_game_state = game_state.current_game_state
 	game_state.current_game_state = new_state.current_game_state
 	game_state.black_cards = new_state.black_cards
 	game_state.choice_groups = new_state.choice_groups
-	%ConnectingPanel.toggle_visible(false)
-	print(new_state)
 	state_updated.emit()
+	if %ConnectingPanel.visible:
+		%ConnectingPanel.toggle_visible(false)
 
+# TODO:
 @rpc("authority", "call_remote", "reliable")
-func update_player_list(new_players: Array[Dictionary]) -> void: pass
+func update_player_list(_new_players: Array[Dictionary]) -> void: pass
 #endregion CLIENT RPC
 
 
@@ -66,14 +73,23 @@ func name_changed(_new_name: String) -> void: pass
 func message_sent(_message: String) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func choose_black(black_card: Dictionary) -> void: pass
+func choose_black(_black_card: Dictionary) -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func choose_white(_white_group: Dictionary) -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func winner_ready() -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func cancel_ready() -> void: pass
 #endregion SERVER RPC
 
 
 #region MULTIPLAYER CALLBACKS
 func _on_peer_connected(peer_id: int) -> void:
 	print("Client: Peer connected: %d" % peer_id)
-	if peer_id == 1:
+	if peer_id == 1: # only accept from server
 		name_changed.rpc_id(1, Global.USERNAME)
 
 func _on_peer_disconnected(peer_id: int) -> void:

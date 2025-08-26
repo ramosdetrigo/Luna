@@ -3,6 +3,7 @@ extends CAHStateHandler
 
 var timers: Array[SceneTreeTimer] = []
 var black_card: Card
+var grabbed_group: CardGroup
 
 func _ready() -> void:
 	nodes.button_controller.toggle_button(false)
@@ -11,13 +12,27 @@ func _ready() -> void:
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(true)
 	# hide cardscroller
-	nodes.split_container.set_expanded(true)
-	nodes.card_scroller.toggle_visible(false)
-	nodes.judge_scroller.toggle_visible(true)
+	var ss_tween = nodes.split_container.set_expanded(true)
+	nodes.split_container.dragging_enabled = false
+	nodes.scroller_split.update_offset(true)
+	ss_tween.finished.connect(func():
+		# Clear card scroller
+		for card in nodes.judge_scroller.get_card_list():
+			nodes.judge_scroller.remove_card(card, true)
+		# Adds new card groups to the card scroller
+		for group in state.choice_groups:
+			var card_group = create_card_group(group)
+			nodes.judge_scroller.add_card(card_group)
+			card_group.dragger.set_child_modulate(Color.TRANSPARENT)
+			card_group.dragger.grabbed.connect(func(): grabbed_group = card_group)
+			card_group.dragger.dropped.connect(func(): grabbed_group = null)
+			card_group.mouse_entered.connect(func():
+				if card_group != grabbed_group:
+					swap_cards(grabbed_group, card_group))
+	)
 	
 	# Erase old cards from the card slots
 	clean_card_slots()
-	nodes.white_card_holder.get_cards()
 	
 	# TODO: não criar a carta preta se ela já existe
 	black_card = CAH.CARD_SCENE.instantiate()
@@ -50,12 +65,17 @@ func _ready() -> void:
 	# Anuncia o vencedor
 	var timer2 = get_tree().create_timer(3)
 	timer2.timeout.connect(func():
+		for card_group in nodes.judge_scroller.get_card_list():
+			card_group.dragger.set_child_modulate(Color.WHITE)
+		
 		var winner_name = state.choice_groups[0].player
 		nodes.top_label.animate_text("O vencedor é... " + winner_name + "!")
 		nodes.top_label._erasing = false
+		nodes.split_container.dragging_enabled = true
 		nodes.confetti.emitting = true
 		nodes.right_card_slot.toggle_glow(false)
 		nodes.white_card_holder.dragger.tween_child_modulate(Color.WHITE)
+		
 		
 		# Espera um porquin pra mostrar o botão de continuar
 		var timer3 = get_tree().create_timer(0.5)
@@ -70,5 +90,6 @@ func _ready() -> void:
 	
 
 func _on_bottom_button_pressed() -> void:
+	nodes.client.winner_ready.rpc_id(1)
 	nodes.top_label.animate_text("Aguarde os outros jogadores...")
 	nodes.button_controller.toggle_button(false)

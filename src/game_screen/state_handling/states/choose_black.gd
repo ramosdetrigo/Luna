@@ -8,7 +8,7 @@ var grabbed_card: Card
 func _ready() -> void:
 	nodes.right_card_slot.toggle_glow(false)
 	nodes.button_controller.toggle_button(false)
-	nodes.card_scroller.toggle_visible(true)
+	nodes.scroller_split.tween_offset(false)
 	var wch_tween = nodes.white_card_holder.dragger.tween_child_modulate(Color.TRANSPARENT)
 	wch_tween.finished.connect(func():
 		for card in nodes.white_card_holder.get_cards():
@@ -31,6 +31,8 @@ func _ready() -> void:
 			new_card.set_clickable(false)
 		card_slots[i].add_child(new_card)
 		black_cards.push_back(new_card)
+		new_card.dragger.set_child_modulate(Color.TRANSPARENT)
+		new_card.dragger.tween_child_modulate(Color.WHITE)
 	
 	var max_index = nodes.card_scroller.get_card_count()
 	var card_list = nodes.card_scroller.get_card_list()
@@ -46,9 +48,14 @@ func _ready() -> void:
 	# Finish config
 	if state.player_role == CAHState.ROLE_JUDGE:
 		nodes.top_label.animate_text("Escolha uma carta.")
-		nodes.bottom_button.pressed.connect(_on_bottom_button_pressed)
+		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)
 	else:
 		nodes.top_label.animate_text("Aguarde a escolha do juiz.")
+
+
+func _exit_tree() -> void:
+	for card in black_cards:
+		card.toggle_glow(false)
 
 
 func link_new_cards(cards: Array[Card]):
@@ -68,20 +75,26 @@ func _on_black_card_clicked(card: Card) -> void:
 		if selected_black_card != null:
 			selected_black_card.toggle_glow(false)
 		selected_black_card = card
-		nodes.bottom_button.toggle_mode = false
-		nodes.bottom_button.button_pressed = false
+		nodes.bottom_button.toggle_mode = true
+		nodes.bottom_button.set_pressed_no_signal(false)
 		nodes.bottom_button.text = "Confirmar"
 		nodes.button_controller.toggle_button(true)
 	card.toggle_glow(not card.glowing)
 
 
-func _on_bottom_button_pressed() -> void:
-	for card in black_cards:
-		card.set_clickable(false)
-		card.clicked.disconnect(_on_black_card_clicked)
-	nodes.button_controller.toggle_button(false)
-	var selected_bc_text = selected_black_card.text
-	for card in state.black_cards:
-		if card.text == selected_bc_text:
-			nodes.client.choose_black.rpc_id(1, card)
-			return
+# TODO: make togglable
+func _on_bottom_button_toggled(toggled: bool) -> void:
+	if toggled:
+		for card in black_cards:
+			card.set_clickable(false)
+			card.clicked.disconnect(_on_black_card_clicked)
+		var selected_bc_text = selected_black_card.text
+		for card in state.black_cards:
+			if card.text == selected_bc_text:
+				nodes.client.choose_black.rpc_id(1, card)
+				return
+	else:
+		nodes.client.cancel_ready.rpc_id(1)
+		for card in black_cards:
+			card.set_clickable(true)
+			card.clicked.connect(_on_black_card_clicked)

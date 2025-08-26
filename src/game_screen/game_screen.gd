@@ -28,6 +28,7 @@ func _ready() -> void:
 	
 	screen_nodes.judge_scroller = %JudgeScroller
 	screen_nodes.card_scroller = %CardScroller
+	screen_nodes.scroller_split = %ScrollerSplit
 	
 	screen_nodes.left_card_slot = %LeftCardSlot
 	screen_nodes.right_card_slot = %RightCardSlot
@@ -40,13 +41,13 @@ func _ready() -> void:
 	
 	%ConnectingPanel.toggle_visible(true)
 	%Client.game_state = game_state
-	#%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
-	#%Client.create_client()
+	%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
+	%Client.create_client()
 	
-	game_state = CAHState.dummy_state()
-	%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
-	_on_client_state_updated()
-	%ConnectingPanel.toggle_visible(false)
+	#game_state = CAHState.dummy_state()
+	#%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
+	#_on_client_state_updated()
+	#%ConnectingPanel.toggle_visible(false)
 	
 	_on_viewport_size_changed()
 

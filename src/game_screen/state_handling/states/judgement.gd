@@ -8,8 +8,7 @@ func _ready() -> void:
 	nodes.white_card_holder.set_clickable(false)
 	nodes.white_card_holder.set_draggable(false)
 	# switch between the card scroller and the judge scroller
-	nodes.card_scroller.toggle_visible(false)
-	nodes.judge_scroller.toggle_visible(true)
+	nodes.scroller_split.tween_offset(true)
 	
 	if state.player_role == CAHState.ROLE_JUDGE:
 		nodes.right_card_slot.toggle_glow(true)
@@ -20,6 +19,7 @@ func _ready() -> void:
 	for card in nodes.white_card_holder.get_cards():
 			nodes.white_card_holder.remove_card(card)
 	nodes.bottom_button.toggle_mode = true
+	nodes.bottom_button.set_pressed_no_signal(false)
 	
 	# show card scroller
 	nodes.split_container.set_expanded(false)
@@ -54,6 +54,9 @@ func _ready() -> void:
 		else:
 			nodes.center_card_slot.add_child(black_card)
 	
+	# Clear card scroller
+	for card in nodes.judge_scroller.get_card_list():
+		nodes.judge_scroller.remove_card(card, true)
 	# Adds new card groups to the card scroller
 	for group in state.choice_groups:
 		var card_group = create_card_group(group)
@@ -211,7 +214,17 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 	if toggled:
 		get_right_slot_group().set_clickable(false)
 		nodes.top_label.animate_text("Aguarde os outros.")
+		
+		var cards: Array[String] = []
+		for card in get_right_slot_group().get_cards():
+			if card.is_editable():
+				cards.push_back(card.get_display_text())
+			else:
+				cards.push_back(card.text)
+		var card_group = CAHState.new_choice_group(cards, Global.USERNAME)
+		nodes.client.choose_white.rpc_id(1, card_group)
 	else:
+		nodes.client.cancel_ready.rpc_id(1)
 		get_right_slot_group().set_clickable(true)
 		nodes.top_label.animate_text("Qual a melhor resposta?")
 
