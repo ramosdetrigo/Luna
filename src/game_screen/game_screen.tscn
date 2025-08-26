@@ -161,24 +161,23 @@ mouse_filter = 2
 border_color = Color(0.0943737, 0.615227, 0.571761, 1)
 border_width = 3.0
 
-[node name="JudgeScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="CardScroller" parent="MarginContainer/VBoxContainer/VSplitContainer" instance=ExtResource("2_3ulvs")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-
 [node name="ScrollerSplit" type="VSplitContainer" parent="MarginContainer/VBoxContainer/VSplitContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 dragging_enabled = false
 dragger_visibility = 2
 script = ExtResource("7_epe2y")
+
+[node name="JudgeScroller" parent="MarginContainer/VBoxContainer/VSplitContainer/ScrollerSplit" instance=ExtResource("2_3ulvs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CardScroller" parent="MarginContainer/VBoxContainer/VSplitContainer/ScrollerSplit" instance=ExtResource("2_3ulvs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="BBControl" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

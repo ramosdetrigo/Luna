@@ -3,7 +3,7 @@ extends VSplitContainer
 # if it isnt up its down ig
 # up = judge_scroller down = card_scroller
 @export
-var up: bool = false
+var up: bool = true
 var _offset_tween: Tween
 
 
@@ -12,6 +12,8 @@ func _ready() -> void:
 
 
 func update_offset(is_up: bool = up) -> void:
+	if _offset_tween:
+		_offset_tween.kill()
 	up = is_up
 	var offset = size.y/2
 	if up:
@@ -22,7 +24,7 @@ func update_offset(is_up: bool = up) -> void:
 		split_offset = -offset
 
 
-func tween_offset(is_up: bool = up, time: float = 0.5) -> void:
+func tween_offset(is_up: bool = up, time: float = 0.5) -> Tween:
 	up = is_up
 	var target = size.y/2
 	if not up:
@@ -34,3 +36,4 @@ func tween_offset(is_up: bool = up, time: float = 0.5) -> void:
 	_offset_tween.set_ease(Tween.EASE_OUT)
 	_offset_tween.set_trans(Tween.TRANS_QUINT)
 	_offset_tween.tween_property(self, "split_offset", target, time)
+	return _offset_tween

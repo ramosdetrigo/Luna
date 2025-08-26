@@ -142,7 +142,7 @@ func _on_resized() -> void:
 		return
 	
 	for element in card_list:
-		if element is Card:
+		if element is Card or element is CardGroup:
 			element.custom_minimum_size = card_size()
 		else:
 			element.custom_minimum_size.x = edge_size()
@@ -151,16 +151,3 @@ func _on_resized() -> void:
 
 func _on_card_list_child_entered_tree(_node: Node) -> void:
 	_on_resized()
-
-
-func _on_scroll_container_mouse_entered() -> void:
-	print(name)
-	print(size)
-
-
-func _on_scroll_container_scroll_started() -> void:
-	print("started")
-
-
-func _on_scroll_container_scroll_ended() -> void:
-	print("ended")

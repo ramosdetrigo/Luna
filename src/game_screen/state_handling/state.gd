@@ -46,9 +46,11 @@ static func dummy_state() -> CAHState:
 	var state = CAHState.new()
 	state.player_role = PlayerRole.ROLE_PLAYER
 	state.previous_game_state = GameState.STATE_CONNECTING
-	state.current_game_state = GameState.STATE_CHOOSE_WHITE
+	state.current_game_state = GameState.STATE_JUDGEMENT
 	
 	state.black_cards = [{"text": "Say my name.", "pick":1}]
-	state.choice_groups = []
+	state.choice_groups = [
+		{"cards":["carta grupo 1", "ca2"], "player":"j"},
+	]
 	
 	return state

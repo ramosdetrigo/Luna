@@ -54,10 +54,11 @@ func _ready() -> void:
 		else:
 			nodes.center_card_slot.add_child(black_card)
 	
-	# Clear card scroller
+	## Clear card scroller
 	for card in nodes.judge_scroller.get_card_list():
-		nodes.judge_scroller.remove_card(card, true)
-	# Adds new card groups to the card scroller
+		if card is CardGroup:
+			nodes.judge_scroller.remove_card(card, true)
+	 #Adds new card groups to the card scroller
 	for group in state.choice_groups:
 		var card_group = create_card_group(group)
 		nodes.judge_scroller.add_card(card_group)
@@ -66,7 +67,6 @@ func _ready() -> void:
 		card_group.dragger.dropped.connect(_on_group_dropped.bind(card_group))
 		if state.player_role == CAHState.ROLE_JUDGE:
 			card_group.dragger.clicked.connect(_on_group_clicked.bind(card_group))
-	
 	if state.player_role == CAHState.ROLE_JUDGE:
 		nodes.white_card_holder.mouse_entered.connect(_on_group_holder_mouse_entered)
 		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)

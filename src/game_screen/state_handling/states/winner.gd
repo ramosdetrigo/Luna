@@ -16,19 +16,15 @@ func _ready() -> void:
 	nodes.split_container.dragging_enabled = false
 	nodes.scroller_split.update_offset(true)
 	ss_tween.finished.connect(func():
-		# Clear card scroller
+		## Clear card scroller
 		for card in nodes.judge_scroller.get_card_list():
-			nodes.judge_scroller.remove_card(card, true)
-		# Adds new card groups to the card scroller
+			if card is CardGroup:
+				nodes.judge_scroller.remove_card(card)
+		 #Adds new card groups to the card scroller
 		for group in state.choice_groups:
 			var card_group = create_card_group(group)
 			nodes.judge_scroller.add_card(card_group)
-			card_group.dragger.set_child_modulate(Color.TRANSPARENT)
-			card_group.dragger.grabbed.connect(func(): grabbed_group = card_group)
-			card_group.dragger.dropped.connect(func(): grabbed_group = null)
-			card_group.mouse_entered.connect(func():
-				if card_group != grabbed_group:
-					swap_cards(grabbed_group, card_group))
+			# TODO: drag card
 	)
 	
 	# Erase old cards from the card slots

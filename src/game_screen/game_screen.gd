@@ -39,15 +39,15 @@ func _ready() -> void:
 	screen_nodes.client = %Client
 	#endregion screen_nodes
 	
-	%ConnectingPanel.toggle_visible(true)
-	%Client.game_state = game_state
-	%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
-	%Client.create_client()
+	#%ConnectingPanel.toggle_visible(true)
+	#%Client.game_state = game_state
+	#%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
+	#%Client.create_client()
 	
-	#game_state = CAHState.dummy_state()
-	#%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
-	#_on_client_state_updated()
-	#%ConnectingPanel.toggle_visible(false)
+	game_state = CAHState.dummy_state()
+	%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
+	_on_client_state_updated()
+	%ConnectingPanel.toggle_visible(false)
 	
 	_on_viewport_size_changed()
 
