@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b2iuonct2f7i"]
 
-[ext_resource type="Script" uid="uid://bd2h4ka0vabfx" path="res://src/base_ui/rotate_button/rotate_button.gd" id="1_lsocf"]
+[ext_resource type="Script" uid="uid://bd2h4ka0vabfx" path="res://src/ui_elements/rotate_button/rotate_button.gd" id="1_lsocf"]
 
 [sub_resource type="Animation" id="Animation_svfpj"]
 length = 0.001

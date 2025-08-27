@@ -19,10 +19,13 @@ func _ready() -> void:
 
 func create_client() -> void:
 	var peer = WebSocketMultiplayerPeer.new()
-	var error = peer.create_client("ws://%s:%d" % [Global.IP_ADDR, Global.PORT])
+	var ip = Global.CONFIGS.ip
+	if Global.CONFIGS.ip == "":
+		ip = "localhost"
+	var error = peer.create_client("ws://%s:%d" % [ip, Global.CONFIGS.port])
 	if error:
 		print(error)
-		return # TODO: handle error
+		disconnected.emit(str(error))
 	multiplayer.multiplayer_peer = peer
 	print("Client created!")
 
@@ -90,7 +93,7 @@ func winner_ready() -> void: pass
 func cancel_ready() -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func new_cards_request(card_num: int) -> void: pass
+func new_cards_request(_card_num: int) -> void: pass
 #endregion SERVER RPC
 
 
@@ -98,7 +101,7 @@ func new_cards_request(card_num: int) -> void: pass
 func _on_peer_connected(peer_id: int) -> void:
 	print("Client: Peer connected: %d" % peer_id)
 	if peer_id == 1: # only accept from server
-		name_changed.rpc_id(1, Global.USERNAME)
+		name_changed.rpc_id(1, Global.CONFIGS.username)
 
 func _on_peer_disconnected(peer_id: int) -> void:
 	print("Client: Peer disconnected: %d" % peer_id)

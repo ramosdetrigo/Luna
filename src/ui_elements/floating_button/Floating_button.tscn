@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c36lew5uiwsgp"]
 
 [ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="1_v2brm"]
-[ext_resource type="Script" uid="uid://cdy1g3o0f5vvt" path="res://src/base_ui/floating_button/floating_button.gd" id="2_ru47g"]
+[ext_resource type="Script" uid="uid://cdy1g3o0f5vvt" path="res://src/ui_elements/floating_button/floating_button.gd" id="2_ru47g"]
 
 [node name="FloatingButton" type="Button"]
 custom_minimum_size = Vector2(200, 48)

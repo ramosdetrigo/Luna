@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://beiq3a5m6gw5x"]
 
-[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/base_ui/draggable/draggable.gd" id="1_uonba"]
+[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/ui_elements/draggable/draggable.gd" id="1_uonba"]
 
 [node name="Draggable" type="Container"]
 offset_left = 377.0

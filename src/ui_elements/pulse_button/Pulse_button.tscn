@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://ct0o4u7jepmja"]
 
-[ext_resource type="Script" uid="uid://dme6w08jrg67u" path="res://src/base_ui/pulse_button/pulse_button.gd" id="1_blxdl"]
+[ext_resource type="Script" uid="uid://dme6w08jrg67u" path="res://src/ui_elements/pulse_button/pulse_button.gd" id="1_blxdl"]
 [ext_resource type="Theme" uid="uid://cqtwf6mg2wos5" path="res://assets/resources/themes/theme_ui2.tres" id="1_x0wke"]
 
 [sub_resource type="Animation" id="Animation_svfpj"]

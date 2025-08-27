@@ -178,7 +178,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 				cards.push_back(card.get_display_text())
 			else:
 				cards.push_back(card.text)
-		var card_group = CAHState.new_choice_group(cards, Global.USERNAME)
+		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
 		nodes.client.choose_white.rpc_id(1, card_group)
 	else:
 		nodes.client.cancel_ready.rpc_id(1)

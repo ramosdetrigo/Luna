@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d33ravlxtvbru"]
 
 [ext_resource type="Script" uid="uid://cge0bxh5g0lny" path="res://src/card_ui/card_group/card_group.gd" id="1_4v4uj"]
-[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/base_ui/draggable/draggable.gd" id="2_4v4uj"]
+[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/ui_elements/draggable/draggable.gd" id="2_4v4uj"]
 
 [node name="CardGroup" type="Control"]
 layout_mode = 3

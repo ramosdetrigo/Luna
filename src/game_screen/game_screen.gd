@@ -41,7 +41,7 @@ func _ready() -> void:
 	
 	%ConnectingPanel.toggle_visible(true)
 	%Client.game_state = game_state
-	%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
+	#%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
 	%Client.create_client()
 	
 	#game_state = CAHState.dummy_state()
@@ -99,13 +99,20 @@ func _on_viewport_size_changed() -> void:
 		%Confetti.finished.connect(func():
 			%Confetti.amount = 150 * new_scale.y
 		)
-#endregion
+#endregionF
 
-func exit_game(reason: String = "Disconnected.") -> void:
-	# TODO:
-	get_tree().quit()
+func exit_game(reason: String = "Desconectado.") -> void:
+	%Client.multiplayer.multiplayer_peer.close()
+	%Client.multiplayer.multiplayer_peer = null
+	%Client.queue_free()
+	scale_fade(true)
+	change_scene.emit(Global.SCREENS[0], 1)
 
 
 func _on_chat_button_pressed() -> void:
 	%NotifyBall.hide()
 	%ChatPanel.toggle_visible(not %ChatPanel.visible)
+
+
+func _on_exit_button_pressed() -> void:
+	exit_game("Você saiu do servidor.")

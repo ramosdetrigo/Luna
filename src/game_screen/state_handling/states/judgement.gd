@@ -93,6 +93,7 @@ func _on_group_clicked(group: CardGroup) -> void:
 		group.custom_minimum_size = nodes.right_card_slot.size
 		group.size = nodes.right_card_slot.size
 		group.reparent(nodes.right_card_slot)
+		group.custom_minimum_size.x = 0
 		# hacky tween cause stuff is shit
 		var new_pos = nodes.white_card_holder.dragger.global_position
 		var offset = old_pos - new_pos
@@ -125,6 +126,7 @@ func _on_group_clicked(group: CardGroup) -> void:
 			clicked_group.custom_minimum_size = nodes.right_card_slot.size
 			clicked_group.size = nodes.right_card_slot.size
 			clicked_group.reparent(nodes.right_card_slot)
+			clicked_group.custom_minimum_size.x = 0
 			# hacky tween cause stuff is shit
 			var clicked_new_pos = nodes.white_card_holder.dragger.global_position
 			var clicked_offset = clicked_old_pos - clicked_new_pos
@@ -174,6 +176,7 @@ func _on_group_mouse_entered(group: CardGroup) -> void:
 			scroller_group.custom_minimum_size = nodes.right_card_slot.size
 			scroller_group.size = nodes.right_card_slot.size
 			scroller_group.reparent(nodes.right_card_slot)
+			scroller_group.custom_minimum_size.x = 0
 			# hacky tween cause stuff is shit
 			if not scroller_group.dragger._grabbed:
 				tween_card_to_new(scroller_group, scroller_old_pos, 1.0)
@@ -207,6 +210,7 @@ func _on_group_holder_mouse_entered() -> void:
 	group.size = nodes.right_card_slot.size
 	nodes.judge_scroller.move_card(group, nodes.judge_scroller.get_card_count())
 	group.reparent(nodes.right_card_slot)
+	group.custom_minimum_size.x = 0
 	nodes.button_controller.toggle_button(true)
 
 
@@ -221,13 +225,14 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 				cards.push_back(card.get_display_text())
 			else:
 				cards.push_back(card.text)
-		var card_group = CAHState.new_choice_group(cards, Global.USERNAME)
+		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
 		nodes.client.choose_white.rpc_id(1, card_group)
 	else:
 		nodes.client.cancel_ready.rpc_id(1)
 		get_right_slot_group().set_clickable(true)
 		nodes.top_label.animate_text("Qual a melhor resposta?")
 
+# TODO: why are card groups ginormous
 
 # Returns the right slot's card group (other than white_card_holder), if there is any
 func get_right_slot_group() -> CardGroup:

@@ -54,7 +54,7 @@ func _ready() -> void:
 #region HELPER
 func create_server() -> void:
 	var peer = WebSocketMultiplayerPeer.new()
-	var error = peer.create_server(Global.PORT)
+	var error = peer.create_server(Global.CONFIGS.port)
 	if error:
 		print(error)
 		return # TODO: handle error
@@ -377,7 +377,6 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	var player = player_list.get(peer_id)
 	if player == null:
 		return
-	
 	var old_player_role = player.role
 	# removes players from our lists
 	change_role(player, CAHState.ROLE_CONNECTING) # erases player from role_lists
@@ -385,9 +384,11 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	judge_queue.erase(player)
 	# the game will reset itself when someone joins.
 	if len(player_list) == 0:
-		return
+		pass
 	# resets the game if the player was the only remaining judge
-	elif old_player_role == CAHState.ROLE_JUDGE and len(role_judges) == 0:
+	elif (old_player_role == CAHState.ROLE_JUDGE and len(role_judges) == 0
+	and game_state.current_game_state != CAHState.STATE_WINNER):
 		set_game_state(CAHState.STATE_CHOOSE_BLACK)
+		send_state_to_all()
 	notify.rpc("[code][color=#71b7ff]SERVER: %s saiu do jogo.[/color][/code]" % player.username)
 #endregion

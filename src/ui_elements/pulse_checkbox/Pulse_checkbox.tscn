@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dx0us2dbgwv3b"]
 
-[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/base_ui/pulse_button/Pulse_button.tscn" id="1_2ll55"]
-[ext_resource type="Script" uid="uid://tqwb6j621t1m" path="res://src/base_ui/pulse_checkbox/pulse_checkbox.gd" id="1_usvlw"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="1_2ll55"]
+[ext_resource type="Script" uid="uid://tqwb6j621t1m" path="res://src/ui_elements/pulse_checkbox/pulse_checkbox.gd" id="1_usvlw"]
 [ext_resource type="Texture2D" uid="uid://b37i0kp2vgepa" path="res://assets/images/ui/checkmark.png" id="2_4dq6u"]
 [ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="4_peear"]
 

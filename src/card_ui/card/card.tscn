@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://d11fr76d7gvjv" path="res://src/card_ui/card/card.gd" id="1_of7fp"]
 [ext_resource type="Texture2D" uid="uid://bh1wjx00rc4ff" path="res://assets/images/cards/white_front.png" id="2_mxmy7"]
-[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/base_ui/draggable/draggable.gd" id="2_tgw1k"]
+[ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/ui_elements/draggable/draggable.gd" id="2_tgw1k"]
 [ext_resource type="Theme" uid="uid://sfftfr7d567s" path="res://assets/resources/themes/theme_cards.tres" id="3_feltw"]
-[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/base_ui/pulse_button/Pulse_button.tscn" id="4_js1fh"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="4_js1fh"]
 [ext_resource type="Texture2D" uid="uid://b37i0kp2vgepa" path="res://assets/images/ui/checkmark.png" id="5_cxcvc"]
 [ext_resource type="Texture2D" uid="uid://0av12aiq7agl" path="res://assets/images/ui/pencil.png" id="5_feltw"]
 [ext_resource type="Material" uid="uid://dkpbibxjep4ot" path="res://src/card_ui/card/edge.tres" id="5_tgw1k"]

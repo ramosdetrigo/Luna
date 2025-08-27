@@ -1,3 +1,86 @@
-[gd_scene format=3 uid="uid://ct8ds1hyeul80"]
+[gd_scene load_steps=7 format=3 uid="uid://bjfv5r3o0xbhb"]
 
-[node name="Main" type="Node2D"]
+[ext_resource type="Script" uid="uid://kap4etbykks5" path="res://src/main.gd" id="1_oi6f2"]
+[ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="2_6oigt"]
+[ext_resource type="PackedScene" uid="uid://udcue8regsrl" path="res://src/menu_ui/settings/settings.tscn" id="2_w4n27"]
+[ext_resource type="PackedScene" uid="uid://cb2jaq3xwrgrh" path="res://src/menu_ui/menu/menu.tscn" id="2_x3itb"]
+
+[sub_resource type="Gradient" id="Gradient_fgl0l"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.487437, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_7mmx0"]
+offsets = PackedFloat32Array(0, 0.507538, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oi6f2")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="BackgroundParticles" type="CPUParticles2D" parent="Control"]
+unique_name_in_owner = true
+z_index = -5
+amount = 100
+texture = ExtResource("2_6oigt")
+lifetime = 20.0
+emission_shape = 3
+emission_rect_extents = Vector2(640, 360)
+direction = Vector2(0, 1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 8.0
+initial_velocity_max = 30.0
+angular_velocity_min = -10.0
+angular_velocity_max = 10.0
+scale_amount_min = 0.4
+color_ramp = SubResource("Gradient_fgl0l")
+color_initial_ramp = SubResource("Gradient_7mmx0")
+
+[node name="ScreenHolder" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Menu" parent="ScreenHolder" instance=ExtResource("2_x3itb")]
+layout_mode = 1
+
+[node name="SettingsMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+offset_right = 236.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Settings" parent="SettingsMargin" instance=ExtResource("2_w4n27")]
+custom_minimum_size = Vector2(216, 60)
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="change_scene" from="ScreenHolder/Menu" to="." method="_on_change_scene"]
