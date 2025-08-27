@@ -16,16 +16,24 @@ func _ready() -> void:
 	nodes.split_container.dragging_enabled = false
 	nodes.scroller_split.update_offset(true)
 	ss_tween.finished.connect(func():
-		## Clear card scroller
+		# Clear card scroller
 		for card in nodes.judge_scroller.get_card_list():
 			if card is CardGroup:
 				nodes.judge_scroller.remove_card(card)
-		 #Adds new card groups to the card scroller
+		#Adds new card groups to the card scroller
+		var first = true
 		for group in state.choice_groups:
+			if first:
+				first = false
+				continue
 			var card_group = create_card_group(group)
 			nodes.judge_scroller.add_card(card_group)
 			card_group.dragger.set_child_modulate(Color.TRANSPARENT)
-			# TODO: drag card
+			card_group.dragger.grabbed.connect(func(): grabbed_group = card_group)
+			card_group.dragger.dropped.connect(func(): grabbed_group = null)
+			card_group.mouse_entered.connect(func():
+				if card_group != grabbed_group:
+					swap_cards(grabbed_group, card_group))
 	)
 	
 	# Erase old cards from the card slots
@@ -50,6 +58,7 @@ func _ready() -> void:
 			nodes.white_card_holder.add_child(new_card)
 			nodes.white_card_holder.add_card(new_card)
 	)
+	
 	
 	# Winner animation
 	nodes.top_label.animate_text("O vencedor é...")
@@ -85,7 +94,13 @@ func _ready() -> void:
 			nodes.bottom_button.pressed.connect(_on_bottom_button_pressed)
 		)
 	)
-	
+
+
+func _exit_tree() -> void:
+	for card in nodes.judge_scroller.get_card_list():
+		if card is not CardGroup: continue
+		nodes.judge_scroller.remove_card(card)
+
 
 func _on_bottom_button_pressed() -> void:
 	nodes.client.winner_ready.rpc_id(1)

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bo5mby4lukkgp"
+path="res://.godot/imported/Cool vibes.ogg-239025d49e31a8c147a53ed27a353426.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/music/Cool vibes.ogg"
+dest_files=["res://.godot/imported/Cool vibes.ogg-239025d49e31a8c147a53ed27a353426.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

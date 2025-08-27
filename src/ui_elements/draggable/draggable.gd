@@ -131,7 +131,6 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-# TODO: oh shit oh fuck what about touch inputs oh no
 func _on_gui_input(event: InputEvent) -> void:
 	# is_pressed: card grabbed, is_released: card dropped
 	if (_child and event.is_pressed() and event is InputEventMouseButton

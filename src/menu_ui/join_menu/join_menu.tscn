@@ -23,6 +23,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(175, 166)
 theme_override_constants/separation = 24
 
 [node name="Nickname" type="LineEdit" parent="VBoxContainer" index="0"]
@@ -31,23 +32,30 @@ theme = ExtResource("2_cw552")
 placeholder_text = "Nickname"
 caret_blink = true
 
-[node name="IP" type="LineEdit" parent="VBoxContainer" index="1"]
+[node name="Separator3" type="Control" parent="VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="IP" type="LineEdit" parent="VBoxContainer" index="2"]
 layout_mode = 2
 theme = ExtResource("2_cw552")
 placeholder_text = "IP do servidor"
 caret_blink = true
 
-[node name="Separator" type="Control" parent="VBoxContainer" index="2"]
+[node name="Separator" type="Control" parent="VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="Join" parent="VBoxContainer" index="3" instance=ExtResource("3_u17jk")]
+[node name="Join" parent="VBoxContainer" index="4" instance=ExtResource("3_u17jk")]
 layout_mode = 2
 text = "Entrar"
 
-[node name="Back" parent="VBoxContainer" index="4" instance=ExtResource("3_u17jk")]
+[node name="Separator2" type="Control" parent="VBoxContainer" index="5"]
+layout_mode = 2
+
+[node name="Back" parent="VBoxContainer" index="6" instance=ExtResource("3_u17jk")]
 layout_mode = 2
 text = "Voltar"
 
+[connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="text_changed" from="VBoxContainer/Nickname" to="." method="_on_nickname_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/IP" to="." method="_on_ip_text_changed"]
 [connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]

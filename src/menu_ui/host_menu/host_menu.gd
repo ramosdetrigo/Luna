@@ -11,7 +11,7 @@ func _ready():
 func _on_back_pressed():
 	#TODO: disable_interactive()
 	scale_fade(true)
-	change_scene.emit(Global.SCREENS[0], 1)
+	change_scene.emit(Global.SCREENS[0])
 
 
 
@@ -45,6 +45,15 @@ func _on_host_pressed() -> void:
 	
 	scale_fade(true)
 	if Global.CONFIGS.join:
-		change_scene.emit(Global.SCREENS[3], 1)
+		change_scene.emit(Global.SCREENS[3])
 	else:
-		change_scene.emit(Global.SCREENS[0], 1)
+		change_scene.emit(Global.SCREENS[0])
+
+
+func _on_resized() -> void:
+	var new_scale = size / Vector2(1280, 720)
+	new_scale = Vector2(new_scale.y, new_scale.y)
+	var viewport_size = get_viewport_rect().size
+	if new_scale.y * 350 > viewport_size.x:
+		new_scale = Vector2(viewport_size.x / 350, viewport_size.x / 350) * 0.75
+	$VBoxContainer.scale = new_scale

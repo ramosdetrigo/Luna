@@ -235,6 +235,7 @@ func name_changed(new_name: String) -> void:
 		judge_queue.push_front(player)
 	else:
 		judge_queue.push_back(player)
+	# ignore spectators
 	if len(role_judges) == 0:
 		set_game_state(CAHState.STATE_CHOOSE_BLACK)
 	# Adds player to player list
@@ -313,10 +314,21 @@ func choose_white(white_group: Dictionary) -> void:
 				# Conta pra ver qual foi o grupo mais escolhido
 				var max_group = get_highest_voted_white()
 				# Move o mais votado pra frente
-				var index = game_state.choice_groups.find(max_group)
+				var index = -1
+				for i in range(len(game_state.choice_groups)):
+					var cg = game_state.choice_groups[i]
+					if cg == max_group:
+						index = i
+						break
 				game_state.choice_groups.remove_at(index)
 				game_state.choice_groups.push_front(max_group)
 				set_game_state(CAHState.STATE_WINNER)
+				# repõe as cartas lol eu esqueci
+				for p in role_players.values():
+					var new_cards = []
+					for i in range(game_state.black_cards[0].pick):
+						new_cards.push_back(random_white())
+					add_cards.rpc_id(p.id, new_cards)
 				send_state_to_all()
 		_: return # Player calling in an invalid state
 
@@ -371,7 +383,7 @@ func update_player_list(_players: Array[Dictionary]) -> void: pass
 func _on_peer_connected(peer_id: int) -> void:
 	print("Server: Peer connected: %d" % peer_id)
 
-# TODO: reset if all players are spectators too, etc.
+
 func _on_peer_disconnected(peer_id: int) -> void:
 	print("Server: Peer disconnected: %d" % peer_id)
 	var player = player_list.get(peer_id)
@@ -383,7 +395,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	player_list.erase(peer_id)
 	judge_queue.erase(player)
 	# the game will reset itself when someone joins.
-	if len(player_list) == 0:
+	if len(role_judges) + len(role_players) == 0: # (ignore spectators)
 		pass
 	# resets the game if the player was the only remaining judge
 	elif (old_player_role == CAHState.ROLE_JUDGE and len(role_judges) == 0

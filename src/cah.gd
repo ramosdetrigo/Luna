@@ -38,7 +38,7 @@ const gradient_cards: Dictionary[String, Gradient] = {
 	"Arco-íris!": gradients[6],
 	"Não-binários.": gradients[7],
 	"Panssexuais.": gradients[8],
-	"Trans.": gradients[9]
+	"Trans.": gradients[9],
 }
 
 # All card textures. Preloading them cause we're gonna use them all anyway

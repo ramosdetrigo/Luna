@@ -221,7 +221,6 @@ func _ready() -> void:
 	set_vertical(vertical)
 
 
-# TODO: is this needed?
 func _on_resized() -> void:
 	update_container_size()
 	update_card_sizes()

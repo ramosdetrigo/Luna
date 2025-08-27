@@ -7,6 +7,8 @@ var expanded_offset: int = 250
 var normal_offset: int = 55
 
 func tween_offset(target: float, time: float = 0.5) -> Tween:
+	@warning_ignore("narrowing_conversion")
+	expanded_offset = size.y / 2.0
 	if _offset_tween:
 		_offset_tween.kill()
 	_offset_tween = create_tween()
@@ -17,6 +19,8 @@ func tween_offset(target: float, time: float = 0.5) -> Tween:
 
 
 func set_expanded(toggle: bool) -> Tween:
+	@warning_ignore("narrowing_conversion")
+	expanded_offset = size.y / 2.0
 	expanded = toggle
 	if expanded:
 		tween_offset(expanded_offset)
@@ -34,6 +38,8 @@ func update_offset() -> void:
 
 # saves the new "normal" offset :>
 func _on_drag_ended() -> void:
+	@warning_ignore("narrowing_conversion")
+	expanded_offset = size.y / 2.0
 	if split_offset < expanded_offset - 75:
 		normal_offset = split_offset
 		expanded = false

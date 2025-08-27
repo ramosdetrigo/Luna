@@ -29,6 +29,7 @@ offset_right = 175.0
 offset_bottom = 239.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(175, 239)
 theme_override_constants/separation = 0
 alignment = 1
 
@@ -53,12 +54,20 @@ layout_mode = 2
 mouse_filter = 2
 text = "Jogar"
 
+[node name="Separator3" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
 [node name="Hostear" parent="VBoxContainer" instance=ExtResource("3_k3hir")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 77)
 layout_mode = 2
 mouse_filter = 2
 text = "Hostear"
+
+[node name="Separator4" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Sair" parent="VBoxContainer" instance=ExtResource("3_k3hir")]
 unique_name_in_owner = true
@@ -67,6 +76,11 @@ layout_mode = 2
 mouse_filter = 2
 text = "Sair"
 
+[node name="Separator2" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="pressed" from="VBoxContainer/Jogar" to="." method="_on_jogar_pressed"]
 [connection signal="pressed" from="VBoxContainer/Hostear" to="." method="_on_hostear_pressed"]
 [connection signal="pressed" from="VBoxContainer/Sair" to="." method="_on_sair_pressed"]

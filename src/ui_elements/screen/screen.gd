@@ -1,7 +1,8 @@
 extends Control
 class_name Screen
 
-signal change_scene(scene : PackedScene, transition : int)
+@warning_ignore("unused_signal") # it is fucking used in OTHER SCENES. ugh.
+signal change_scene(scene : PackedScene)
 @export var animation_speed : float = 1.25
 var tweens : Array[Tween] = []
 

@@ -82,5 +82,10 @@ custom_minimum_size = Vector2(216, 60)
 layout_mode = 2
 mouse_filter = 2
 
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+
 [connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="change_scene" from="ScreenHolder/Menu" to="." method="_on_change_scene"]
+[connection signal="audio_pressed" from="SettingsMargin/Settings" to="." method="_on_settings_audio_pressed"]
+[connection signal="music_pressed" from="SettingsMargin/Settings" to="." method="_on_settings_music_pressed"]
+[connection signal="finished" from="MusicPlayer" to="." method="next_song"]

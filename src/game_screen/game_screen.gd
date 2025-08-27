@@ -39,10 +39,7 @@ func _ready() -> void:
 	screen_nodes.client = %Client
 	#endregion screen_nodes
 	
-	%ConnectingPanel.toggle_visible(true)
-	%Client.game_state = game_state
 	#%Server.create_server() # NOTE: DEBUG PURPOSES ONLY!
-	%Client.create_client()
 	
 	#game_state = CAHState.dummy_state()
 	#%Client.add_cards(["card1", "card2", "card3", "card4", "card5", "card6", "card7", "card8", "card9", "card10"])
@@ -50,6 +47,11 @@ func _ready() -> void:
 	#%ConnectingPanel.toggle_visible(false)
 	
 	_on_viewport_size_changed()
+	%ScrollerSplit.update_offset(false)
+	
+	%ConnectingPanel.toggle_visible(true)
+	%Client.game_state = game_state
+	%Client.create_client()
 
 
 func _on_client_state_updated() -> void:
@@ -61,7 +63,7 @@ func _on_client_state_updated() -> void:
 
 
 #region BASIC_UI
-# TODO: this could definetly be improved.
+# TODO: mobile layout.
 # Dynamic resize that matches most resolutions nicely
 func _on_viewport_size_changed() -> void:
 	# we don't need this because anchors 😎
@@ -101,12 +103,13 @@ func _on_viewport_size_changed() -> void:
 		)
 #endregionF
 
-func exit_game(reason: String = "Desconectado.") -> void:
+# TODO: reason
+func exit_game(_reason: String = "Desconectado.") -> void:
 	%Client.multiplayer.multiplayer_peer.close()
 	%Client.multiplayer.multiplayer_peer = null
 	%Client.queue_free()
 	scale_fade(true)
-	change_scene.emit(Global.SCREENS[0], 1)
+	change_scene.emit(Global.SCREENS[0])
 
 
 func _on_chat_button_pressed() -> void:

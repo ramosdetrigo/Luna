@@ -42,32 +42,41 @@ func add_cards(new_cards: Array) -> void:
 		card_nodes.push_back(card)
 	new_cards_added.emit(card_nodes)
 
-# TODO:
+
 @rpc("authority", "call_remote", "reliable")
 func add_message(message: String) -> void:
 	if not %ChatPanel.visible:
 		%NotifyBall.show()
 	%ChatText.text += "\n%s" % message
 
-# TODO:
+
 @rpc("authority", "call_remote", "reliable")
 func notify(message: String) -> void:
 	add_message(message)
 
-# TODO: fix error where white cards kind of... disappear...
-# from the card scroller... when the scene changes...
+
 @rpc("authority", "call_remote", "reliable")
 func update_state(new_state: Dictionary) -> void:
-	game_state.player_role = new_state.player_role
 	game_state.previous_game_state = game_state.current_game_state
 	game_state.current_game_state = new_state.current_game_state
+	
+	# if the game state changed to black suddenly, we need to take the cards
+	# back from the white holder. really stupid fix but oh well, it's needed ig.
+	if (game_state.current_game_state == CAHState.STATE_CHOOSE_BLACK
+	and game_state.previous_game_state == CAHState.STATE_CHOOSE_WHITE
+	and game_state.player_role == CAHState.ROLE_PLAYER):
+		for card in %WhiteCardHolder.get_cards():
+			%WhiteCardHolder.remove_card(card)
+			%CardScroller.add_card(card)
+	
+	game_state.player_role = new_state.player_role
 	game_state.black_cards = new_state.black_cards
 	game_state.choice_groups = new_state.choice_groups
 	state_updated.emit()
 	if %ConnectingPanel.visible:
 		%ConnectingPanel.toggle_visible(false)
 
-# TODO:
+
 @rpc("authority", "call_remote", "reliable")
 func update_player_list(_new_players: Array[Dictionary]) -> void: pass
 #endregion CLIENT RPC

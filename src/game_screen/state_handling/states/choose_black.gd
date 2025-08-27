@@ -8,7 +8,9 @@ var grabbed_card: Card
 func _ready() -> void:
 	nodes.right_card_slot.toggle_glow(false)
 	nodes.button_controller.toggle_button(false)
-	nodes.scroller_split.tween_offset(false)
+	var ss_tween = nodes.scroller_split.tween_offset(false)
+	ss_tween.finished.connect(func():
+		nodes.scroller_split.update_offset(false))
 	var wch_tween = nodes.white_card_holder.dragger.tween_child_modulate(Color.TRANSPARENT)
 	wch_tween.finished.connect(func():
 		for card in nodes.white_card_holder.get_cards():
@@ -82,7 +84,6 @@ func _on_black_card_clicked(card: Card) -> void:
 	card.toggle_glow(not card.glowing)
 
 
-# TODO: make togglable
 func _on_bottom_button_toggled(toggled: bool) -> void:
 	if toggled:
 		for card in black_cards:

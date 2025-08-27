@@ -11,16 +11,16 @@ func _ready():
 func _on_jogar_pressed():
 	disable_interactive()
 	scale_fade(true)
-	change_scene.emit(Global.SCREENS[2], 0)
+	change_scene.emit(Global.SCREENS[2])
 
 
 func _on_hostear_pressed():
 	disable_interactive()
 	scale_fade(true)
-	change_scene.emit(Global.SCREENS[1], 0)
+	change_scene.emit(Global.SCREENS[1])
 
 
-#TODO: save stuff when quitting game
+
 func _on_sair_pressed():
 	get_tree().quit()
 
@@ -29,3 +29,12 @@ func disable_interactive() -> void:
 	%Jogar.set_mouse_filter(MOUSE_FILTER_IGNORE)
 	%Hostear.set_mouse_filter(MOUSE_FILTER_IGNORE)
 	%Sair.set_mouse_filter(MOUSE_FILTER_IGNORE)
+
+
+func _on_resized() -> void:
+	var new_scale = size / Vector2(1280, 720)
+	new_scale = Vector2(new_scale.y, new_scale.y)
+	var viewport_size = get_viewport_rect().size
+	if new_scale.y * 350 > viewport_size.x:
+		new_scale = Vector2(viewport_size.x / 350, viewport_size.x / 350) * 0.75
+	$VBoxContainer.scale = new_scale

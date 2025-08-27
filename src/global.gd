@@ -15,6 +15,10 @@ var CONFIGS : Dictionary = {
 	port = 12112
 }
 const MUSIC : Array[AudioStreamOggVorbis] = [
-	preload("res://assets/audio/music/slowly.ogg"),
-	
+	preload("res://assets/audio/music/Clean soul.ogg"), # 0
+	preload("res://assets/audio/music/Cool vibes.ogg"), # 1
+	preload("res://assets/audio/music/Morfin.ogg"),     # 2
+	preload("res://assets/audio/music/Sincerely.ogg"),  # 3
+	preload("res://assets/audio/music/slowly.ogg"),     # 4
+	preload("res://assets/audio/music/something.ogg"),  # 5
 ]

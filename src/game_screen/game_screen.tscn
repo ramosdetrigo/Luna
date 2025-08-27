@@ -189,6 +189,7 @@ border_width = 3.0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+split_offset = 125
 dragging_enabled = false
 dragger_visibility = 2
 script = ExtResource("7_epe2y")

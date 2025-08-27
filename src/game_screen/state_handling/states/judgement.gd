@@ -54,11 +54,11 @@ func _ready() -> void:
 		else:
 			nodes.center_card_slot.add_child(black_card)
 	
-	## Clear card scroller
+	# Clears card scroller
 	for card in nodes.judge_scroller.get_card_list():
 		if card is CardGroup:
 			nodes.judge_scroller.remove_card(card, true)
-	 #Adds new card groups to the card scroller
+	#Adds new card groups to the card scroller
 	for group in state.choice_groups:
 		var card_group = create_card_group(group)
 		nodes.judge_scroller.add_card(card_group)
@@ -225,14 +225,18 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 				cards.push_back(card.get_display_text())
 			else:
 				cards.push_back(card.text)
+		
 		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
+		for cg in state.choice_groups:
+			if cg.cards == cards:
+				card_group = cg
+				break
 		nodes.client.choose_white.rpc_id(1, card_group)
 	else:
 		nodes.client.cancel_ready.rpc_id(1)
 		get_right_slot_group().set_clickable(true)
 		nodes.top_label.animate_text("Qual a melhor resposta?")
 
-# TODO: why are card groups ginormous
 
 # Returns the right slot's card group (other than white_card_holder), if there is any
 func get_right_slot_group() -> CardGroup:
