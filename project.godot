@@ -8,11 +8,17 @@
 
 config_version=5
 
+[animation]
+
+warnings/check_invalid_track_paths=false
+
 [application]
 
 config/name="Luna"
 run/main_scene="uid://bjfv5r3o0xbhb"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="uid://cqtcb4ieax1b"
 config/icon="uid://c6vnqrknq0wkp"
 
 [autoload]
@@ -24,6 +30,7 @@ CAH="*res://src/cah.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/mode=3
 window/handheld/orientation=1
 
 [editor_plugins]
@@ -37,9 +44,9 @@ folder_colors={
 "res://src/": "yellow",
 "res://src/card_ui/": "teal",
 "res://src/card_ui/card/": "teal",
-"res://src/game_screen/": "red",
-"res://src/game_screen/state_handling/": "orange",
-"res://src/menu_ui/": "blue",
+"res://src/screens/": "blue",
+"res://src/screens/game_screen/": "red",
+"res://src/screens/game_screen/state_handling/": "orange",
 "res://src/server/": "purple",
 "res://src/ui_elements/": "gray"
 }

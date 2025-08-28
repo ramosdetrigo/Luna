@@ -40,6 +40,7 @@ func _on_mouse_exited():
 
 
 func _pressed(on_checkbox=false):
+	Global.play_audio(Global.SFX[0])
 	is_toggled = not is_toggled
 	
 	if on_checkbox:

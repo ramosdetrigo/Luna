@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://kap4etbykks5" path="res://src/main.gd" id="1_oi6f2"]
 [ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="2_6oigt"]
-[ext_resource type="PackedScene" uid="uid://udcue8regsrl" path="res://src/menu_ui/settings/settings.tscn" id="2_w4n27"]
-[ext_resource type="PackedScene" uid="uid://cb2jaq3xwrgrh" path="res://src/menu_ui/menu/menu.tscn" id="2_x3itb"]
+[ext_resource type="PackedScene" uid="uid://udcue8regsrl" path="res://src/screens/settings/settings.tscn" id="2_w4n27"]
+[ext_resource type="PackedScene" uid="uid://cb2jaq3xwrgrh" path="res://src/screens/menu/menu.tscn" id="2_x3itb"]
 
 [sub_resource type="Gradient" id="Gradient_fgl0l"]
 interpolation_mode = 2
@@ -65,27 +65,15 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Menu" parent="ScreenHolder" instance=ExtResource("2_x3itb")]
+unique_name_in_owner = true
 layout_mode = 1
 
-[node name="SettingsMargin" type="MarginContainer" parent="."]
-layout_mode = 1
-offset_right = 236.0
-offset_bottom = 80.0
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="Settings" parent="SettingsMargin" instance=ExtResource("2_w4n27")]
+[node name="Settings" parent="." instance=ExtResource("2_w4n27")]
 custom_minimum_size = Vector2(216, 60)
-layout_mode = 2
-mouse_filter = 2
+layout_mode = 1
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 
 [connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="change_scene" from="ScreenHolder/Menu" to="." method="_on_change_scene"]
-[connection signal="audio_pressed" from="SettingsMargin/Settings" to="." method="_on_settings_audio_pressed"]
-[connection signal="music_pressed" from="SettingsMargin/Settings" to="." method="_on_settings_music_pressed"]
 [connection signal="finished" from="MusicPlayer" to="." method="next_song"]

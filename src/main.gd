@@ -4,10 +4,15 @@ extends Control
 var music_player: AudioStreamPlayer = $MusicPlayer
 var song_queue: Array[AudioStreamOggVorbis] = []
 func _ready() -> void:
+	%Menu.scale_fade(false)
 	for song in Global.MUSIC:
 		song_queue.push_back(song)
 	song_queue.shuffle()
 	
+	Global.music_volume_changed.connect(func(volume: float):
+		music_player.volume_linear = volume)
+	
+	music_player.volume_linear = Global.CONFIGS.music_volume
 	next_song()
 	update_children_pivot()
 
@@ -23,23 +28,11 @@ func _on_resized() -> void:
 
 
 func _on_change_scene(scene: PackedScene) -> void:
-	print("change")
 	var scene_node: Screen = scene.instantiate()
 	scene_node.change_scene.connect(_on_change_scene)
 	%ScreenHolder.add_child(scene_node)
 	scene_node.scale_fade(false)
 	update_children_pivot()
-
-
-func _on_settings_audio_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_settings_music_pressed() -> void:
-	if music_player.volume_linear == 1.0:
-		music_player.volume_linear = 0.0
-	else:
-		music_player.volume_linear = 1.0
 
 
 func next_song() -> void:

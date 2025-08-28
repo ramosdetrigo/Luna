@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://cb2jaq3xwrgrh"]
+
+[ext_resource type="Texture2D" uid="uid://dl3m3ahsf5ti8" path="res://assets/images/ui/title.png" id="1_u7sx4"]
+[ext_resource type="Script" uid="uid://wdqehwj2wucu" path="res://src/screens/menu/menu.gd" id="1_ysb8s"]
+[ext_resource type="PackedScene" uid="uid://c36lew5uiwsgp" path="res://src/ui_elements/floating_button/Floating_button.tscn" id="3_k3hir"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_ysb8s")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 478)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -239.0
+offset_right = 175.0
+offset_bottom = 239.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(175, 239)
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="TextureRect" parent="VBoxContainer"]
+modulate = Color(0.835294, 0.65098, 1, 1)
+custom_minimum_size = Vector2(350, 125)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_u7sx4")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Separator" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Jogar" parent="VBoxContainer" instance=ExtResource("3_k3hir")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 77)
+layout_mode = 2
+mouse_filter = 2
+text = "Jogar"
+
+[node name="Separator3" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Hostear" parent="VBoxContainer" instance=ExtResource("3_k3hir")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 77)
+layout_mode = 2
+mouse_filter = 2
+text = "Hostear"
+
+[node name="Separator4" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Sair" parent="VBoxContainer" instance=ExtResource("3_k3hir")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 77)
+layout_mode = 2
+mouse_filter = 2
+text = "Sair"
+
+[node name="Separator2" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="pressed" from="VBoxContainer/Jogar" to="." method="_on_jogar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Hostear" to="." method="_on_hostear_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sair" to="." method="_on_sair_pressed"]

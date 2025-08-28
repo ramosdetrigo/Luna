@@ -1,7 +1,7 @@
 class_name PulseButton
 extends Button
 
-signal pulse_toggled(bool)
+signal pulse_toggled(toggled: bool)
 
 @export var is_toggleable : bool = true
 @export var is_toggled : bool = true
@@ -16,6 +16,7 @@ func _ready():
 		$Icon.texture = texture_on
 
 func _pressed():
+	Global.play_audio(Global.SFX[0])
 	$AnimationPlayer.stop()
 	if toggle_mode:
 		if button_pressed:

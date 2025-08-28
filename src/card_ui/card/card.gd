@@ -16,6 +16,7 @@ enum CardType {
 
 const BLACK_CARD: CardType = CardType.BLACK_CARD
 const WHITE_CARD: CardType = CardType.WHITE_CARD
+var target_image: CompressedTexture2D = CAH.textures[2]
 
 # The card's text
 @export_multiline
@@ -72,12 +73,14 @@ func set_type(type: CardType) -> void:
 		%CardText.add_theme_color_override("default_color", Color.WHITE)
 		%CardText.text = text.replace("_", "____")
 		%Image.texture = CAH.textures[0]
+		target_image = CAH.textures[0]
 	else:
 		var new_data = CAH.custom_cards.get(text, {"text": text, "texture": CAH.textures[2]})
 		%CardText.remove_theme_color_override("default_color")
 		%CardText.text = new_data.text
 		%Image.texture = new_data.texture
 		%Image.offset.y = 744 * int(text == "<O tamanho dessa carta>")
+		target_image = new_data.texture
 
 
 func set_editable(toggle: bool) -> void:

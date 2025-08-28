@@ -1,0 +1,413 @@
+[gd_scene load_steps=16 format=3 uid="uid://udcue8regsrl"]
+
+[ext_resource type="Script" uid="uid://dj7rammeipjoc" path="res://src/screens/settings/settings.gd" id="1_73aem"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="2_qpi4s"]
+[ext_resource type="Texture2D" uid="uid://b0o2andoc284t" path="res://assets/images/ui/gear.png" id="2_u1jv7"]
+[ext_resource type="Texture2D" uid="uid://cuas8pjw2npw" path="res://assets/images/ui/larger.png" id="3_maj8y"]
+[ext_resource type="Texture2D" uid="uid://cwmg0tyjgwwcj" path="res://assets/images/ui/musicOn.png" id="3_vrrn6"]
+[ext_resource type="Texture2D" uid="uid://2eq0xk26jog7" path="res://assets/images/ui/smaller.png" id="4_8ouht"]
+[ext_resource type="Texture2D" uid="uid://cm8wvxsa8xgki" path="res://assets/images/ui/musicOff.png" id="4_22fgp"]
+[ext_resource type="Texture2D" uid="uid://ccar8tj7r636h" path="res://assets/images/ui/audioOn.png" id="5_rgyag"]
+[ext_resource type="Texture2D" uid="uid://wm3sc0vivp0h" path="res://assets/images/ui/audioOff.png" id="6_u3gu1"]
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="7_2y4ge"]
+[ext_resource type="PackedScene" uid="uid://b2iuonct2f7i" path="res://src/ui_elements/rotate_button/Rotate_button.tscn" id="8_wl48j"]
+
+[sub_resource type="Animation" id="Animation_llsds"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Fullscreen:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/Fullscreen:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/Music:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control/Music:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/Audio:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/Audio:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control/Music/MusicSlider:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Control/Audio/AudioSlider:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_w7cmy"]
+resource_name = "show_icons"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Fullscreen:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 210)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/Fullscreen:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/Music:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 140)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control/Music:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/Audio:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.01, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 70)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/Audio:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.01),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control/Music/MusicSlider:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Control/Audio/AudioSlider:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8ouht"]
+resource_name = "show_icons_mobile"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Fullscreen:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/Fullscreen:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/Music:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 140)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control/Music:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.01),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/Audio:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 70)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/Audio:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_migkw"]
+_data = {
+&"RESET": SubResource("Animation_llsds"),
+&"show_icons": SubResource("Animation_w7cmy"),
+&"show_icons_mobile": SubResource("Animation_8ouht")
+}
+
+[node name="Container" type="MarginContainer"]
+custom_minimum_size = Vector2(60, 216)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_73aem")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Fullscreen" parent="Control" instance=ExtResource("2_qpi4s")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+anchors_preset = 0
+offset_left = -630.0
+offset_top = -350.0
+offset_right = -570.0
+offset_bottom = -290.0
+texture_on = ExtResource("4_8ouht")
+texture_off = ExtResource("3_maj8y")
+
+[node name="Music" parent="Control" instance=ExtResource("2_qpi4s")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+anchors_preset = 0
+offset_left = -630.0
+offset_top = -350.0
+offset_right = -570.0
+offset_bottom = -290.0
+texture_on = ExtResource("3_vrrn6")
+texture_off = ExtResource("4_22fgp")
+
+[node name="MusicSlider" type="HSlider" parent="Control/Music"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 70.0
+offset_top = -30.0
+offset_right = 270.0
+offset_bottom = 30.0
+grow_vertical = 2
+theme = ExtResource("7_2y4ge")
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Audio" parent="Control" instance=ExtResource("2_qpi4s")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+anchors_preset = 0
+offset_left = -630.0
+offset_top = -350.0
+offset_right = -570.0
+offset_bottom = -290.0
+texture_on = ExtResource("5_rgyag")
+texture_off = ExtResource("6_u3gu1")
+
+[node name="AudioSlider" type="HSlider" parent="Control/Audio"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 70.0
+offset_top = -30.0
+offset_right = 270.0
+offset_bottom = 30.0
+grow_vertical = 2
+theme = ExtResource("7_2y4ge")
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Settings" parent="Control" instance=ExtResource("8_wl48j")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+offset_right = 60.0
+offset_bottom = 60.0
+texture = ExtResource("2_u1jv7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_migkw")
+}
+
+[connection signal="resized" from="Control" to="." method="_on_control_resized"]
+[connection signal="pulse_toggled" from="Control/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="pulse_toggled" from="Control/Music" to="." method="_on_music_toggled"]
+[connection signal="value_changed" from="Control/Music/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="pulse_toggled" from="Control/Audio" to="." method="_on_audio_toggled"]
+[connection signal="value_changed" from="Control/Audio/AudioSlider" to="." method="_on_audio_slider_value_changed"]
+[connection signal="pressed" from="Control/Settings" to="." method="_on_settings_pressed"]

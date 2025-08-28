@@ -52,14 +52,14 @@ func _ready() -> void:
 
 
 #region HELPER
-func create_server() -> void:
+func create_server() -> Error:
 	var peer = WebSocketMultiplayerPeer.new()
 	var error = peer.create_server(Global.CONFIGS.port)
 	if error:
-		print(error)
-		return # TODO: handle error
+		return error
 	multiplayer.multiplayer_peer = peer
 	print("Server created!")
+	return OK
 
 # returns the dictionary associated with a specific role
 func get_role_dict(role: CAHState.PlayerRole) -> Dictionary[int, Player]:
@@ -183,6 +183,7 @@ func set_game_state(state: CAHState.GameState) -> void:
 			# Takes the next judge from the queue and puts it back at the end
 			var new_judge = judge_queue.pop_front()
 			judge_queue.push_back(new_judge)
+			game_state.current_judge = new_judge.username
 			change_role(new_judge, CAHState.ROLE_JUDGE)
 		CAHState.STATE_CHOOSE_WHITE:
 			# We define the first one as the one that has been selected
@@ -200,6 +201,7 @@ func set_game_state(state: CAHState.GameState) -> void:
 
 func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 	return {
+		"current_judge": game_state.current_judge,
 		"player_role": player_role,
 		"current_game_state": game_state.current_game_state,
 		"black_cards": game_state.black_cards,
@@ -208,7 +210,6 @@ func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 
 func send_state_to_all() -> void:
 	for player: Player in player_list.values():
-		print(game_state.choice_groups)
 		update_state.rpc_id(player.id, dict_from_state(player.role))
 #endregion STATE
 
@@ -293,7 +294,6 @@ func choose_white(white_group: Dictionary) -> void:
 	var curr_state = game_state.current_game_state
 	match curr_state:
 		CAHState.STATE_CHOOSE_WHITE:
-			print("choose_white")
 			if player.role != CAHState.ROLE_PLAYER:
 				return
 			player.ready = true
@@ -304,7 +304,6 @@ func choose_white(white_group: Dictionary) -> void:
 				set_game_state(CAHState.STATE_JUDGEMENT)
 				send_state_to_all()
 		CAHState.STATE_JUDGEMENT:
-			print("judgement")
 			if player.role != CAHState.ROLE_JUDGE:
 				return
 			player.ready = true

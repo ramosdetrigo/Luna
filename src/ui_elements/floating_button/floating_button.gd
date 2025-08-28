@@ -31,6 +31,7 @@ func _on_mouse_exited():
 
 
 func _on_pressed():
+	Global.play_audio(Global.SFX[0])
 	label.scale = Vector2(target_scale,target_scale)
 	
 	if scale_tween != null: scale_tween.kill()

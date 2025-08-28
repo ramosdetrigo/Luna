@@ -10,6 +10,7 @@ func _ready():
 		$Icon.rotation = PI
 
 func _pressed():
+	Global.play_audio(Global.SFX[0])
 	if is_toggled:
 		$AnimationPlayer.play_backwards("rotate")
 	else:

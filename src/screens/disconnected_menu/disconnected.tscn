@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqwb1tmuowcbl"]
+
+[ext_resource type="Script" uid="uid://b2c27eetvnw75" path="res://src/screens/disconnected_menu/disconnected.gd" id="1_f6abm"]
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="1_hn1tn"]
+[ext_resource type="PackedScene" uid="uid://c36lew5uiwsgp" path="res://src/ui_elements/floating_button/Floating_button.tscn" id="3_3we5j"]
+
+[node name="Disconnected" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_f6abm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -100.0
+offset_right = 175.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(175, 239)
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Desconectado" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_hn1tn")
+theme_override_font_sizes/font_size = 36
+text = "DESCONECTADO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator4" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Voltar" parent="VBoxContainer" instance=ExtResource("3_3we5j")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 77)
+layout_mode = 2
+text = "Voltar"
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="pressed" from="VBoxContainer/Voltar" to="." method="_on_sair_pressed"]
