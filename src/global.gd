@@ -9,11 +9,11 @@ var save_timer: Timer
 
 var DISCONNECT_REASON: String = "DESCONECTADO"
 var SCREENS : Array[PackedScene] = [
-	load("res://src/screens/menu/menu.tscn"),                      # 0
-	load("res://src/screens/host_menu/host_menu.tscn"),            # 1
-	load("res://src/screens/join_menu/join_menu.tscn"),            # 2
-	load("res://src/screens/game_screen/game_screen.tscn"),                # 3
-	load("res://src/screens/disconnected_menu/disconnected.tscn"), # 4
+	load("res://src/screens/menu/main_menu/main_menu.tscn"),                 # 0
+	load("res://src/screens/menu/host_menu/host_menu.tscn"),                 # 1
+	load("res://src/screens/menu/join_menu/join_menu.tscn"),                 # 2
+	load("res://src/screens/menu/disconnected_menu/disconnected_menu.tscn"), # 4
+	load("res://src/screens/cah/game_screen/game_screen.tscn"),              # 3
 ]
 var CONFIGS : Dictionary = {
 	join = true,

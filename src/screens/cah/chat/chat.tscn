@@ -1,0 +1,98 @@
+[gd_scene load_steps=12 format=3 uid="uid://wqg1ulep46fv"]
+
+[ext_resource type="Script" uid="uid://8pj7nkbaicpd" path="res://src/screens/cah/chat/chat.gd" id="1_loufe"]
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="2_wj2bn"]
+[ext_resource type="FontVariation" uid="uid://d1gk6q8f0lufe" path="res://assets/resources/fonts/jost_fallbacks.tres" id="3_fha1a"]
+[ext_resource type="FontVariation" uid="uid://jrjellmto2y1" path="res://assets/resources/fonts/monospace_fallbacks.tres" id="4_c3pha"]
+[ext_resource type="FontVariation" uid="uid://c68gysw3rl5o6" path="res://assets/resources/fonts/jost_italic_fallbacks.tres" id="5_e64id"]
+[ext_resource type="FontVariation" uid="uid://hdrhiyulp1x4" path="res://assets/resources/fonts/jost_bold_italic_fallbacks.tres" id="6_htouo"]
+[ext_resource type="FontVariation" uid="uid://q4yw12go71aa" path="res://assets/resources/fonts/jost_bold_fallbacks.tres" id="7_s4414"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="8_3xe2p"]
+[ext_resource type="Texture2D" uid="uid://cpfmq0frwg4iw" path="res://assets/images/ui/send.png" id="9_f4yr6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7cw8"]
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k2ufc"]
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+
+[node name="ChatPanel" type="Panel"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j7cw8")
+script = ExtResource("1_loufe")
+
+[node name="ChatVBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ChatTopPanel" type="PanelContainer" parent="ChatVBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k2ufc")
+
+[node name="ChatCenterMargin" type="MarginContainer" parent="ChatVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ChatText" type="RichTextLabel" parent="ChatVBox/ChatCenterMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_wj2bn")
+theme_override_fonts/normal_font = ExtResource("3_fha1a")
+theme_override_fonts/mono_font = ExtResource("4_c3pha")
+theme_override_fonts/italics_font = ExtResource("5_e64id")
+theme_override_fonts/bold_italics_font = ExtResource("6_htouo")
+theme_override_fonts/bold_font = ExtResource("7_s4414")
+bbcode_enabled = true
+scroll_following = true
+
+[node name="ChatBottomPanel" type="PanelContainer" parent="ChatVBox"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k2ufc")
+
+[node name="ChatBottomMargin" type="MarginContainer" parent="ChatVBox/ChatBottomPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ChatBottomHBox" type="HBoxContainer" parent="ChatVBox/ChatBottomPanel/ChatBottomMargin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ChatTextEdit" type="LineEdit" parent="ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_wj2bn")
+theme_override_font_sizes/font_size = 28
+keep_editing_on_text_submit = true
+clear_button_enabled = true
+
+[node name="ChatSendButton" parent="ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox" instance=ExtResource("8_3xe2p")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_on = ExtResource("9_f4yr6")
+texture_off = ExtResource("9_f4yr6")

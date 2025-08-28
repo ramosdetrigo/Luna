@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://kap4etbykks5" path="res://src/main.gd" id="1_oi6f2"]
 [ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="2_6oigt"]
-[ext_resource type="PackedScene" uid="uid://udcue8regsrl" path="res://src/screens/settings/settings.tscn" id="2_w4n27"]
-[ext_resource type="PackedScene" uid="uid://cb2jaq3xwrgrh" path="res://src/screens/menu/menu.tscn" id="2_x3itb"]
+[ext_resource type="PackedScene" uid="uid://udcue8regsrl" path="res://src/screens/menu/settings/settings.tscn" id="2_w4n27"]
+[ext_resource type="PackedScene" uid="uid://cb2jaq3xwrgrh" path="res://src/screens/menu/main_menu/main_menu.tscn" id="2_x3itb"]
 
 [sub_resource type="Gradient" id="Gradient_fgl0l"]
 interpolation_mode = 2

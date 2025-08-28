@@ -45,8 +45,10 @@ folder_colors={
 "res://src/card_ui/": "teal",
 "res://src/card_ui/card/": "teal",
 "res://src/screens/": "blue",
-"res://src/screens/game_screen/": "red",
-"res://src/screens/game_screen/state_handling/": "orange",
+"res://src/screens/cah/": "red",
+"res://src/screens/cah/chat/": "red",
+"res://src/screens/cah/game_screen/": "red",
+"res://src/screens/cah/game_screen/state_handling/": "orange",
 "res://src/server/": "purple",
 "res://src/ui_elements/": "gray"
 }

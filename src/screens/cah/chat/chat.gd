@@ -1,6 +1,9 @@
 extends Panel
 
+signal message_sent(message: String)
+
 var _modulate_tween: Tween
+
 
 func toggle_visible(enable: bool) -> Tween:
 	if _modulate_tween:
@@ -16,3 +19,15 @@ func toggle_visible(enable: bool) -> Tween:
 		_modulate_tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
 		_modulate_tween.finished.connect(hide)
 	return _modulate_tween
+
+
+func _on_message_sent() -> void:
+	var message: String = %ChatTextEdit.text
+	if message.lstrip(" ").is_empty(): # don't send message if only spaces
+		return
+	%ChatTextEdit.clear()
+	message_sent.emit(message)
+
+
+func new_message(message: String) -> void:
+	%ChatTextEdit.text += "\n" + message

@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://cqwb1tmuowcbl"]
 
-[ext_resource type="Script" uid="uid://b2c27eetvnw75" path="res://src/screens/disconnected_menu/disconnected.gd" id="1_f6abm"]
+[ext_resource type="Script" uid="uid://b2c27eetvnw75" path="res://src/screens/menu/disconnected_menu/disconnected_menu.gd" id="1_f6abm"]
 [ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="1_hn1tn"]
 [ext_resource type="PackedScene" uid="uid://c36lew5uiwsgp" path="res://src/ui_elements/floating_button/Floating_button.tscn" id="3_3we5j"]
 
-[node name="Disconnected" type="Control"]
+[node name="DisconnectedMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
