@@ -104,6 +104,7 @@ func _on_black_card_clicked(card: Card) -> void:
 
 func _on_bottom_button_toggled(toggled: bool) -> void:
 	if toggled:
+		nodes.top_label.animate_text("Aguarde os outros.")
 		for card in black_cards:
 			card.set_clickable(false)
 			card.clicked.disconnect(_on_black_card_clicked)
@@ -122,6 +123,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		nodes.client.choose_black.rpc_id(1, card)
 	else:
 		nodes.client.cancel_ready.rpc_id(1)
+		nodes.top_label.animate_text("Escolha uma carta.")
 		for card in black_cards:
 			card.set_clickable(true)
 			card.clicked.connect(_on_black_card_clicked)

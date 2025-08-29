@@ -59,6 +59,8 @@ func notify(message: String) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func update_state(new_state: Dictionary) -> void:
+	game_state.draw = new_state.draw
+	game_state.vote_mode = new_state.vote_mode
 	game_state.edit_all_black = new_state.edit_all_black
 	game_state.edit_all_white = new_state.edit_all_white
 	game_state.current_judge = new_state.current_judge

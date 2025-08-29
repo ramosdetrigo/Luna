@@ -14,7 +14,10 @@ func _ready() -> void:
 		nodes.right_card_slot.toggle_glow(true)
 		nodes.top_label.animate_text("Qual a melhor resposta?")
 	else:
-		nodes.top_label.animate_text("Aguarde o juiz.")
+		if state.vote_mode:
+			nodes.top_label.animate_text("Aguarde os juízes.")
+		else:
+			nodes.top_label.animate_text("Aguarde o juiz.")
 		nodes.right_card_slot.toggle_glow(false)
 	for card in nodes.white_card_holder.get_cards():
 			nodes.white_card_holder.remove_card(card)

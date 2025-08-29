@@ -8,10 +8,12 @@ func _ready():
 		%Host.hide()
 		%EditBlack.hide()
 		%EditWhite.hide()
+		%VoteMode.hide()
 	else:
 		%Host.show()
 		%EditBlack.show()
 		%EditWhite.show()
+		%VoteMode.show()
 		%Close.hide()
 
 func _on_back_pressed():
@@ -34,6 +36,7 @@ func close_server() -> void:
 	%Host.show()
 	%EditBlack.show()
 	%EditWhite.show()
+	%VoteMode.show()
 	if Global.SERVER_NODE:
 		Global.SERVER_NODE.multiplayer.multiplayer_peer.close()
 		Global.SERVER_NODE.multiplayer.multiplayer_peer = null
@@ -48,6 +51,7 @@ func _on_host_pressed() -> void:
 	var server: Server = Server.new()
 	server.game_state.edit_all_black = %EditBlack.is_toggled
 	server.game_state.edit_all_white = %EditWhite.is_toggled
+	server.game_state.vote_mode = %VoteMode.is_toggled
 	Global.add_child(server)
 	Global.SERVER_NODE = server
 	Global.CONFIGS.ip = ""
@@ -61,6 +65,7 @@ func _on_host_pressed() -> void:
 	%Host.hide()
 	%EditBlack.hide()
 	%EditWhite.hide()
+	%VoteMode.hide()
 	if Global.CONFIGS.join:
 		scale_fade(true)
 		change_scene.emit(Global.SCREENS[4])
@@ -78,3 +83,9 @@ func _on_resized() -> void:
 func _on_error_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		%Error.hide()
+
+
+func _on_vote_mode_toggled(_toggled_on: bool) -> void:
+	pass
+	#%EditBlack.visible = not toggled_on
+	#%EditBlack.set_toggled(false)

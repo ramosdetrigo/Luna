@@ -141,7 +141,7 @@ func set_all_players_ready(r: bool) -> void:
 	for player: Player in player_list.values():
 		player.ready = r
 
-func get_highest_voted_white() -> Dictionary:
+func get_highest_voted_whites() -> Array[Dictionary]:
 	var counting_dict: Dictionary[String, int] = {}
 	var reverse_dict: Dictionary[String, Dictionary] = {}
 	for judge: Player in role_judges.values():
@@ -151,14 +151,17 @@ func get_highest_voted_white() -> Dictionary:
 			reverse_dict.set(key, judge.choice_white)
 		counting_dict[key] += 1
 	
+	# TODO: segundo turno
 	var max_count = 0
 	var max_group = {}
-	for key in counting_dict.keys():
+	var keys = counting_dict.keys()
+	keys.shuffle() # helps with random choice if it's a draw
+	for key in keys:
 		var count = counting_dict[key]
 		if count > max_count:
 			max_count = count
 			max_group = reverse_dict[key]
-	return max_group
+	return [max_group]
 
 func get_highest_voted_black() -> Dictionary:
 	var counting_dict: Dictionary[String, int] = {}
@@ -172,7 +175,9 @@ func get_highest_voted_black() -> Dictionary:
 	
 	var max_count = 0
 	var max_group = {}
-	for key in counting_dict.keys():
+	var keys = counting_dict.keys()
+	keys.shuffle() # helps with random choice if it's a draw
+	for key in keys:
 		var count = counting_dict[key]
 		if count > max_count:
 			max_count = count
@@ -193,14 +198,22 @@ func set_game_state(state: CAHState.GameState) -> void:
 			game_state.choice_groups = []
 			game_state.black_cards = [random_black(), random_black()]
 			# Changes everyone back into a player and chooses a new judge
-			for judge: Player in role_judges.values():
-				change_role(judge, CAHState.ROLE_PLAYER)
-			# Takes the next judge from the queue and puts it back at the end
-			var new_judge = judge_queue.pop_front()
-			judge_queue.push_back(new_judge)
-			game_state.current_judge = new_judge.username
-			change_role(new_judge, CAHState.ROLE_JUDGE)
+			if game_state.vote_mode:
+				for player in role_players.values():
+					change_role(player, CAHState.ROLE_JUDGE)
+					game_state.current_judge = "todos"
+			else:
+				for judge: Player in role_judges.values():
+					change_role(judge, CAHState.ROLE_PLAYER)
+				# Takes the next judge from the queue and puts it back at the end
+				var new_judge = judge_queue.pop_front()
+				judge_queue.push_back(new_judge)
+				game_state.current_judge = new_judge.username
+				change_role(new_judge, CAHState.ROLE_JUDGE)
 		CAHState.STATE_CHOOSE_WHITE:
+			if game_state.vote_mode:
+				for player in role_judges.values():
+					change_role(player, CAHState.ROLE_PLAYER)
 			# We define the first one as the one that has been selected
 			game_state.black_cards = [game_state.black_cards[0]]
 			game_state.choice_groups = []
@@ -211,12 +224,20 @@ func set_game_state(state: CAHState.GameState) -> void:
 			for player: Player in role_players.values():
 				game_state.choice_groups.push_back(player.choice_white)
 			game_state.choice_groups.shuffle()
+			if game_state.vote_mode:
+					for player in role_players.values():
+						change_role(player, CAHState.ROLE_JUDGE)
 		CAHState.STATE_WINNER:
+			if game_state.vote_mode:
+				for player in role_players.values():
+					change_role(player, CAHState.ROLE_PLAYER)
 			# We define the first one as the one that has been selected
 			game_state.black_cards = [game_state.black_cards[0]]
 
 func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 	return {
+		"draw": game_state.draw,
+		"vote_mode": game_state.vote_mode,
 		"edit_all_black": game_state.edit_all_black,
 		"edit_all_white": game_state.edit_all_white,
 		"current_judge": game_state.current_judge,
@@ -227,8 +248,10 @@ func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 	}
 
 func send_state_to_all() -> void:
+	var state = dict_from_state(CAHState.ROLE_CONNECTING)
 	for player: Player in player_list.values():
-		update_state.rpc_id(player.id, dict_from_state(player.role))
+		state.player_role = player.role
+		update_state.rpc_id(player.id, state)
 
 func send_player_list(to_id: int = -1) -> void:
 	var list: Array[Dictionary] = []
@@ -256,7 +279,6 @@ func name_changed(new_name: String) -> void:
 	var player = Player.new()
 	player.id = id
 	player.username = new_name
-	change_role(player, CAHState.ROLE_PLAYER)
 	# Adds player to queue of next judges
 	if len(judge_queue) == 1:
 		# Prevents a player from being judge twice in a row
@@ -266,17 +288,34 @@ func name_changed(new_name: String) -> void:
 	# ignore spectators
 	# Adds player to player list
 	player_list.set(id, player)
+	
+	# Sends the info to the player
+	if len(role_judges) == 0:
+		# Se não for modo voto ou se for e não tiver jogadores, reseta
+		if not game_state.vote_mode or len(role_players) == 0:
+			change_role(player, CAHState.ROLE_PLAYER)
+			set_game_state(CAHState.STATE_CHOOSE_BLACK)
+			send_state_to_all()
+		# Caso contrário, vira player (modo voto em winner ou choose_white)
+		else:
+			change_role(player, CAHState.ROLE_PLAYER)
+			update_state.rpc_id(id, dict_from_state(player.role))
+	# Caso já exista juiz e seja modo votação
+	elif (game_state.vote_mode and game_state.current_game_state in
+	[CAHState.STATE_CHOOSE_BLACK, CAHState.STATE_JUDGEMENT]):
+		change_role(player, CAHState.ROLE_JUDGE)
+		update_state.rpc_id(id, dict_from_state(player.role))
+	# Caso contrário (modo normal e já tem juiz)
+	else:
+		change_role(player, CAHState.ROLE_PLAYER)
+		update_state.rpc_id(id, dict_from_state(player.role))
+	
 	# Generates their new cards
 	var new_cards = []
 	for i in range(10):
 		new_cards.push_back(random_white())
-	# Sends the info to the player
-	if len(role_judges) == 0:
-		set_game_state(CAHState.STATE_CHOOSE_BLACK)
-		send_state_to_all()
-	else:
-		update_state.rpc_id(id, dict_from_state(player.role))
 	add_cards.rpc_id(id, new_cards)
+
 	if game_state.current_game_state == CAHState.STATE_JUDGEMENT:
 		for card_group in flipped_cards:
 			judge_flipped_group.rpc_id(player.id, card_group)
@@ -299,7 +338,6 @@ func message_sent(message: String) -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func choose_black(black_card: Dictionary) -> void:
-	# TODO: modo democrático
 	if game_state.current_game_state != CAHState.STATE_CHOOSE_BLACK:
 		return
 	var player = player_list.get(multiplayer.get_remote_sender_id())
@@ -346,16 +384,21 @@ func choose_white(white_group: Dictionary) -> void:
 			if all_category_players_ready(role_judges):
 				set_all_players_ready(false)
 				# Conta pra ver qual foi o grupo mais escolhido
-				var max_group = get_highest_voted_white()
-				# Move o mais votado pra frente
-				var index = -1
-				for i in range(len(game_state.choice_groups)):
-					var cg = game_state.choice_groups[i]
-					if cg == max_group:
-						index = i
-						break
-				game_state.choice_groups.remove_at(index)
-				game_state.choice_groups.push_front(max_group)
+				var max_groups = get_highest_voted_whites()
+				if len(max_groups) == 1:
+					# Move o mais votado pra frente
+					var highest_group = max_groups[0]
+					var index = -1
+					for i in range(len(game_state.choice_groups)):
+						var cg = game_state.choice_groups[i]
+						if cg == highest_group:
+							index = i
+							break
+					game_state.choice_groups.remove_at(index)
+					game_state.choice_groups.push_front(max_groups)
+				else:
+					game_state.choice_groups = max_groups
+					game_state.draw = true
 				set_game_state(CAHState.STATE_WINNER)
 				# repõe as cartas lol eu esqueci
 				for p in role_players.values():
