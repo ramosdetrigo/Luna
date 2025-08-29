@@ -222,9 +222,10 @@ func set_game_state(state: CAHState.GameState) -> void:
 		CAHState.STATE_JUDGEMENT:
 			# We define the first one as the one that has been selected
 			game_state.black_cards = [game_state.black_cards[0]]
-			game_state.choice_groups = []
-			for player: Player in role_players.values():
-				game_state.choice_groups.push_back(player.choice_white)
+			if not game_state.draw:
+				game_state.choice_groups = []
+				for player: Player in role_players.values():
+					game_state.choice_groups.push_back(player.choice_white)
 			game_state.choice_groups.shuffle()
 			if game_state.vote_mode:
 					for player in role_players.values():
@@ -399,7 +400,7 @@ func choose_white(white_group: Dictionary) -> void:
 							index = i
 							break
 					game_state.choice_groups.remove_at(index)
-					game_state.choice_groups.push_front(max_groups)
+					game_state.choice_groups.push_front(highest_group)
 					# repõe as cartas lol eu esqueci
 					for p in role_players.values():
 						var new_cards = []
