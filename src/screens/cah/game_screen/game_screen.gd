@@ -114,13 +114,19 @@ func exit_game(reason: String = "DESCONECTADO.") -> void:
 	else:
 		Global.play_audio(Global.SFX[2])
 	Global.DISCONNECT_REASON = reason
-	change_scene.emit(Global.SCREENS[4])
-
-
-func _on_chat_button_pressed() -> void:
-	%NotifyBall.hide()
-	%ChatPanel.toggle_visible(not %ChatPanel.visible)
+	change_scene.emit(Global.SCREENS[3])
 
 
 func _on_exit_button_pressed() -> void:
-	exit_game("VOCÊ SAIU DO JOGO.")
+	%ConfirmPanel.set_text("Deseja sair do jogo?")
+	%ConfirmPanel.fade(false, false)
+	%ConfirmPanel.ok_pressed.connect(exit_game.bind("VOCÊ SAIU DO JOGO."), CONNECT_ONE_SHOT)
+
+
+func _on_chat_button_toggled(toggled: bool) -> void:
+	%NotifyBall.hide()
+	%Chat.fade(not toggled, false)
+
+
+func _on_confirm_panel_cancel_pressed() -> void:
+	%ConfirmPanel.fade(true, false)

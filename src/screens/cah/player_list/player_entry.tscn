@@ -1,0 +1,118 @@
+[gd_scene load_steps=9 format=3 uid="uid://pe8rtym8hqgx"]
+
+[ext_resource type="Script" uid="uid://dnlomo2tbd78m" path="res://src/screens/cah/player_list/player_entry.gd" id="1_nw7yb"]
+[ext_resource type="Texture2D" uid="uid://cxawshrubbwqx" path="res://assets/images/ui/judge.png" id="2_c5lpt"]
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="3_jn1bc"]
+[ext_resource type="Texture2D" uid="uid://c2sqfaa75lfem" path="res://assets/images/ui/trophy.png" id="3_sd55r"]
+[ext_resource type="Texture2D" uid="uid://dpjqxi107fpcp" path="res://assets/images/ui/checkmark_white.png" id="4_c3h83"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="6_psway"]
+[ext_resource type="Texture2D" uid="uid://dessmokecwct" path="res://assets/images/ui/kick.png" id="7_ehq1x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_psway"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_top = 1
+border_width_bottom = 1
+
+[node name="Border" type="Panel"]
+custom_minimum_size = Vector2(0, 80)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_psway")
+script = ExtResource("1_nw7yb")
+player_role = 1
+player_win_count = 5
+player_name = "Jujubas"
+kick_vote_target = 5
+
+[node name="PlayerEntry" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="RoleImage" type="TextureRect" parent="PlayerEntry"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_c5lpt")
+expand_mode = 1
+
+[node name="VSeparator3" type="VSeparator" parent="PlayerEntry"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="PlayerName" type="Label" parent="PlayerEntry"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("3_jn1bc")
+text = "Fulano da silva"
+vertical_alignment = 1
+
+[node name="Checkmark" type="TextureRect" parent="PlayerEntry"]
+unique_name_in_owner = true
+modulate = Color(0.25098, 0.627451, 0.168627, 1)
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_c3h83")
+expand_mode = 1
+
+[node name="VSeparator2" type="VSeparator" parent="PlayerEntry"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="WinCount" type="Label" parent="PlayerEntry"]
+unique_name_in_owner = true
+modulate = Color(0.87451, 0.556863, 0.113725, 1)
+layout_mode = 2
+theme = ExtResource("3_jn1bc")
+text = "0"
+
+[node name="Trophy" type="TextureRect" parent="PlayerEntry"]
+unique_name_in_owner = true
+modulate = Color(0.87451, 0.556863, 0.113725, 1)
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_sd55r")
+expand_mode = 1
+
+[node name="VSeparator" type="VSeparator" parent="PlayerEntry"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="KickCount" type="Label" parent="PlayerEntry"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_jn1bc")
+text = "0/5"
+
+[node name="KickButtonContainer" type="MarginContainer" parent="PlayerEntry"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="KickButton" parent="PlayerEntry/KickButtonContainer" instance=ExtResource("6_psway")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+is_toggleable = false
+is_toggled = false
+texture_on = ExtResource("7_ehq1x")
+texture_off = ExtResource("7_ehq1x")

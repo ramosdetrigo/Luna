@@ -357,6 +357,18 @@ func new_cards_request(card_num: int) -> void:
 		for i in range(card_num):
 			new_cards.push_back(random_white())
 		add_cards.rpc_id(player.id, new_cards)
+
+@rpc("any_peer", "call_remote", "reliable")
+func flip_group(card_group: Array[String]) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	var player = player_list.get(id)
+	if not player or player.role != CAHState.ROLE_JUDGE:
+		return
+	
+	for p in player_list.values():
+		if p == player:
+			continue
+		judge_flipped_group.rpc_id(p.id, card_group)
 #endregion SERVER RPC
 
 # TODO: toggle_spectator
@@ -375,6 +387,9 @@ func update_state(_new_state: Dictionary) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
 func update_player_list(_players: Array[Dictionary]) -> void: pass
+
+@rpc("authority", "call_remote", "reliable")
+func judge_flipped_group(_card_group: Array[String]) -> void: pass
 #endregion CLIENT RPC
 
 

@@ -67,11 +67,12 @@ func tween_card_to_new(card: Control, old_pos: Vector2, time: float = 0.2) -> vo
 
 
 func create_card_group(choice_group: Dictionary,
-clickable: bool = true, draggable: bool = true, vertical: bool = false) -> CardGroup:
+clickable: bool = true, draggable: bool = true, vertical: bool = false, flipped: bool = false) -> CardGroup:
 	var card_group: CardGroup = CAH.CARD_GROUP_SCENE.instantiate()
 	card_group.clickable = clickable
 	card_group.draggable = draggable
 	card_group.vertical = vertical
+	card_group.flipped = flipped
 	
 	# we need to add the card group somewhere to make its child card _ready etc.
 	nodes.confetti.add_child(card_group)

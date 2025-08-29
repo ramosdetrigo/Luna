@@ -26,10 +26,10 @@ metallic = 0.5
 material = SubResource("StandardMaterial3D_m0gau")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tgw1k"]
-viewport_path = NodePath("ImageContainer/Control/Control/Image/CubeViewport")
+viewport_path = NodePath("ImageContainer/CenterControl/ImageControl/Image/CardStuff/CubeViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_m0gau"]
-viewport_path = NodePath("ImageContainer/Control/Control/Image/TextViewport")
+viewport_path = NodePath("ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextViewport")
 
 [node name="Card" type="AspectRatioContainer"]
 anchors_preset = 15
@@ -54,26 +54,41 @@ layout_mode = 2
 script = ExtResource("2_tgw1k")
 metadata/_custom_type_script = "uid://dkatnti28hcwg"
 
-[node name="Control" type="CenterContainer" parent="ImageContainer"]
+[node name="CenterControl" type="CenterContainer" parent="ImageContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Control" type="Control" parent="ImageContainer/Control"]
+[node name="ImageControl" type="Control" parent="ImageContainer/CenterControl"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Image" type="Sprite2D" parent="ImageContainer/Control/Control"]
+[node name="Image" type="Sprite2D" parent="ImageContainer/CenterControl/ImageControl"]
 unique_name_in_owner = true
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_mxmy7")
 
-[node name="TextEdit" type="TextEdit" parent="ImageContainer/Control/Control/Image"]
+[node name="CardStuff" type="Control" parent="ImageContainer/CenterControl/ImageControl/Image"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -267.0
+offset_top = -406.0
+offset_right = -267.0
+offset_bottom = -406.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextEdit" type="TextEdit" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 visible = false
-offset_left = -226.022
-offset_top = -357.857
-offset_right = 237.978
-offset_bottom = 374.143
+offset_left = 40.978
+offset_top = 48.143
+offset_right = 504.978
+offset_bottom = 780.143
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 theme = ExtResource("3_feltw")
@@ -93,35 +108,35 @@ selecting_enabled = false
 wrap_mode = 1
 caret_multiple = false
 
-[node name="CubeViewport" type="SubViewport" parent="ImageContainer/Control/Control/Image"]
+[node name="CubeViewport" type="SubViewport" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 world_3d = SubResource("World3D_js1fh")
 transparent_bg = true
 
-[node name="OmniLight3D" type="OmniLight3D" parent="ImageContainer/Control/Control/Image/CubeViewport"]
+[node name="OmniLight3D" type="OmniLight3D" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/CubeViewport"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.41957, 2.27761, 1.63508)
 light_energy = 3.0
 omni_shadow_mode = 0
 
-[node name="Cube" type="MeshInstance3D" parent="ImageContainer/Control/Control/Image/CubeViewport"]
+[node name="Cube" type="MeshInstance3D" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/CubeViewport"]
 unique_name_in_owner = true
 mesh = SubResource("BoxMesh_js1fh")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="Camera3D" type="Camera3D" parent="ImageContainer/Control/Control/Image/CubeViewport"]
+[node name="Camera3D" type="Camera3D" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/CubeViewport"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.961569, 0.274564, 0, -0.274564, 0.961569, 0, 0.80651, 2.31952)
 current = true
 fov = 49.6
 far = 5.0
 
-[node name="TextViewport" type="SubViewport" parent="ImageContainer/Control/Control/Image"]
+[node name="TextViewport" type="SubViewport" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(454, 729)
 
-[node name="CardText" type="RichTextLabel" parent="ImageContainer/Control/Control/Image/TextViewport"]
+[node name="CardText" type="RichTextLabel" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextViewport"]
 unique_name_in_owner = true
 anchors_preset = -1
 anchor_bottom = 0.009
@@ -133,42 +148,44 @@ bbcode_enabled = true
 fit_content = true
 scroll_active = false
 
-[node name="CubeViewportTexture" type="TextureRect" parent="ImageContainer/Control/Control/Image"]
+[node name="CubeViewportTexture" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 visible = false
-offset_left = -247.022
-offset_top = -228.857
-offset_right = 250.978
-offset_bottom = 269.143
+offset_left = 19.978
+offset_top = 177.143
+offset_right = 517.978
+offset_bottom = 675.143
 mouse_filter = 2
 texture = SubResource("ViewportTexture_tgw1k")
 expand_mode = 1
 
-[node name="TextViewportTexture" type="TextureRect" parent="ImageContainer/Control/Control/Image"]
+[node name="TextViewportTexture" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
-offset_left = -226.022
-offset_top = -366.857
-offset_right = 227.978
-offset_bottom = 364.143
+offset_left = 40.978
+offset_top = 39.143
+offset_right = 494.978
+offset_bottom = 770.143
 mouse_filter = 2
 texture = SubResource("ViewportTexture_m0gau")
 expand_mode = 1
 
-[node name="Edge" type="Sprite2D" parent="ImageContainer/Control/Control/Image"]
+[node name="Edge" type="Sprite2D" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0)
 material = ExtResource("5_tgw1k")
+position = Vector2(267, 406)
 texture = ExtResource("7_spel0")
 
-[node name="TextEditButton" parent="ImageContainer/Control/Control/Image" instance=ExtResource("4_js1fh")]
+[node name="TextEditButton" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff" instance=ExtResource("4_js1fh")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(100, 100)
-offset_left = -315.758
-offset_top = -70.0
-offset_right = -215.758
-offset_bottom = 30.0
+layout_mode = 1
+offset_left = -48.7579
+offset_top = 336.0
+offset_right = 51.2421
+offset_bottom = 436.0
 pivot_offset = Vector2(50, 50)
 is_toggled = false
 texture_on = ExtResource("5_cxcvc")
@@ -181,4 +198,4 @@ border_width = 3.0
 
 [connection signal="resized" from="." to="." method="_on_image_container_resized"]
 [connection signal="resized" from="ImageContainer" to="." method="_on_image_container_resized"]
-[connection signal="pulse_toggled" from="ImageContainer/Control/Control/Image/TextEditButton" to="." method="_on_text_edit_button_toggled"]
+[connection signal="pulse_toggled" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextEditButton" to="." method="_on_text_edit_button_toggled"]

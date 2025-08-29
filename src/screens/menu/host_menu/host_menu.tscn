@@ -60,14 +60,22 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Host" parent="VBoxContainer" index="4" instance=ExtResource("3_4ndd0")]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Abrir servidor"
 
-[node name="Separator5" type="Control" parent="VBoxContainer" index="5"]
+[node name="Close" parent="VBoxContainer" index="5" instance=ExtResource("3_4ndd0")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Fechar servidor"
+expand_icon = true
+
+[node name="Separator5" type="Control" parent="VBoxContainer" index="6"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Error" type="HBoxContainer" parent="VBoxContainer" index="6"]
+[node name="Error" type="HBoxContainer" parent="VBoxContainer" index="7"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.823529, 0.0588235, 0.223529, 1)
@@ -89,13 +97,6 @@ text = "Erro abrindo servidor"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Close" parent="VBoxContainer" index="7" instance=ExtResource("3_4ndd0")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "Fechar servidor"
-expand_icon = true
-
 [node name="Separator4" type="Control" parent="VBoxContainer" index="8"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -113,6 +114,6 @@ text = "Voltar
 [connection signal="pressed" from="VBoxContainer/AskJoin" to="." method="_on_ask_join_pressed"]
 [connection signal="text_changed" from="VBoxContainer/Nickname" to="." method="_on_nickname_text_changed"]
 [connection signal="pressed" from="VBoxContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="gui_input" from="VBoxContainer/Error" to="." method="_on_error_gui_input"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="close_server"]
+[connection signal="gui_input" from="VBoxContainer/Error" to="." method="_on_error_gui_input"]
 [connection signal="pressed" from="VBoxContainer/Back" to="." method="_on_back_pressed"]

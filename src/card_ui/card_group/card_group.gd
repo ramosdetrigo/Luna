@@ -12,6 +12,9 @@ var clickable: bool = false
 @onready
 var dragger: Draggable = %Draggable
 
+@export
+var flipped: bool = false
+
 var _size_x_tween: Tween
 var collapsed: bool = false
 
@@ -45,6 +48,8 @@ func add_card(card: Card, index: int = -1, skip_anim: bool = false) -> void:
 	
 	if index != -1:
 		move_card(card, index, skip_anim)
+	
+	card.set_flipped(flipped)
 
 
 func update_container_size() -> void:
@@ -179,6 +184,13 @@ func set_draggable(enabled: bool) -> void:
 func set_clickable(enabled: bool) -> void:
 	clickable = enabled
 	%Draggable.clickable = enabled
+
+func set_flipped(toggle: bool) -> void:
+	if flipped == toggle:
+		return
+	flipped = toggle
+	for card in get_cards():
+		card.set_flipped(toggle)
 #endregion CARD_MANIPULATION
 
 
@@ -204,7 +216,8 @@ static func get_container_card(container: Control) -> Card:
 
 func generate_dummy_cards() -> void:
 	for i in range(3):
-		var new_card = Global.PACKED_SCENES.card.instantiate()
+		var new_card = CAH.CARD_SCENE.instantiate()
+		add_child(new_card)
 		var t = ""
 		for _j in range(i):
 			t += "\n"
@@ -219,6 +232,10 @@ func _ready() -> void:
 	set_clickable(clickable)
 	set_draggable(draggable)
 	set_vertical(vertical)
+	#generate_dummy_cards()
+	if flipped:
+		for card in get_cards():
+			card.set_flipped(true, true)
 
 
 func _on_resized() -> void:
@@ -226,13 +243,13 @@ func _on_resized() -> void:
 	update_card_sizes()
 
 
-#func _input(event: InputEvent) -> void:
-	#if event is InputEventKey and event.get_keycode_with_modifiers() == KEY_SPACE and event.is_released():
-		##if not is_vertical():
-			##size = Vector2(140, 220)
-		##else:
-			##size = Vector2(220, 140)
-		#set_vertical(not is_vertical())
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.get_keycode_with_modifiers() == KEY_SPACE and event.is_released():
+		#if not is_vertical():
+			#size = Vector2(140, 220)
+		#else:
+			#size = Vector2(220, 140)
+		set_flipped(false)
 #endregion CALLBACKS
 
 

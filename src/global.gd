@@ -7,13 +7,13 @@ signal audio_volume_changed(new_volume: float)
 signal music_volume_changed(new_volume: float)
 var save_timer: Timer
 
-var DISCONNECT_REASON: String = "DESCONECTADO"
+var DISCONNECT_REASON: String = "DESCONECTADO."
 var SCREENS : Array[PackedScene] = [
 	load("res://src/screens/menu/main_menu/main_menu.tscn"),                 # 0
 	load("res://src/screens/menu/host_menu/host_menu.tscn"),                 # 1
 	load("res://src/screens/menu/join_menu/join_menu.tscn"),                 # 2
-	load("res://src/screens/menu/disconnected_menu/disconnected_menu.tscn"), # 4
-	load("res://src/screens/cah/game_screen/game_screen.tscn"),              # 3
+	load("res://src/screens/menu/disconnected_menu/disconnected_menu.tscn"), # 3
+	load("res://src/screens/cah/game_screen/game_screen.tscn"),              # 4
 ]
 var CONFIGS : Dictionary = {
 	join = true,

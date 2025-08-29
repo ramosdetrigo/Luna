@@ -16,18 +16,26 @@ bg_color = Color(0.101961, 0.101961, 0.101961, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k2ufc"]
 bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
 
-[node name="ChatPanel" type="Panel"]
-visible = false
-modulate = Color(1, 1, 1, 0)
+[node name="Chat" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_loufe")
+metadata/_custom_type_script = "uid://i24r776wg103"
+
+[node name="ChatPanel" type="Panel" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_j7cw8")
-script = ExtResource("1_loufe")
 
-[node name="ChatVBox" type="VBoxContainer" parent="."]
+[node name="ChatVBox" type="VBoxContainer" parent="ChatPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -36,12 +44,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="ChatTopPanel" type="PanelContainer" parent="ChatVBox"]
+[node name="ChatTopPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k2ufc")
 
-[node name="ChatCenterMargin" type="MarginContainer" parent="ChatVBox"]
+[node name="ChatCenterMargin" type="MarginContainer" parent="ChatPanel/ChatVBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -49,7 +57,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ChatText" type="RichTextLabel" parent="ChatVBox/ChatCenterMargin"]
+[node name="ChatText" type="RichTextLabel" parent="ChatPanel/ChatVBox/ChatCenterMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_wj2bn")
@@ -61,12 +69,12 @@ theme_override_fonts/bold_font = ExtResource("7_s4414")
 bbcode_enabled = true
 scroll_following = true
 
-[node name="ChatBottomPanel" type="PanelContainer" parent="ChatVBox"]
+[node name="ChatBottomPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k2ufc")
 
-[node name="ChatBottomMargin" type="MarginContainer" parent="ChatVBox/ChatBottomPanel"]
+[node name="ChatBottomMargin" type="MarginContainer" parent="ChatPanel/ChatVBox/ChatBottomPanel"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -74,11 +82,11 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ChatBottomHBox" type="HBoxContainer" parent="ChatVBox/ChatBottomPanel/ChatBottomMargin"]
+[node name="ChatBottomHBox" type="HBoxContainer" parent="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ChatTextEdit" type="LineEdit" parent="ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox"]
+[node name="ChatTextEdit" type="LineEdit" parent="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
@@ -88,7 +96,7 @@ theme_override_font_sizes/font_size = 28
 keep_editing_on_text_submit = true
 clear_button_enabled = true
 
-[node name="ChatSendButton" parent="ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox" instance=ExtResource("8_3xe2p")]
+[node name="ChatSendButton" parent="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox" instance=ExtResource("8_3xe2p")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
@@ -96,3 +104,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_on = ExtResource("9_f4yr6")
 texture_off = ExtResource("9_f4yr6")
+
+[connection signal="text_submitted" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatTextEdit" to="." method="_on_chat_text_edit_text_submitted"]
+[connection signal="pressed" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatSendButton" to="." method="_on_chat_send_button_pressed"]
+[connection signal="pressed" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatSendButton" to="." method="_on_message_sent"]

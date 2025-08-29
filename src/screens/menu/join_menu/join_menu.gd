@@ -11,7 +11,7 @@ func _on_ip_text_changed(new_text):
 
 func _on_join_pressed():
 	scale_fade(true)
-	change_scene.emit(Global.SCREENS[3])
+	change_scene.emit(Global.SCREENS[4])
 
 
 func _on_back_pressed():

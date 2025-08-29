@@ -28,11 +28,18 @@ var card_type: CardType
 var editable: bool
 @export
 var glowing: bool
+@export
+var flipped: bool = false
+
+# Helper var to know if do a complete or partial flip animation
+var _flipping: bool = false
 
 # Tweener to change glow visibility
 var _edge_modulate_tween: Tween
 # Tweener to change image scale
 var _scale_tween: Tween
+# Tweener to change image scale
+var _flip_tween: Tween
 
 @onready var dragger: Draggable = %ImageContainer
 
@@ -72,13 +79,15 @@ func set_type(type: CardType) -> void:
 	if type == BLACK_CARD or text == "Carta preta.":
 		%CardText.add_theme_color_override("default_color", Color.WHITE)
 		%CardText.text = text.replace("_", "____")
-		%Image.texture = CAH.textures[0]
+		if not flipped:
+			%Image.texture = CAH.textures[0]
 		target_image = CAH.textures[0]
 	else:
 		var new_data = CAH.custom_cards.get(text, {"text": text, "texture": CAH.textures[2]})
 		%CardText.remove_theme_color_override("default_color")
 		%CardText.text = new_data.text
-		%Image.texture = new_data.texture
+		if not flipped:
+			%Image.texture = new_data.texture
 		%Image.offset.y = 744 * int(text == "<O tamanho dessa carta>")
 		target_image = new_data.texture
 
@@ -97,6 +106,50 @@ func set_editable(toggle: bool) -> void:
 		%TextEdit.remove_theme_color_override("default_color")
 		%TextEdit.add_theme_color_override("font_readonly_color", Color.BLACK)
 
+
+func set_flipped(toggle: bool, no_tween: bool = false) -> void:
+	if flipped == toggle:
+		return
+	flipped = toggle
+	if _flip_tween:
+		_flip_tween.kill()
+	
+	if no_tween:
+		%ImageControl.scale = Vector2(1.0, 1.0)
+		if flipped:
+			# we only use flipped white cards, so it shouldn't matter.
+			%Image.texture = CAH.textures[3] # 3: white_back
+			%CardStuff.hide()
+		else:
+			%Image.texture = target_image
+			%CardStuff.show()
+		return
+	
+	_flip_tween = create_tween()
+	_flip_tween.set_trans(Tween.TRANS_QUAD)
+	
+	# Only do partial animation if it was already flipping
+	if _flipping:
+		_flipping = false
+		_flip_tween.tween_property(%ImageControl, "scale", Vector2(1.0, 1.0), 0.1)
+		return
+	
+	_flip_tween.tween_property(%ImageControl, "scale", Vector2(0.0, 1.0), 0.1)
+	_flipping = true
+	
+	_flip_tween.finished.connect(func():
+		if flipped:
+			# we only use flipped white cards, so it shouldn't matter.
+			%Image.texture = CAH.textures[3] # 3: white_back
+			%CardStuff.hide()
+		else:
+			%Image.texture = target_image
+			%CardStuff.show()
+		_flip_tween.stop()
+		_flipping = false
+		_flip_tween.tween_property(%ImageControl, "scale", Vector2(1.0, 1.0), 0.1)
+		_flip_tween.play()
+	, CONNECT_ONE_SHOT)
 
 func get_display_text() -> String:
 	if text == "[Carta editável]":
@@ -181,6 +234,7 @@ func _ready() -> void:
 	%Image.show()
 	%ImageContainer.set_child_modulate(Color.TRANSPARENT)
 	%ImageContainer.tween_child_modulate(Color.WHITE)
+	set_flipped(flipped, true)
 
 
 func _on_image_container_resized() -> void:
@@ -216,3 +270,8 @@ func is_clickable() -> bool:
 func set_clickable(clickable: bool) -> void:
 	%ImageContainer.clickable = clickable
 #endregion EXPOSE
+
+
+#func _input(event: InputEvent) -> void:
+	#if event.is_pressed():
+		#set_flipped(not flipped)

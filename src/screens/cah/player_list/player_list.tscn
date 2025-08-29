@@ -1,0 +1,83 @@
+[gd_scene load_steps=8 format=3 uid="uid://c5w3fx00hnrot"]
+
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="1_s1mbr"]
+[ext_resource type="Script" uid="uid://2233hr88b0dx" path="res://src/screens/cah/player_list/player_list.gd" id="1_w5ucy"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="2_w5ucy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s3nii"]
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_neehq"]
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+
+[sub_resource type="Resource" id="Resource_w13gf"]
+script = ExtResource("2_w5ucy")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_okoth"]
+script = ExtResource("2_w5ucy")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[node name="PlayerList" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w5ucy")
+
+[node name="ChatPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s3nii")
+
+[node name="ChatVBox" type="VBoxContainer" parent="ChatPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="ChatTopPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_neehq")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="ChatPanel/ChatVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+script = ExtResource("1_s1mbr")
+wheel_scroll_damper = SubResource("Resource_w13gf")
+dragging_scroll_damper = SubResource("Resource_okoth")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="PlayerList" type="VBoxContainer" parent="ChatPanel/ChatVBox/SmoothScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ChatBottomPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_neehq")
+
+[node name="ChatBottomMargin" type="MarginContainer" parent="ChatPanel/ChatVBox/ChatBottomPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20

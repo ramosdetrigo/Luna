@@ -60,28 +60,32 @@ func _ready() -> void:
 			nodes.judge_scroller.remove_card(card, true)
 	#Adds new card groups to the card scroller
 	for group in state.choice_groups:
-		var card_group = create_card_group(group)
+		var is_judge = state.player_role == CAHState.ROLE_JUDGE
+		var card_group = create_card_group(group, is_judge, true, false, true)
 		nodes.judge_scroller.add_card(card_group)
 		card_group.mouse_entered.connect(_on_group_mouse_entered.bind(card_group))
 		card_group.dragger.grabbed.connect(_on_group_grabbed.bind(card_group))
 		card_group.dragger.dropped.connect(_on_group_dropped.bind(card_group))
-		if state.player_role == CAHState.ROLE_JUDGE:
+		if is_judge:
 			card_group.dragger.clicked.connect(_on_group_clicked.bind(card_group))
 	if state.player_role == CAHState.ROLE_JUDGE:
 		nodes.white_card_holder.mouse_entered.connect(_on_group_holder_mouse_entered)
 		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)
 
 
-func _on_group_grabbed(card: CardGroup) -> void:
-	grabbed_group = card
+func _on_group_grabbed(group: CardGroup) -> void:
+	grabbed_group = group
 
-func _on_group_dropped(card: CardGroup) -> void:
-	if card == grabbed_group:
+func _on_group_dropped(group: CardGroup) -> void:
+	if group == grabbed_group:
 		grabbed_group = null
 
 
 func _on_group_clicked(group: CardGroup) -> void:
 	var confirmed: bool = nodes.bottom_button.button_pressed
+	if group.flipped:
+		flip_card_group(group)
+		return
 	# move a carta pra dentro do slot
 	if get_right_slot_group() == null:
 		nodes.right_card_slot.toggle_glow(false)
@@ -172,6 +176,8 @@ func _on_group_mouse_entered(group: CardGroup) -> void:
 			var scroller_old_pos = scroller_group.dragger.global_position
 			var scroller_index = nodes.judge_scroller.find_card(grabbed_group)
 			# moves grabbed card to slot
+			if scroller_group.flipped:
+				flip_card_group(scroller_group)
 			scroller_group.set_vertical(true)
 			scroller_group.custom_minimum_size = nodes.right_card_slot.size
 			scroller_group.size = nodes.right_card_slot.size
@@ -204,6 +210,8 @@ func _on_group_holder_mouse_entered() -> void:
 	if group == null:
 		return
 	
+	if group.flipped:
+		flip_card_group(group)
 	nodes.right_card_slot.toggle_glow(false)
 	group.set_vertical(true)
 	group.custom_minimum_size = nodes.right_card_slot.size
@@ -245,3 +253,10 @@ func get_right_slot_group() -> CardGroup:
 			return group
 	# not found
 	return null
+
+func flip_card_group(group: CardGroup) -> void:
+	group.set_flipped(false)
+	var cards: Array[String] = []
+	for card in group.get_cards():
+		cards.push_back(card.text)
+	nodes.client.flip_group.rpc_id(1, cards)

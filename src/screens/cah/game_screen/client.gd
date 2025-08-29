@@ -44,9 +44,9 @@ func add_cards(new_cards: Array) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func add_message(message: String) -> void:
-	if not %ChatPanel.visible:
+	if not %Chat.visible:
 		%NotifyBall.show()
-	%ChatText.text += "\n%s" % message
+	%Chat.add_message(message)
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -83,6 +83,17 @@ func update_state(new_state: Dictionary) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func update_player_list(_new_players: Array[Dictionary]) -> void: pass
+
+@rpc("authority", "call_remote", "reliable")
+func judge_flipped_group(card_group: Array[String]) -> void:
+	for group in %JudgeScroller.get_card_list():
+		if group is not CardGroup:
+			continue
+		var cards: Array[String] = []
+		for card in group.get_cards():
+			cards.push_back(card.text)
+		if cards == card_group:
+			group.set_flipped(false)
 #endregion CLIENT RPC
 
 
@@ -107,6 +118,9 @@ func cancel_ready() -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
 func new_cards_request(_card_num: int) -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func flip_group(_card_group: Array[String]) -> void: pass
 #endregion SERVER RPC
 
 
@@ -132,17 +146,19 @@ func _on_server_disconnected() -> void:
 #endregion MULTIPLAYER CALLBACKS
 
 
-func _on_chat_send_button_pressed() -> void:
-	if len(%ChatTextEdit.text) > 0:
-		message_sent.rpc_id(1, %ChatTextEdit.text)
-		%ChatTextEdit.clear()
-
-
-func _on_chat_text_edit_text_submitted(_new_text: String) -> void:
-	_on_chat_send_button_pressed()
+# When the user sends a message via the chat screen
+func _on_message_sent(message: String) -> void:
+	message_sent.rpc_id(1, message)
 
 
 func _on_reset_cards_button_pressed() -> void:
+	%ConfirmPanel.set_text("Deseja trocar todas as suas cartas?")
+	%ConfirmPanel.fade(false, false)
+	%ConfirmPanel.ok_pressed.connect(send_card_reset_request, CONNECT_ONE_SHOT)
+
+
+func send_card_reset_request() -> void:
+	%ConfirmPanel.fade(true, false)
 	if game_state.current_game_state == CAHState.STATE_CHOOSE_WHITE:
 		%BottomButton.set_pressed(false)
 		%BBControl.toggle_button(false)

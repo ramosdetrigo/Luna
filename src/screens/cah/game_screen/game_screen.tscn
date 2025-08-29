@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=24 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/screens/cah/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
@@ -13,6 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://dms4mpfwrvcps" path="res://assets/images/particles/sqr.png" id="10_lfrdv"]
 [ext_resource type="Script" uid="uid://of1q8s48itpc" path="res://src/screens/cah/game_screen/connecting_panel.gd" id="11_1mmlo"]
 [ext_resource type="Script" uid="uid://cgputfm08k270" path="res://src/screens/cah/game_screen/client.gd" id="12_0461g"]
+[ext_resource type="PackedScene" uid="uid://wqg1ulep46fv" path="res://src/screens/cah/chat/chat.tscn" id="12_dlfji"]
+[ext_resource type="Texture2D" uid="uid://br0d5b18rlha4" path="res://assets/images/ui/menuList.png" id="13_tpuab"]
+[ext_resource type="Texture2D" uid="uid://btot01ow8qsw8" path="res://assets/images/ui/return.png" id="14_avejo"]
+[ext_resource type="PackedScene" uid="uid://bl3ii81dfb0j" path="res://src/screens/cah/confirm_panel/confirm_panel.tscn" id="18_acp4u"]
 [ext_resource type="Texture2D" uid="uid://b4p14y2p8a1gl" path="res://assets/images/ui/exit.png" id="21_7n8ay"]
 [ext_resource type="Texture2D" uid="uid://dxshxsxjqnn1q" path="res://assets/images/ui/massiveMultiplayer.png" id="21_mqnxu"]
 
@@ -257,6 +261,67 @@ hue_variation_min = -0.25
 hue_variation_max = 0.25
 hue_variation_curve = SubResource("Curve_lfrdv")
 
+[node name="Chat" parent="." instance=ExtResource("12_dlfji")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="ChatButtonsMargin" type="MarginContainer" parent="Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Control" type="Control" parent="Chat/ChatButtonsMargin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChatButtonsContainer" type="HBoxContainer" parent="Chat/ChatButtonsMargin/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -130.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="PlayerListButton" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer" instance=ExtResource("3_qrh6e")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+is_toggled = false
+texture_on = ExtResource("13_tpuab")
+texture_off = ExtResource("13_tpuab")
+
+[node name="ResetCardsButton" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer" instance=ExtResource("3_qrh6e")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+is_toggleable = false
+is_toggled = false
+texture_on = ExtResource("14_avejo")
+texture_off = ExtResource("14_avejo")
+
+[node name="Space" type="Control" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Space2" type="Control" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+mouse_filter = 2
+
 [node name="ConnectingPanel" type="Panel" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -302,7 +367,7 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TopLeftButtons" type="HBoxContainer" parent="ButtonsMargin/Control"]
+[node name="ButtonsContainer" type="HBoxContainer" parent="ButtonsMargin/Control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -312,15 +377,16 @@ offset_bottom = 60.0
 grow_horizontal = 0
 theme_override_constants/separation = 10
 
-[node name="ChatButton" parent="ButtonsMargin/Control/TopLeftButtons" instance=ExtResource("3_qrh6e")]
+[node name="ChatButton" parent="ButtonsMargin/Control/ButtonsContainer" instance=ExtResource("3_qrh6e")]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+is_toggled = false
 texture_on = ExtResource("21_mqnxu")
 texture_off = ExtResource("21_mqnxu")
 
-[node name="NotifyBall" type="Panel" parent="ButtonsMargin/Control/TopLeftButtons/ChatButton"]
+[node name="NotifyBall" type="Panel" parent="ButtonsMargin/Control/ButtonsContainer/ChatButton"]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(20, 20)
@@ -333,11 +399,18 @@ offset_bottom = 20.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_mqnxu")
 
-[node name="ExitButton" parent="ButtonsMargin/Control/TopLeftButtons" instance=ExtResource("3_qrh6e")]
+[node name="ExitButton" parent="ButtonsMargin/Control/ButtonsContainer" instance=ExtResource("3_qrh6e")]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
+is_toggleable = false
+is_toggled = false
 texture_on = ExtResource("21_7n8ay")
 texture_off = ExtResource("21_7n8ay")
+
+[node name="ConfirmPanel" parent="." instance=ExtResource("18_acp4u")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
 
 [node name="Client" type="Node" parent="."]
 unique_name_in_owner = true
@@ -345,7 +418,10 @@ script = ExtResource("12_0461g")
 
 [connection signal="drag_ended" from="Game/VBoxContainer/VSplitContainer" to="Game/VBoxContainer/VSplitContainer" method="_on_drag_ended"]
 [connection signal="resized" from="Game/VBoxContainer/VSplitContainer/ScrollerSplit" to="Game/VBoxContainer/VSplitContainer/ScrollerSplit" method="update_offset"]
-[connection signal="pressed" from="ButtonsMargin/Control/TopLeftButtons/ChatButton" to="." method="_on_chat_button_pressed"]
-[connection signal="pressed" from="ButtonsMargin/Control/TopLeftButtons/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="message_sent" from="Chat" to="Client" method="_on_message_sent"]
+[connection signal="pressed" from="Chat/ChatButtonsMargin/Control/ChatButtonsContainer/ResetCardsButton" to="Client" method="_on_reset_cards_button_pressed"]
+[connection signal="pulse_toggled" from="ButtonsMargin/Control/ButtonsContainer/ChatButton" to="." method="_on_chat_button_toggled"]
+[connection signal="pressed" from="ButtonsMargin/Control/ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="cancel_pressed" from="ConfirmPanel" to="." method="_on_confirm_panel_cancel_pressed"]
 [connection signal="disconnected" from="Client" to="." method="exit_game"]
 [connection signal="state_updated" from="Client" to="." method="_on_client_state_updated"]

@@ -5,7 +5,9 @@ func _ready():
 	%Nickname.text = Global.CONFIGS.username
 	if Global.SERVER_NODE:
 		%Close.show()
+		%Host.hide()
 	else:
+		%Host.show()
 		%Close.hide()
 
 func _on_back_pressed():
@@ -26,6 +28,7 @@ func _on_nickname_text_changed(new_text):
 
 func close_server() -> void:
 	%Close.hide()
+	%Host.show()
 	if Global.SERVER_NODE:
 		Global.SERVER_NODE.multiplayer.multiplayer_peer.close()
 		Global.SERVER_NODE.multiplayer.multiplayer_peer = null
@@ -49,8 +52,9 @@ func _on_host_pressed() -> void:
 	
 	if Global.CONFIGS.join:
 		scale_fade(true)
-		change_scene.emit(Global.SCREENS[3])
+		change_scene.emit(Global.SCREENS[4])
 		%Close.show()
+		%Host.hide()
 
 
 func _on_resized() -> void:

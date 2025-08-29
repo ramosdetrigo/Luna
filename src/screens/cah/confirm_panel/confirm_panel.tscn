@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl3ii81dfb0j"]
+
+[ext_resource type="Script" uid="uid://p45idhaiyo6v" path="res://src/screens/cah/confirm_panel/confirm_panel.gd" id="1_t1sng"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="2_5tdp7"]
+
+[node name="ConfirmPanel" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t1sng")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(480, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -81.0
+offset_right = 240.0
+offset_bottom = 81.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Text" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Deseja sair do jogo?"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Não" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_5tdp7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Não"
+is_toggleable = false
+is_toggled = false
+
+[node name="Sim" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_5tdp7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Sim"
+is_toggleable = false
+is_toggled = false
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Não" to="." method="_on_não_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Sim" to="." method="_on_sim_pressed"]
