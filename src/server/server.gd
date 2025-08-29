@@ -141,7 +141,7 @@ func set_all_players_ready(r: bool) -> void:
 	for player: Player in player_list.values():
 		player.ready = r
 
-func get_highest_voted_whites() -> Array[Dictionary]:
+func get_highest_voted_whites(ignore_draws: bool = false) -> Array[Dictionary]:
 	var counting_dict: Dictionary[String, int] = {}
 	var reverse_dict: Dictionary[String, Dictionary] = {}
 	for judge: Player in role_judges.values():
@@ -153,15 +153,17 @@ func get_highest_voted_whites() -> Array[Dictionary]:
 	
 	# TODO: segundo turno
 	var max_count = 0
-	var max_group = {}
+	var max_groups: Array[Dictionary] = []
 	var keys = counting_dict.keys()
 	keys.shuffle() # helps with random choice if it's a draw
 	for key in keys:
 		var count = counting_dict[key]
 		if count > max_count:
 			max_count = count
-			max_group = reverse_dict[key]
-	return [max_group]
+			max_groups = [reverse_dict[key]]
+		elif count == max_count and not ignore_draws:
+			max_groups.push_back(reverse_dict[key])
+	return max_groups
 
 func get_highest_voted_black() -> Dictionary:
 	var counting_dict: Dictionary[String, int] = {}
@@ -233,6 +235,7 @@ func set_game_state(state: CAHState.GameState) -> void:
 					change_role(player, CAHState.ROLE_PLAYER)
 			# We define the first one as the one that has been selected
 			game_state.black_cards = [game_state.black_cards[0]]
+			# The selected white group is already defined on the choose_white function
 
 func dict_from_state(player_role: CAHState.PlayerRole) -> Dictionary:
 	return {
@@ -384,7 +387,8 @@ func choose_white(white_group: Dictionary) -> void:
 			if all_category_players_ready(role_judges):
 				set_all_players_ready(false)
 				# Conta pra ver qual foi o grupo mais escolhido
-				var max_groups = get_highest_voted_whites()
+				# (ignora empates se já teve segundo turno)
+				var max_groups = get_highest_voted_whites(game_state.draw)
 				if len(max_groups) == 1:
 					# Move o mais votado pra frente
 					var highest_group = max_groups[0]
@@ -396,16 +400,17 @@ func choose_white(white_group: Dictionary) -> void:
 							break
 					game_state.choice_groups.remove_at(index)
 					game_state.choice_groups.push_front(max_groups)
+					# repõe as cartas lol eu esqueci
+					for p in role_players.values():
+						var new_cards = []
+						for i in range(game_state.black_cards[0].pick):
+							new_cards.push_back(random_white())
+						add_cards.rpc_id(p.id, new_cards)
+					game_state.draw = false
 				else:
 					game_state.choice_groups = max_groups
 					game_state.draw = true
 				set_game_state(CAHState.STATE_WINNER)
-				# repõe as cartas lol eu esqueci
-				for p in role_players.values():
-					var new_cards = []
-					for i in range(game_state.black_cards[0].pick):
-						new_cards.push_back(random_white())
-					add_cards.rpc_id(p.id, new_cards)
 				send_state_to_all()
 			send_player_list()
 		_: return # Player calling in an invalid state
@@ -416,9 +421,12 @@ func winner_ready() -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player and game_state.current_game_state == CAHState.STATE_WINNER:
 		player.ready = true
-		if all_category_players_ready(role_judges) and all_category_players_ready(role_players):
+	if all_category_players_ready(role_judges) and all_category_players_ready(role_players):
+		if game_state.draw: # empate!
+			set_game_state(CAHState.STATE_CHOOSE_WHITE)
+		else:
 			set_game_state(CAHState.STATE_CHOOSE_BLACK)
-			send_state_to_all()
+		send_state_to_all()
 
 
 @rpc("any_peer", "call_remote", "reliable")
