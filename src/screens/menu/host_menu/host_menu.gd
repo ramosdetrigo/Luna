@@ -71,15 +71,6 @@ func _on_host_pressed() -> void:
 		change_scene.emit(Global.SCREENS[4])
 
 
-func _on_resized() -> void:
-	var new_scale = size / Vector2(1280, 720)
-	new_scale = Vector2(new_scale.y, new_scale.y)
-	var viewport_size = get_viewport_rect().size
-	if new_scale.y * 350 > viewport_size.x:
-		new_scale = Vector2(viewport_size.x / 350, viewport_size.x / 350) * 0.75
-	$VBoxContainer.scale = new_scale
-
-
 func _on_error_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		%Error.hide()
@@ -89,3 +80,7 @@ func _on_vote_mode_toggled(_toggled_on: bool) -> void:
 	pass
 	#%EditBlack.visible = not toggled_on
 	#%EditBlack.set_toggled(false)
+
+
+func _on_nickname_focus_entered() -> void:
+	Global.TEXT_EDIT_Y = %Nickname.global_position.y + %Nickname.size.y

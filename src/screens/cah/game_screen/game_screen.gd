@@ -14,8 +14,6 @@ var handlers = {
 }
 
 func _ready() -> void:
-	# or else the resizing won't work for some reason
-	await %VSplitContainer.resized
 	%TopLabel.set_text_instant("")
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	
@@ -46,19 +44,21 @@ func _ready() -> void:
 	#_on_client_state_updated()
 	#%ConnectingPanel.toggle_visible(false)
 	
-	_on_viewport_size_changed()
 	%ScrollerSplit.update_offset(false)
 	%SpectateButton.set_toggled(false)
 	
 	%ConnectingPanel.toggle_visible(true)
 	%Client.game_state = game_state
 	%Client.create_client()
+	_on_viewport_size_changed.call_deferred()
 
 
 func _on_client_state_updated() -> void:
 	if state_handler:
 		remove_child(state_handler)
 		state_handler.queue_free()
+	else:
+		_on_viewport_size_changed()
 	state_handler = handlers[game_state.current_game_state].new(game_state, screen_nodes)
 	add_child(state_handler)
 
@@ -73,14 +73,17 @@ func _on_viewport_size_changed() -> void:
 	
 	var width_guess = max(450 * new_scale.y, 450)
 	if size.x > 450 and width_guess < size.x*0.9:
-		%CenterControl.custom_minimum_size.x = width_guess
+		%CenterVBox.custom_minimum_size.x = width_guess
 	else:
-		%CenterControl.custom_minimum_size.x = size.x*0.9
+		%CenterVBox.custom_minimum_size.x = size.x*0.9
 	
 	# Set up split container height
-	await %VSplitContainer.resized
-	var normal_offset = %VSplitContainer.size.y/13.0
+	var normal_offset = %VSplitContainer.size.y/12.0
 	var expanded_offset = %VSplitContainer.size.y / 2.0
+	var sep_size = 0.0
+	if size.y > size.x:
+		normal_offset = %VSplitContainer.size.y/5.0
+		sep_size = 60.0 * new_scale.y
 	%VSplitContainer.normal_offset = normal_offset
 	%VSplitContainer.expanded_offset = expanded_offset
 	%VSplitContainer.update_offset()
@@ -88,13 +91,30 @@ func _on_viewport_size_changed() -> void:
 	var margin_size = (2.0/5.0) * width
 	%VSplitContainer.drag_area_margin_begin = margin_size
 	%VSplitContainer.drag_area_margin_end = margin_size
+	%CenterSeparatorTop.custom_minimum_size.y = sep_size
+	%CenterSeparatorBottom.custom_minimum_size.y = sep_size
+	
+	var button_scale = 1.0
+	if size.y > 1080:
+		button_scale = size.y / 1080
+	%ChatButtonsContainer.scale = Vector2(button_scale, button_scale)
+	%ButtonsContainer.scale = Vector2(button_scale, button_scale)
 	
 	%TopLabel.custom_minimum_size.x = 510 * new_scale.y
 	%TopLabel.add_theme_font_size_override("normal_font_size", 40 * new_scale.y)
+	%LabelSeparator.custom_minimum_size.y = 0.0
+	if %TopLabel.custom_minimum_size.x > size.x * 0.75:
+		%LabelSeparator.custom_minimum_size.y = button_scale * 60
+		%TopLabel.custom_minimum_size.x = size.x * 0.75
+		%TopLabel.add_theme_font_size_override("normal_font_size", 26 * new_scale.y)
 	%LabelControl.custom_minimum_size = %TopLabel.custom_minimum_size
 	
 	%BottomButton.custom_minimum_size.x = 360 * new_scale.y
 	%BottomButton.add_theme_font_size_override("font_size", 24 * new_scale.y)
+	if %BottomButton.custom_minimum_size.x > size.x * 0.75:
+		%BottomButton.custom_minimum_size.x = size.x * 0.75
+	%BBControl.custom_minimum_size.y = %BottomButton.size.y * 1.2
+	%BottomButton.pivot_offset = %BottomButton.size / 2.0
 	
 	%Confetti.initial_velocity_min = 250 * new_scale.y
 	%Confetti.initial_velocity_max = 550 * new_scale.y

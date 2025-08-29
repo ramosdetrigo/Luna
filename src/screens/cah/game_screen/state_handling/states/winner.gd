@@ -36,10 +36,23 @@ func _ready() -> void:
 					swap_cards(grabbed_group, card_group))
 	)
 	
-	# Erase old cards from the card slots
-	clean_card_slots()
-	
-	if state.previous_game_state != CAHState.STATE_CHOOSE_WHITE:
+	# Move a carta preta do lugar anterior
+	if state.previous_game_state == CAHState.STATE_JUDGEMENT:
+		if state.player_role == CAHState.ROLE_PLAYER:
+			clean_left_slot()
+			clean_right_slot()
+			black_card = nodes.center_card_slot.get_cards()[0]
+			
+			var old_pos = black_card.dragger.global_position
+			black_card.reparent(nodes.left_card_slot)
+			tween_card_to_new(black_card, old_pos)
+		else:
+			clean_center_slot()
+			clean_right_slot()
+			black_card = nodes.left_card_slot.get_cards()[0]
+		black_card.set_clickable(false)
+	# Cria a carta preta se ela não existe
+	else:
 		black_card = CAH.CARD_SCENE.instantiate()
 		black_card.text = state.black_cards[0].text
 		black_card.card_type = Card.BLACK_CARD
@@ -47,16 +60,6 @@ func _ready() -> void:
 		black_card.set_clickable(false)
 		black_card.dragger.set_child_modulate(Color.TRANSPARENT)
 		black_card.dragger.tween_child_modulate(Color.WHITE)
-	else:
-		if state.player_role == CAHState.ROLE_PLAYER:
-			black_card = nodes.left_card_slot.get_cards()[0]
-		else:
-			black_card = nodes.center_card_slot.get_cards()[0]
-		black_card.set_clickable(false)
-		
-		var old_pos = black_card.dragger.global_position
-		black_card.reparent(nodes.left_card_slot)
-		tween_card_to_new(black_card, old_pos)
 	
 	# Cria o grupo de cartas brancas quando o card holder ficar transparente
 	wch_tweener.finished.connect(func():
@@ -82,17 +85,21 @@ func _ready() -> void:
 	Global.play_audio(Global.SFX[4])
 	var timer2 = get_tree().create_timer(3)
 	timer2.timeout.connect(func():
+		# Revela as outras respostas
 		for card_group in nodes.judge_scroller.get_card_list():
 			if card_group is not CardGroup: continue
 			card_group.dragger.set_child_modulate(Color.WHITE)
-		
-		var winner_name = state.choice_groups[0].player
-		nodes.top_label.animate_text("O vencedor é... " + winner_name + "!")
-		nodes.top_label._erasing = false
 		nodes.split_container.dragging_enabled = true
-		nodes.confetti.emitting = true
-		nodes.right_card_slot.toggle_glow(false)
-		nodes.white_card_holder.dragger.tween_child_modulate(Color.WHITE)
+		
+		if state.draw:
+			nodes.top_label.animate_text("Foi empate! Vai ter segundo turno!")
+		else:
+			var winner_name = state.choice_groups[0].player
+			nodes.top_label.animate_text("O vencedor é... " + winner_name + "!")
+			nodes.top_label._erasing = false
+			nodes.confetti.emitting = true
+			nodes.right_card_slot.toggle_glow(false)
+			nodes.white_card_holder.dragger.tween_child_modulate(Color.WHITE)
 		
 		
 		# Espera um porquin pra mostrar o botão de continuar

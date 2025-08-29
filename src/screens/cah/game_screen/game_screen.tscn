@@ -80,6 +80,10 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
+[node name="LabelSeparator" type="Control" parent="Game/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="LabelControl" type="Control" parent="Game/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 68)
@@ -108,23 +112,38 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("3_lfrdv")
 
+[node name="LabelSeparator2" type="Control" parent="Game/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="VSplitContainer" type="VSplitContainer" parent="Game/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/minimum_grab_thickness = 30
 theme_override_constants/autohide = 0
 split_offset = 3000
+drag_area_highlight_in_editor = true
 script = ExtResource("4_pnpbp")
 
-[node name="CenterControl" type="Control" parent="Game/VBoxContainer/VSplitContainer"]
+[node name="CenterVBox" type="VBoxContainer" parent="Game/VBoxContainer/VSplitContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-mouse_filter = 1
+theme_override_constants/separation = 0
 
-[node name="CentralCardContainer" type="HBoxContainer" parent="Game/VBoxContainer/VSplitContainer/CenterControl"]
+[node name="CenterSeparatorTop" type="Control" parent="Game/VBoxContainer/VSplitContainer/CenterVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Game/VBoxContainer/VSplitContainer/CenterVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CentralCardContainer" type="HBoxContainer" parent="Game/VBoxContainer/VSplitContainer/CenterVBox/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -132,24 +151,23 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
 size_flags_vertical = 3
 alignment = 1
 
-[node name="LeftCardSlot" parent="Game/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer" instance=ExtResource("4_drf4n")]
+[node name="LeftCardSlot" parent="Game/VBoxContainer/VSplitContainer/CenterVBox/Control/CentralCardContainer" instance=ExtResource("4_drf4n")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="RightCardSlot" parent="Game/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer" instance=ExtResource("4_drf4n")]
+[node name="RightCardSlot" parent="Game/VBoxContainer/VSplitContainer/CenterVBox/Control/CentralCardContainer" instance=ExtResource("4_drf4n")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="WhiteCardHolder" parent="Game/VBoxContainer/VSplitContainer/CenterControl/CentralCardContainer/RightCardSlot" instance=ExtResource("5_oc45t")]
+[node name="WhiteCardHolder" parent="Game/VBoxContainer/VSplitContainer/CenterVBox/Control/CentralCardContainer/RightCardSlot" instance=ExtResource("5_oc45t")]
 unique_name_in_owner = true
 layout_mode = 2
 draggable = false
 
-[node name="CenterCardSlot" parent="Game/VBoxContainer/VSplitContainer/CenterControl" instance=ExtResource("4_drf4n")]
+[node name="CenterCardSlot" parent="Game/VBoxContainer/VSplitContainer/CenterVBox/Control" instance=ExtResource("4_drf4n")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -163,16 +181,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ReferenceRect" type="ReferenceRect" parent="Game/VBoxContainer/VSplitContainer/CenterControl"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(0.0943737, 0.615227, 0.571761, 1)
-border_width = 3.0
+[node name="CenterSeparatorBottom" type="Control" parent="Game/VBoxContainer/VSplitContainer/CenterVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
 
 [node name="ScrollerSplit" type="VSplitContainer" parent="Game/VBoxContainer/VSplitContainer"]
 unique_name_in_owner = true
@@ -292,6 +304,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="ChatButtonsContainer" type="HBoxContainer" parent="Chat/ChatButtonsMargin/Control"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -299,6 +312,7 @@ anchor_right = 1.0
 offset_left = -130.0
 offset_bottom = 60.0
 grow_horizontal = 0
+pivot_offset = Vector2(340, 0)
 theme_override_constants/separation = 10
 
 [node name="PlayerListButton" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer" instance=ExtResource("3_qrh6e")]
@@ -387,6 +401,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="ButtonsContainer" type="HBoxContainer" parent="ButtonsMargin/Control"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -394,6 +409,7 @@ anchor_right = 1.0
 offset_left = -130.0
 offset_bottom = 60.0
 grow_horizontal = 0
+pivot_offset = Vector2(130, 0)
 theme_override_constants/separation = 10
 
 [node name="ChatButton" parent="ButtonsMargin/Control/ButtonsContainer" instance=ExtResource("3_qrh6e")]

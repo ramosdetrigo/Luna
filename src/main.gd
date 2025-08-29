@@ -3,6 +3,10 @@ extends Control
 @onready
 var music_player: AudioStreamPlayer = $MusicPlayer
 var song_queue: Array[AudioStreamOggVorbis] = []
+@onready
+var has_virtual_keyboard: bool = DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD)
+
+
 func _ready() -> void:
 	%Menu.scale_fade(false)
 	for song in Global.MUSIC:
@@ -25,6 +29,18 @@ func update_children_pivot() -> void:
 func _on_resized() -> void:
 	update_children_pivot()
 	%BackgroundParticles.emission_rect_extents = size/2
+
+
+func _process(_delta: float) -> void:
+	if has_virtual_keyboard:
+		var mobile_keyboard_height = DisplayServer.virtual_keyboard_get_height()
+		if mobile_keyboard_height > 0:
+			var text_height = size.y - Global.TEXT_EDIT_Y
+			if text_height < mobile_keyboard_height:
+				# offset position ye
+				position.y = text_height - mobile_keyboard_height
+		else:
+			position.y = 0
 
 
 func _on_change_scene(scene: PackedScene) -> void:

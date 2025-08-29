@@ -72,3 +72,12 @@ func _on_audio_slider_value_changed(value: float) -> void:
 	else:
 		%Audio.set_toggled(true)
 	Global.set_audio_volume(value)
+
+
+func _on_resized() -> void:
+	var viewport_size = get_viewport_rect().size
+	if viewport_size.y > 1080:
+		var new_scale = viewport_size.y / 1080
+		%Control.scale = Vector2(new_scale, new_scale)
+	else:
+		%Control.scale = Vector2(1.0, 1.0)

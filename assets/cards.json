@@ -597,7 +597,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"A mancha no tapete parecia mingau!\nA mancha no tapete parecia mingau!\nMas não era mingau!\nO que que era pessoal?",
+	  "text":"A mancha no tapete parecia mingau!\nA mancha no tapete parecia mingau!\nMas não era mingau!\nQuê que era pessoal?",
 	  "pick":1
 	},
 	{
@@ -733,7 +733,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"Aventura. Romance. _.\nDe Paramount Pictures, \"_.\"",
+	  "text":"Aventura. Romance. _.\nDa Paramount Pictures, vem aí: \"_.\"",
 	  "pick":2
 	},
 	{
@@ -4189,7 +4189,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"Bolsonaro durante seu governo apostou 80% da Amazônia brasileira num buteco de São Paulo em troca de _.",
+	  "text":"Bolsonaro durante seu governo apostou 80% da Amazônia brasileira num boteco de São Paulo em troca de _.",
 	  "pick":1
 	},
 	{
@@ -4633,7 +4633,6 @@
 	"Racismo.",
 	"Sexo surpresa!",
 	"Brutalidade policial.",
-	"Travestis indistinguíveis de mulheres.",
 	"O Massacre de Suzano.",
 	"Quando você peida e sai mais do que devia.",
 	"Oompa-Loompas.",
@@ -5796,13 +5795,14 @@
 	"A cloaca enorme botadora de ovos do Yoshi.",
 	"Um unifome caseiro sujo de porra de Star Trek.",
 	"Oferecer favores sexuais por 10kg de metal e uma ovelha.",
-	"Fúria no Mario Kart.",
+	"Rage no Mario Kart.",
 	"O coração dolorido do Bowser.",
 	"Uma cabeça de concreto raivosa que bate no chão a cada três segundos.",
 	"Usar um mod de nudez no Super Mario 64.",
 	"Invencibilidade temporária.",
 	"Ser um elfo atrativo preso num corpo de um humano não-atrativo.",
 	"Encher todos os bolsos de uma saia de utilidades com pizza.",
+	"O motivo do Mario sempre se vestir de vermelho.",
 	"O motivo do Luigi sempre se vestir de verde.",
 	"Maconha.",
 	"Conquistar a destreza manual e esplendência tática de um garoto coreano de 12 anos.",
@@ -5850,6 +5850,7 @@
 	"O Universo Star Wars.",
 	"Conteúdo picante!",
 	"Esfregar pudim de chocolate nos mamilos do Michael Jordan.",
+	"Jorge Ben Jor.",
 	"Let me cook.",
 	"Pisar numa desgraça duma porra duma buceta de um LEGO.",
 	"Todo esse líquido na minha boca.",
@@ -5903,6 +5904,7 @@
 	"Mussolini Discoteca.",
 	"O cheiro de cadáver do corpo do Silvio Santos.",
 	"Os cinco filhos de Bolsonaro: Flávio, Carlos, Eduardo, Renan e Laura.",
+	"Os cinco filhos de Bolsonaro: 01, 02, 03, 04 e Laura.",
 	"O sexo matinal tchuco-tchaca do Sr. e Sra. Pandeiro.",
 	"Jojo Toddynho.",
 	"Roberto Carlos e sua orquestra estrelada.",

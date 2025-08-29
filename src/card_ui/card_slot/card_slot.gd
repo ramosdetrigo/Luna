@@ -43,3 +43,15 @@ func get_cards() -> Array[Control]:
 		if node is Card or node is CardGroup:
 			cards.push_back(node)
 	return cards
+
+
+
+
+
+func _on_child_entered_tree(node: Node) -> void:
+	node.custom_minimum_size.y = 0
+
+
+func _on_resized() -> void:
+	for card in get_cards():
+		card.custom_minimum_size.y = 0

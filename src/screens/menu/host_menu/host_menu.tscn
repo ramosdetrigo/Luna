@@ -125,8 +125,8 @@ layout_mode = 2
 text = "Voltar
 "
 
-[connection signal="resized" from="." to="." method="_on_resized"]
 [connection signal="pressed" from="VBoxContainer/AskJoin" to="." method="_on_ask_join_pressed"]
+[connection signal="focus_entered" from="VBoxContainer/Nickname" to="." method="_on_nickname_focus_entered"]
 [connection signal="text_changed" from="VBoxContainer/Nickname" to="." method="_on_nickname_text_changed"]
 [connection signal="toggled" from="VBoxContainer/VoteMode" to="." method="_on_vote_mode_toggled"]
 [connection signal="pressed" from="VBoxContainer/Host" to="." method="_on_host_pressed"]

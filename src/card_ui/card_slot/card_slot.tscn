@@ -21,3 +21,6 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("3_ok8ee")
 expand_mode = 1
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
+[connection signal="resized" from="." to="." method="_on_resized"]

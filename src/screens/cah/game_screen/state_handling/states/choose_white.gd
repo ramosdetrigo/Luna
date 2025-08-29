@@ -178,7 +178,6 @@ func _on_card_holder_mouse_entered() -> void:
 		add_card_to_holder(card)
 
 
-# TODO: editable black card with more than 1 choice... ugh...
 func _on_bottom_button_toggled(toggled: bool) -> void:
 	if toggled:
 		nodes.white_card_holder.set_draggable(true)

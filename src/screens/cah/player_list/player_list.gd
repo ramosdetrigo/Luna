@@ -48,3 +48,14 @@ func remove_player(player_id: int) -> void:
 	if player:
 		player_list.erase(player_id)
 		%PlayerList.remove_child(player)
+
+
+func _on_resized() -> void:
+	var viewport_size = get_viewport_rect().size
+	if viewport_size.y > 1080:
+		var new_scale = viewport_size.y / 1080
+		%ChatTopPanel.custom_minimum_size.y = 80 * new_scale
+		%ChatBottomPanel.custom_minimum_size.y = 60 * new_scale + 40
+	else:
+		%ChatTopPanel.custom_minimum_size.y = 80
+		%ChatBottomPanel.custom_minimum_size.y = 100

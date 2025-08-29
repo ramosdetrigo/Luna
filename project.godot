@@ -16,6 +16,7 @@ warnings/check_invalid_track_paths=false
 
 config/name="Luna"
 run/main_scene="uid://bjfv5r3o0xbhb"
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="uid://cqtcb4ieax1b"

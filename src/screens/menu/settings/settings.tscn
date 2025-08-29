@@ -17,7 +17,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/Fullscreen:position")
+tracks/0/path = NodePath("Control2/Control/Fullscreen:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -29,7 +29,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Control/Fullscreen:visible")
+tracks/1/path = NodePath("Control2/Control/Fullscreen:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -41,7 +41,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Control/Music:position")
+tracks/2/path = NodePath("Control2/Control/Music:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -53,7 +53,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Control/Music:visible")
+tracks/3/path = NodePath("Control2/Control/Music:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -65,7 +65,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Control/Audio:position")
+tracks/4/path = NodePath("Control2/Control/Audio:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -77,7 +77,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Control/Audio:visible")
+tracks/5/path = NodePath("Control2/Control/Audio:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -89,7 +89,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Control/Music/MusicSlider:modulate")
+tracks/6/path = NodePath("Control2/Control/Music/MusicSlider:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -101,7 +101,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Control/Audio/AudioSlider:modulate")
+tracks/7/path = NodePath("Control2/Control/Audio/AudioSlider:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -109,6 +109,30 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Control2/Control/Audio/AudioSlider:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Control2/Control/Music/MusicSlider:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_w7cmy"]
@@ -118,7 +142,7 @@ step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/Fullscreen:position")
+tracks/0/path = NodePath("Control2/Control/Fullscreen:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -130,7 +154,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Control/Fullscreen:visible")
+tracks/1/path = NodePath("Control2/Control/Fullscreen:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -142,7 +166,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Control/Music:position")
+tracks/2/path = NodePath("Control2/Control/Music:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -154,7 +178,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Control/Music:visible")
+tracks/3/path = NodePath("Control2/Control/Music:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -166,7 +190,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Control/Audio:position")
+tracks/4/path = NodePath("Control2/Control/Audio:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -178,7 +202,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Control/Audio:visible")
+tracks/5/path = NodePath("Control2/Control/Audio:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -190,7 +214,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Control/Music/MusicSlider:modulate")
+tracks/6/path = NodePath("Control2/Control/Music/MusicSlider:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -202,7 +226,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Control/Audio/AudioSlider:modulate")
+tracks/7/path = NodePath("Control2/Control/Audio/AudioSlider:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -219,7 +243,7 @@ step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/Fullscreen:position")
+tracks/0/path = NodePath("Control2/Control/Fullscreen:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -231,7 +255,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Control/Fullscreen:visible")
+tracks/1/path = NodePath("Control2/Control/Fullscreen:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -243,7 +267,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Control/Music:position")
+tracks/2/path = NodePath("Control2/Control/Music:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -255,7 +279,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Control/Music:visible")
+tracks/3/path = NodePath("Control2/Control/Music:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -267,7 +291,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Control/Audio:position")
+tracks/4/path = NodePath("Control2/Control/Audio:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -279,11 +303,59 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Control/Audio:visible")
+tracks/5/path = NodePath("Control2/Control/Audio:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control2/Control/Music/MusicSlider:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Control2/Control/Audio/AudioSlider:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(3.72529e-09, 0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Control2/Control/Audio/AudioSlider:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Control2/Control/Music/MusicSlider:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.01),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -312,11 +384,21 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 script = ExtResource("1_73aem")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control2" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Fullscreen" parent="Control" instance=ExtResource("2_qpi4s")]
+[node name="Control" type="Control" parent="Control2"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Fullscreen" parent="Control2/Control" instance=ExtResource("2_qpi4s")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(60, 60)
@@ -329,7 +411,7 @@ offset_bottom = -290.0
 texture_on = ExtResource("4_8ouht")
 texture_off = ExtResource("3_maj8y")
 
-[node name="Music" parent="Control" instance=ExtResource("2_qpi4s")]
+[node name="Music" parent="Control2/Control" instance=ExtResource("2_qpi4s")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(60, 60)
@@ -342,7 +424,7 @@ offset_bottom = -290.0
 texture_on = ExtResource("3_vrrn6")
 texture_off = ExtResource("4_22fgp")
 
-[node name="MusicSlider" type="HSlider" parent="Control/Music"]
+[node name="MusicSlider" type="HSlider" parent="Control2/Control/Music"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(200, 60)
@@ -360,7 +442,7 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="Audio" parent="Control" instance=ExtResource("2_qpi4s")]
+[node name="Audio" parent="Control2/Control" instance=ExtResource("2_qpi4s")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(60, 60)
@@ -373,7 +455,7 @@ offset_bottom = -290.0
 texture_on = ExtResource("5_rgyag")
 texture_off = ExtResource("6_u3gu1")
 
-[node name="AudioSlider" type="HSlider" parent="Control/Audio"]
+[node name="AudioSlider" type="HSlider" parent="Control2/Control/Audio"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(200, 60)
@@ -391,7 +473,7 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="Settings" parent="Control" instance=ExtResource("8_wl48j")]
+[node name="Settings" parent="Control2/Control" instance=ExtResource("8_wl48j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
@@ -404,10 +486,11 @@ libraries = {
 &"": SubResource("AnimationLibrary_migkw")
 }
 
-[connection signal="resized" from="Control" to="." method="_on_control_resized"]
-[connection signal="pulse_toggled" from="Control/Fullscreen" to="." method="_on_fullscreen_toggled"]
-[connection signal="pulse_toggled" from="Control/Music" to="." method="_on_music_toggled"]
-[connection signal="value_changed" from="Control/Music/MusicSlider" to="." method="_on_music_slider_value_changed"]
-[connection signal="pulse_toggled" from="Control/Audio" to="." method="_on_audio_toggled"]
-[connection signal="value_changed" from="Control/Audio/AudioSlider" to="." method="_on_audio_slider_value_changed"]
-[connection signal="pressed" from="Control/Settings" to="." method="_on_settings_pressed"]
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="resized" from="Control2/Control" to="." method="_on_control_resized"]
+[connection signal="pulse_toggled" from="Control2/Control/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="pulse_toggled" from="Control2/Control/Music" to="." method="_on_music_toggled"]
+[connection signal="value_changed" from="Control2/Control/Music/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="pulse_toggled" from="Control2/Control/Audio" to="." method="_on_audio_toggled"]
+[connection signal="value_changed" from="Control2/Control/Audio/AudioSlider" to="." method="_on_audio_slider_value_changed"]
+[connection signal="pressed" from="Control2/Control/Settings" to="." method="_on_settings_pressed"]

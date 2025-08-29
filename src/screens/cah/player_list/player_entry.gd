@@ -32,15 +32,18 @@ func _ready() -> void:
 	set_player_win_count(player_win_count)
 	set_player_kick_count(kick_vote_count, kick_vote_target)
 	set_player_ready(player_ready)
-	_resized()
+	%KickButton.pivot_offset = Vector2(30.0, 30.0)
+	_on_resized()
 
 
-func _resized() -> void:
+func _on_resized() -> void:
 	var sqr = Vector2(size.y, size.y)
 	%RoleImage.custom_minimum_size = sqr
 	%Checkmark.custom_minimum_size = sqr
 	%Trophy.custom_minimum_size = sqr
 	%KickButtonContainer.custom_minimum_size = sqr
+	var kick_scale = (size.y - 40.0) / 60.0
+	%KickButton.scale = Vector2(kick_scale, kick_scale)
 	
 	var font_size = 32 * size.y/80
 	%PlayerName.add_theme_font_size_override("font_size", font_size)
@@ -73,6 +76,7 @@ func set_player_name(new_name: String) -> void:
 
 func set_player_win_count(win_count: int) -> void:
 	player_win_count = win_count
+	%WinCount.text = str(win_count)
 
 
 func set_player_kick_count(kick_count: int, kick_target: int) -> void:

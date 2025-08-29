@@ -25,10 +25,11 @@ const ROLE_JUDGE: PlayerRole = PlayerRole.ROLE_JUDGE
 const ROLE_SPECTATOR: PlayerRole = PlayerRole.ROLE_SPECTATOR
 const ROLE_CONNECTING: PlayerRole = PlayerRole.ROLE_CONNECTING
 
-static func new_choice_group(cards: Array[String], player: String) -> Dictionary:
+static func new_choice_group(cards: Array[String], player: String, id: int = 0) -> Dictionary:
 	return {
 		"cards": cards,
-		"player": player
+		"player": player,
+		"id": id
 	}
 
 #region STATE

@@ -309,3 +309,8 @@ func _on_pick_slider_value_changed(value: float) -> void:
 		%PickLabel.text = "1 resposta"
 	else:
 		%PickLabel.text = "%d respostas" % value
+
+
+func _on_text_edit_focus_entered() -> void:
+	@warning_ignore("narrowing_conversion")
+	Global.TEXT_EDIT_Y = dragger.global_position.y + dragger.size.y

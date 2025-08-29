@@ -238,5 +238,6 @@ border_width = 3.0
 
 [connection signal="resized" from="." to="." method="_on_image_container_resized"]
 [connection signal="resized" from="ImageContainer" to="." method="_on_image_container_resized"]
+[connection signal="focus_entered" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextEdit" to="." method="_on_text_edit_focus_entered"]
 [connection signal="pulse_toggled" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextEditButton" to="." method="_on_text_edit_button_toggled"]
 [connection signal="value_changed" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/PickSlider" to="." method="_on_pick_slider_value_changed"]

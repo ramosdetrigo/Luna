@@ -50,6 +50,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="ChatTopPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_neehq")
@@ -70,6 +71,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ChatBottomPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_neehq")
@@ -81,3 +83,5 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
+
+[connection signal="resized" from="." to="." method="_on_resized"]

@@ -37,7 +37,7 @@ const gradient_cards: Dictionary[String, Gradient] = {
 	"Viado.": gradients[6],
 	"Arco-íris!": gradients[6],
 	"Não-binários.": gradients[7],
-	"Panssexuais.": gradients[8],
+	"Pansexuais.": gradients[8],
 	"Trans.": gradients[9],
 }
 

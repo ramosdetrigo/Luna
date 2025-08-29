@@ -6,6 +6,7 @@ var SERVER_NODE: Server
 signal audio_volume_changed(new_volume: float)
 signal music_volume_changed(new_volume: float)
 var save_timer: Timer
+var TEXT_EDIT_Y: int = 0
 
 var DISCONNECT_REASON: String = "DESCONECTADO."
 var SCREENS : Array[PackedScene] = [

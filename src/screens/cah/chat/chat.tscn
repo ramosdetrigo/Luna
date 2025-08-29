@@ -45,6 +45,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="ChatTopPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k2ufc")
@@ -70,6 +71,7 @@ bbcode_enabled = true
 scroll_following = true
 
 [node name="ChatBottomPanel" type="PanelContainer" parent="ChatPanel/ChatVBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k2ufc")
@@ -101,10 +103,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 1
 texture_on = ExtResource("9_f4yr6")
 texture_off = ExtResource("9_f4yr6")
 
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="focus_entered" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatTextEdit" to="." method="_on_chat_text_edit_focus_entered"]
 [connection signal="text_submitted" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatTextEdit" to="." method="_on_chat_text_edit_text_submitted"]
 [connection signal="pressed" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatSendButton" to="." method="_on_chat_send_button_pressed"]
-[connection signal="pressed" from="ChatPanel/ChatVBox/ChatBottomPanel/ChatBottomMargin/ChatBottomHBox/ChatSendButton" to="." method="_on_message_sent"]

@@ -29,7 +29,7 @@ func _ready() -> void:
 	
 	# (if the previous screen was choose_black)
 	# Cleans slots and drags the selected card to the correct container
-	if state.previous_game_state == CAHState.STATE_CHOOSE_WHITE:
+	if state.previous_game_state == CAHState.STATE_CHOOSE_BLACK:
 		clean_right_slot()
 		# Assumes the black card is the left one then checks
 		var black_group = nodes.left_card_slot.get_cards()

@@ -45,3 +45,14 @@ func scale_fade(leaving:bool=false, delete:bool=true) -> void:
 		modulate = Color.TRANSPARENT
 		show()
 		fade_tween.tween_property(self, "modulate", Color.WHITE, animation_speed).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+
+
+func _on_resized() -> void:
+	if not $VBoxContainer:
+		return
+	var new_scale = size / Vector2(1280, 720)
+	new_scale = Vector2(new_scale.y, new_scale.y)
+	var viewport_size = get_viewport_rect().size
+	if new_scale.y * 350 > viewport_size.x * 0.66:
+		new_scale = Vector2(viewport_size.x / 350, viewport_size.x / 350) * 0.66
+	$VBoxContainer.scale = new_scale
