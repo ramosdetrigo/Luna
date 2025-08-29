@@ -32,11 +32,16 @@ func _ready() -> void:
 		var new_card = CAH.CARD_SCENE.instantiate()
 		new_card.card_type = Card.BLACK_CARD
 		new_card.text = state.black_cards[i].text
+		new_card.pick = state.black_cards[i].pick
+		card_slots[i].add_child(new_card)
 		if state.player_role == CAHState.ROLE_JUDGE:
 			new_card.clicked.connect(_on_black_card_clicked.bind(new_card))
+			if state.edit_all_black:
+				new_card.set_edit_visible(true, false)
 		else:
 			new_card.set_clickable(false)
-		card_slots[i].add_child(new_card)
+			# Don't let players edit black cards
+			new_card.set_edit_visible(false, false)
 		black_cards.push_back(new_card)
 		new_card.dragger.set_child_modulate(Color.TRANSPARENT)
 		new_card.dragger.tween_child_modulate(Color.WHITE)
@@ -58,11 +63,19 @@ func _ready() -> void:
 		nodes.bottom_button.toggled.connect(_on_bottom_button_toggled)
 	else:
 		nodes.top_label.animate_text("Aguarde a escolha de %s." % state.current_judge)
+		for card in black_cards:
+			if card.text == "[Carta editável]":
+				card.set_edit_visible(false)
 
 
 func _exit_tree() -> void:
 	for card in black_cards:
 		card.toggle_glow(false)
+		# Makes cards into a normal card if they're editable.
+		if card.is_editable():
+			var regex = RegEx.create_from_string("_+")
+			var card_text = card.get_display_text()
+			card.set_text(regex.sub(card_text, "_", true))
 
 
 func link_new_cards(cards: Array[Card]):
@@ -94,15 +107,23 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		for card in black_cards:
 			card.set_clickable(false)
 			card.clicked.disconnect(_on_black_card_clicked)
+			if card.text == "[Carta editável]":
+				card.set_edit_visible(false)
 		var selected_bc_text = selected_black_card.text
-		for card in state.black_cards:
-			if card.text == selected_bc_text:
-				if card.text == "[Carta editável]":
-					card.text = selected_black_card.get_display_text()
-				nodes.client.choose_black.rpc_id(1, card)
-				return
+		var selected_bc_pick = selected_black_card.pick
+		if selected_bc_text == "[Carta editável]":
+			var regex = RegEx.create_from_string("_+")
+			selected_bc_text = selected_black_card.get_display_text()
+			selected_bc_text = regex.sub(selected_bc_text, "_", true)
+		var card = {
+			"text": selected_bc_text,
+			"pick": selected_bc_pick
+		}
+		nodes.client.choose_black.rpc_id(1, card)
 	else:
 		nodes.client.cancel_ready.rpc_id(1)
 		for card in black_cards:
 			card.set_clickable(true)
 			card.clicked.connect(_on_black_card_clicked)
+			if card.text == "[Carta editável]":
+				card.set_edit_visible(true)

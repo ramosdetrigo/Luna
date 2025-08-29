@@ -6,12 +6,15 @@ func _ready():
 	if Global.SERVER_NODE:
 		%Close.show()
 		%Host.hide()
+		%EditBlack.hide()
+		%EditWhite.hide()
 	else:
 		%Host.show()
+		%EditBlack.show()
+		%EditWhite.show()
 		%Close.hide()
 
 func _on_back_pressed():
-	#TODO: disable_interactive()
 	scale_fade(true)
 	change_scene.emit(Global.SCREENS[0])
 
@@ -29,6 +32,8 @@ func _on_nickname_text_changed(new_text):
 func close_server() -> void:
 	%Close.hide()
 	%Host.show()
+	%EditBlack.show()
+	%EditWhite.show()
 	if Global.SERVER_NODE:
 		Global.SERVER_NODE.multiplayer.multiplayer_peer.close()
 		Global.SERVER_NODE.multiplayer.multiplayer_peer = null
@@ -41,6 +46,8 @@ func _on_host_pressed() -> void:
 	close_server()
 	
 	var server: Server = Server.new()
+	server.game_state.edit_all_black = %EditBlack.is_toggled
+	server.game_state.edit_all_white = %EditWhite.is_toggled
 	Global.add_child(server)
 	Global.SERVER_NODE = server
 	Global.CONFIGS.ip = ""
@@ -50,11 +57,13 @@ func _on_host_pressed() -> void:
 		%Error.show()
 		return
 	
+	%Close.show()
+	%Host.hide()
+	%EditBlack.hide()
+	%EditWhite.hide()
 	if Global.CONFIGS.join:
 		scale_fade(true)
 		change_scene.emit(Global.SCREENS[4])
-		%Close.show()
-		%Host.hide()
 
 
 func _on_resized() -> void:

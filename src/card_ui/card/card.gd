@@ -31,6 +31,8 @@ var glowing: bool
 @export
 var flipped: bool = false
 
+var pick = 1
+
 # Helper var to know if do a complete or partial flip animation
 var _flipping: bool = false
 
@@ -98,13 +100,23 @@ func set_editable(toggle: bool) -> void:
 	%TextEdit.visible = editable
 	%TextEditButton.visible = editable
 	if card_type == BLACK_CARD:
+		%PickSlider.visible = editable
 		%TextEdit.material = null
 		%TextEdit.add_theme_color_override("default_color", Color.WHITE)
 		%TextEdit.add_theme_color_override("font_readonly_color", Color.WHITE)
 	else:
+		%PickSlider.hide()
 		%TextEdit.material = CAH.TEXTEDIT_MATERIAL
 		%TextEdit.remove_theme_color_override("default_color")
 		%TextEdit.add_theme_color_override("font_readonly_color", Color.BLACK)
+
+
+func set_edit_visible(toggle: bool, pick_visible: bool = true) -> void:
+	%TextEditButton.visible = toggle
+	if card_type == BLACK_CARD:
+		%PickSlider.visible = pick_visible
+	else:
+		%PickSlider.visible = false
 
 
 func set_flipped(toggle: bool, no_tween: bool = false) -> void:
@@ -229,6 +241,7 @@ func _ready() -> void:
 	%ImageContainer.dropped.connect(func(): dropped.emit())
 	%ImageContainer.clicked.connect(func(): clicked.emit())
 	set_text(text)
+	set_pick(pick)
 	await %ImageContainer.resized
 	%Image.scale = get_image_target_scale()
 	%Image.show()
@@ -252,12 +265,21 @@ func _on_text_edit_button_toggled(toggled_on: bool) -> void:
 	%TextEdit.editable = toggled_on
 	%TextEdit.selecting_enabled = toggled_on
 	
+	# Toggle for "all editable mode"
+	if not editable:
+		var previous_text = get_display_text()
+		set_text("[Carta editável]")
+		%TextEdit.text = previous_text
+		set_editable(true)
+	
 	if toggled_on:
 		%TextEdit.grab_focus()
+		%TextEdit.mouse_filter = MOUSE_FILTER_STOP
 		%TextEdit.mouse_default_cursor_shape = CURSOR_IBEAM
 		editing.emit()
 	else:
 		%TextEdit.release_focus()
+		%TextEdit.mouse_filter = MOUSE_FILTER_IGNORE
 		%TextEdit.mouse_default_cursor_shape = CURSOR_ARROW
 		edited.emit()
 #endregion CALLBACKS
@@ -275,3 +297,15 @@ func set_clickable(clickable: bool) -> void:
 #func _input(event: InputEvent) -> void:
 	#if event.is_pressed():
 		#set_flipped(not flipped)
+
+
+func set_pick(value: int) -> void:
+	%PickSlider.set_value(value)
+
+
+func _on_pick_slider_value_changed(value: float) -> void:
+	pick = value
+	if pick == 1:
+		%PickLabel.text = "1 resposta"
+	else:
+		%PickLabel.text = "%d respostas" % value

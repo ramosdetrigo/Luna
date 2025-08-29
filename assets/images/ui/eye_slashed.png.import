@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bku7syimk1jbx"
-path="res://.godot/imported/eye.png-7a3329755653a30aa63492a82d6a3566.ctex"
+uid="uid://ciw4lnh1a3xyu"
+path="res://.godot/imported/eye_slashed.png-b860452c27d02164617ec7e423a2e495.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/ui/eye.png"
-dest_files=["res://.godot/imported/eye.png-7a3329755653a30aa63492a82d6a3566.ctex"]
+source_file="res://assets/images/ui/eye_slashed.png"
+dest_files=["res://.godot/imported/eye_slashed.png-b860452c27d02164617ec7e423a2e495.ctex"]
 
 [params]
 

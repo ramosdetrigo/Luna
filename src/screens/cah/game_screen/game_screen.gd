@@ -48,6 +48,7 @@ func _ready() -> void:
 	
 	_on_viewport_size_changed()
 	%ScrollerSplit.update_offset(false)
+	%SpectateButton.set_toggled(false)
 	
 	%ConnectingPanel.toggle_visible(true)
 	%Client.game_state = game_state
@@ -130,3 +131,7 @@ func _on_chat_button_toggled(toggled: bool) -> void:
 
 func _on_confirm_panel_cancel_pressed() -> void:
 	%ConfirmPanel.fade(true, false)
+
+
+func _on_player_list_button_toggled(toggled: bool) -> void:
+	%PlayerList.fade(not toggled, false)

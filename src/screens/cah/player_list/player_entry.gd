@@ -1,6 +1,8 @@
 extends Panel
 class_name PlayerEntry
 
+signal vote_kicked(id: int)
+
 var id: int = 0
 @export
 var player_role: CAHState.PlayerRole = CAHState.ROLE_PLAYER
@@ -21,11 +23,11 @@ var YELLOW: Color = Color.hex(0xdf8e1dff)
 
 const JUDGE_ICON: CompressedTexture2D = preload("res://assets/images/ui/judge.png")
 const PLAYER_ICON: CompressedTexture2D = preload("res://assets/images/ui/singleplayer.png")
-const SPECTATOR_ICON: CompressedTexture2D = preload("res://assets/images/ui/eye.png")
+const SPECTATOR_ICON: CompressedTexture2D = preload("res://assets/images/ui/eye_white.png")
 
 
 func _ready() -> void:
-	set_role(player_role)
+	set_player_role(player_role)
 	set_player_name(player_name)
 	set_player_win_count(player_win_count)
 	set_player_kick_count(kick_vote_count, kick_vote_target)
@@ -46,7 +48,11 @@ func _resized() -> void:
 	%KickCount.add_theme_font_size_override("font_size", font_size)
 
 
-func set_role(role: CAHState.PlayerRole) -> void:
+func set_player_id(new_id: int) -> void:
+	id = new_id
+
+
+func set_player_role(role: CAHState.PlayerRole) -> void:
 	player_role = role
 	match role:
 		CAHState.ROLE_JUDGE:
@@ -78,3 +84,7 @@ func set_player_kick_count(kick_count: int, kick_target: int) -> void:
 func set_player_ready(is_ready: bool) -> void:
 	player_ready = is_ready
 	%Checkmark.visible = is_ready
+
+
+func _on_kick_button_pressed() -> void:
+	vote_kicked.emit(id)

@@ -59,23 +59,33 @@ caret_force_displayed = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Host" parent="VBoxContainer" index="4" instance=ExtResource("3_4ndd0")]
+[node name="EditBlack" parent="VBoxContainer" index="4" instance=ExtResource("6_a5t43")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "Cartas p. editáveis"
+
+[node name="EditWhite" parent="VBoxContainer" index="5" instance=ExtResource("6_a5t43")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "Cartas b. editáveis"
+
+[node name="Host" parent="VBoxContainer" index="6" instance=ExtResource("3_4ndd0")]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Abrir servidor"
 
-[node name="Close" parent="VBoxContainer" index="5" instance=ExtResource("3_4ndd0")]
+[node name="Close" parent="VBoxContainer" index="7" instance=ExtResource("3_4ndd0")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Fechar servidor"
 expand_icon = true
 
-[node name="Separator5" type="Control" parent="VBoxContainer" index="6"]
+[node name="Separator5" type="Control" parent="VBoxContainer" index="8"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Error" type="HBoxContainer" parent="VBoxContainer" index="7"]
+[node name="Error" type="HBoxContainer" parent="VBoxContainer" index="9"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.823529, 0.0588235, 0.223529, 1)
@@ -97,15 +107,15 @@ text = "Erro abrindo servidor"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Separator4" type="Control" parent="VBoxContainer" index="8"]
+[node name="Separator4" type="Control" parent="VBoxContainer" index="10"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Separator3" type="Control" parent="VBoxContainer" index="9"]
+[node name="Separator3" type="Control" parent="VBoxContainer" index="11"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Back" parent="VBoxContainer" index="10" instance=ExtResource("3_4ndd0")]
+[node name="Back" parent="VBoxContainer" index="12" instance=ExtResource("3_4ndd0")]
 layout_mode = 2
 text = "Voltar
 "

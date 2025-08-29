@@ -39,7 +39,6 @@ func _ready() -> void:
 	# Erase old cards from the card slots
 	clean_card_slots()
 	
-	# TODO: não criar a carta preta se ela já existe
 	if state.previous_game_state != CAHState.STATE_CHOOSE_WHITE:
 		black_card = CAH.CARD_SCENE.instantiate()
 		black_card.text = state.black_cards[0].text

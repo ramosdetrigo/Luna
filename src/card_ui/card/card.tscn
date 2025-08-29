@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bgei4l44scxyg"]
+[gd_scene load_steps=17 format=3 uid="uid://bgei4l44scxyg"]
 
 [ext_resource type="Script" uid="uid://d11fr76d7gvjv" path="res://src/card_ui/card/card.gd" id="1_of7fp"]
 [ext_resource type="Texture2D" uid="uid://bh1wjx00rc4ff" path="res://assets/images/cards/white_front.png" id="2_mxmy7"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://0av12aiq7agl" path="res://assets/images/ui/pencil.png" id="5_feltw"]
 [ext_resource type="Material" uid="uid://dkpbibxjep4ot" path="res://src/card_ui/card/edge.tres" id="5_tgw1k"]
 [ext_resource type="Texture2D" uid="uid://cfncsj4ixc2ja" path="res://assets/images/cards/border.png" id="7_spel0"]
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="11_wnunt"]
 
 [sub_resource type="Environment" id="Environment_tgw1k"]
 ambient_light_source = 2
@@ -45,7 +46,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 ratio = 0.6576
 script = ExtResource("1_of7fp")
-text = "Cubo."
+text = "[Carta editável]"
 card_type = 1
 
 [node name="ImageContainer" type="Container" parent="."]
@@ -85,6 +86,7 @@ mouse_filter = 2
 [node name="TextEdit" type="TextEdit" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 visible = false
+layout_mode = 0
 offset_left = 40.978
 offset_top = 48.143
 offset_right = 504.978
@@ -151,6 +153,7 @@ scroll_active = false
 [node name="CubeViewportTexture" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 visible = false
+layout_mode = 0
 offset_left = 19.978
 offset_top = 177.143
 offset_right = 517.978
@@ -161,6 +164,7 @@ expand_mode = 1
 
 [node name="TextViewportTexture" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 40.978
 offset_top = 39.143
 offset_right = 494.978
@@ -179,7 +183,6 @@ texture = ExtResource("7_spel0")
 
 [node name="TextEditButton" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff" instance=ExtResource("4_js1fh")]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 offset_left = -48.7579
@@ -191,6 +194,43 @@ is_toggled = false
 texture_on = ExtResource("5_cxcvc")
 texture_off = ExtResource("5_feltw")
 
+[node name="PickSlider" type="HSlider" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 836.0
+offset_right = 494.0
+offset_bottom = 900.0
+theme = ExtResource("11_wnunt")
+min_value = 1.0
+max_value = 3.0
+value = 1.0
+rounded = true
+scrollable = false
+tick_count = 3
+ticks_on_borders = true
+
+[node name="PickLabel" type="Label" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/PickSlider"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.0
+offset_top = -30.5
+offset_right = 89.0
+offset_bottom = 30.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_wnunt")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 42
+text = "1 resposta"
+
 [node name="ReferenceRect" type="ReferenceRect" parent="."]
 layout_mode = 2
 mouse_filter = 2
@@ -199,3 +239,4 @@ border_width = 3.0
 [connection signal="resized" from="." to="." method="_on_image_container_resized"]
 [connection signal="resized" from="ImageContainer" to="." method="_on_image_container_resized"]
 [connection signal="pulse_toggled" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextEditButton" to="." method="_on_text_edit_button_toggled"]
+[connection signal="value_changed" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/PickSlider" to="." method="_on_pick_slider_value_changed"]

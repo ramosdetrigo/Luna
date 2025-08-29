@@ -48,6 +48,7 @@ func _ready() -> void:
 			new_card.card_type = Card.CardType.BLACK_CARD
 			new_card.set_clickable(false)
 			nodes.left_card_slot.add_child(new_card) # give it a parent to make it reparentable
+			selected_black_card = new_card
 			clean_left_slot()
 			clean_right_slot()
 		
@@ -187,6 +188,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		for card in nodes.white_card_holder.get_cards():
 			if card.is_editable():
 				cards.push_back(card.get_display_text())
+				card.set_edit_visible(false)
 			else:
 				cards.push_back(card.text)
 		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
@@ -194,6 +196,9 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 	else:
 		nodes.client.cancel_ready.rpc_id(1)
 		var white_choices = state.black_cards[0].pick
+		for card in nodes.white_card_holder.get_cards():
+			if card.is_editable():
+				card.set_edit_visible(true)
 		if white_choices == 1:
 			nodes.top_label.animate_text("Selecione sua carta.")
 		else:

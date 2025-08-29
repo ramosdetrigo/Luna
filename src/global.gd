@@ -104,10 +104,10 @@ func load_save() -> void:
 		if username and username is String:
 			set_username(username)
 		var audio_volume = save_data.get("audio_volume")
-		if audio_volume and audio_volume is float:
+		if audio_volume != null and audio_volume is float:
 			set_audio_volume(clamp(audio_volume, 0.0, 1.0))
 		var music_volume = save_data.get("music_volume")
-		if music_volume and music_volume is float:
+		if music_volume != null and music_volume is float:
 			set_music_volume(clamp(music_volume, 0.0, 1.0))
 
 func _notification(what: int) -> void:

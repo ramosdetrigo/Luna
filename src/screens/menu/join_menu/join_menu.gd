@@ -15,7 +15,6 @@ func _on_join_pressed():
 
 
 func _on_back_pressed():
-	#TODO: disable_interactive()
 	scale_fade(true)
 	change_scene.emit(Global.SCREENS[0])
 

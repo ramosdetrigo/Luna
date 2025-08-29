@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c3fk5f6o5vtr7"]
+[gd_scene load_steps=27 format=3 uid="uid://c3fk5f6o5vtr7"]
 
 [ext_resource type="Script" uid="uid://c4823xxpi80bs" path="res://src/screens/cah/game_screen/game_screen.gd" id="1_qaexu"]
 [ext_resource type="PackedScene" uid="uid://xsivno8npp4i" path="res://src/card_ui/card_scroller/card_scroller.tscn" id="2_3ulvs"]
@@ -14,8 +14,11 @@
 [ext_resource type="Script" uid="uid://of1q8s48itpc" path="res://src/screens/cah/game_screen/connecting_panel.gd" id="11_1mmlo"]
 [ext_resource type="Script" uid="uid://cgputfm08k270" path="res://src/screens/cah/game_screen/client.gd" id="12_0461g"]
 [ext_resource type="PackedScene" uid="uid://wqg1ulep46fv" path="res://src/screens/cah/chat/chat.tscn" id="12_dlfji"]
+[ext_resource type="PackedScene" uid="uid://c5w3fx00hnrot" path="res://src/screens/cah/player_list/player_list.tscn" id="13_lriuk"]
 [ext_resource type="Texture2D" uid="uid://br0d5b18rlha4" path="res://assets/images/ui/menuList.png" id="13_tpuab"]
 [ext_resource type="Texture2D" uid="uid://btot01ow8qsw8" path="res://assets/images/ui/return.png" id="14_avejo"]
+[ext_resource type="Texture2D" uid="uid://ciw4lnh1a3xyu" path="res://assets/images/ui/eye_slashed.png" id="15_kd60j"]
+[ext_resource type="Texture2D" uid="uid://bku7syimk1jbx" path="res://assets/images/ui/eye.png" id="15_lnfi4"]
 [ext_resource type="PackedScene" uid="uid://bl3ii81dfb0j" path="res://src/screens/cah/confirm_panel/confirm_panel.tscn" id="18_acp4u"]
 [ext_resource type="Texture2D" uid="uid://b4p14y2p8a1gl" path="res://assets/images/ui/exit.png" id="21_7n8ay"]
 [ext_resource type="Texture2D" uid="uid://dxshxsxjqnn1q" path="res://assets/images/ui/massiveMultiplayer.png" id="21_mqnxu"]
@@ -266,6 +269,11 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
+[node name="PlayerList" parent="Chat" instance=ExtResource("13_lriuk")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
 [node name="ChatButtonsMargin" type="MarginContainer" parent="Chat"]
 layout_mode = 1
 anchors_preset = 15
@@ -301,6 +309,17 @@ size_flags_vertical = 4
 is_toggled = false
 texture_on = ExtResource("13_tpuab")
 texture_off = ExtResource("13_tpuab")
+
+[node name="SpectateButton" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer" instance=ExtResource("3_qrh6e")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+is_toggleable = false
+is_toggled = false
+texture_on = ExtResource("15_kd60j")
+texture_off = ExtResource("15_lnfi4")
 
 [node name="ResetCardsButton" parent="Chat/ChatButtonsMargin/Control/ChatButtonsContainer" instance=ExtResource("3_qrh6e")]
 custom_minimum_size = Vector2(60, 60)
@@ -419,6 +438,9 @@ script = ExtResource("12_0461g")
 [connection signal="drag_ended" from="Game/VBoxContainer/VSplitContainer" to="Game/VBoxContainer/VSplitContainer" method="_on_drag_ended"]
 [connection signal="resized" from="Game/VBoxContainer/VSplitContainer/ScrollerSplit" to="Game/VBoxContainer/VSplitContainer/ScrollerSplit" method="update_offset"]
 [connection signal="message_sent" from="Chat" to="Client" method="_on_message_sent"]
+[connection signal="player_vote_kicked" from="Chat/PlayerList" to="Client" method="_on_player_list_player_vote_kicked"]
+[connection signal="pulse_toggled" from="Chat/ChatButtonsMargin/Control/ChatButtonsContainer/PlayerListButton" to="." method="_on_player_list_button_toggled"]
+[connection signal="pressed" from="Chat/ChatButtonsMargin/Control/ChatButtonsContainer/SpectateButton" to="Client" method="_on_spectate_button_pressed"]
 [connection signal="pressed" from="Chat/ChatButtonsMargin/Control/ChatButtonsContainer/ResetCardsButton" to="Client" method="_on_reset_cards_button_pressed"]
 [connection signal="pulse_toggled" from="ButtonsMargin/Control/ButtonsContainer/ChatButton" to="." method="_on_chat_button_toggled"]
 [connection signal="pressed" from="ButtonsMargin/Control/ButtonsContainer/ExitButton" to="." method="_on_exit_button_pressed"]

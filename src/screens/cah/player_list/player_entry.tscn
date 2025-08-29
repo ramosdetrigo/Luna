@@ -116,3 +116,5 @@ is_toggleable = false
 is_toggled = false
 texture_on = ExtResource("7_ehq1x")
 texture_off = ExtResource("7_ehq1x")
+
+[connection signal="pressed" from="PlayerEntry/KickButtonContainer/KickButton" to="." method="_on_kick_button_pressed"]

@@ -35,6 +35,8 @@ static func new_choice_group(cards: Array[String], player: String) -> Dictionary
 var player_role: PlayerRole = PlayerRole.ROLE_PLAYER
 
 var current_judge: String = ""
+var edit_all_black: bool = false
+var edit_all_white: bool = false
 
 var previous_game_state: GameState = GameState.STATE_CONNECTING
 var current_game_state: GameState = GameState.STATE_CONNECTING
