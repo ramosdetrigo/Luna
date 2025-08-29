@@ -245,8 +245,6 @@ grow_vertical = 0
 
 [node name="Confetti" type="CPUParticles2D" parent="ParticlesAnchor"]
 unique_name_in_owner = true
-z_index = 1
-z_as_relative = false
 emitting = false
 amount = 150
 texture = ExtResource("10_lfrdv")

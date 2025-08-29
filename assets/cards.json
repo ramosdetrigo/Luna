@@ -449,7 +449,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"_ estaria lamentávelmente incompleta sem _.",
+	  "text":"_ estaria lamentavelmente incompleta sem _.",
 	  "pick":2
 	},
 	{
@@ -517,7 +517,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"*BANG*\nTodo mundo no chão! Não queremos machucar ninguém!\nNós só estamos aqui por _.",
+	  "text":"[b]*BANG*[/b]\nTodo mundo no chão! Não queremos machucar ninguém!\nNós só estamos aqui por _.",
 	  "pick":1
 	},
 	{
@@ -529,7 +529,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"O jogo de mímica foi destruído pra sempre pra mim quando minha mãe teve que imitar _ na minha frente.",
+	  "text":"O jogo de mímica foi arruinado pra sempre pra mim quando minha mãe teve que imitar _ na minha frente.",
 	  "pick":1
 	},
 	{
@@ -581,7 +581,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"Chamem a polícia! Ninguém deveria ter que lidar com _ no espaço de trabalho.",
+	  "text":"Eu vou chamar a polícia! Ninguém deveria ter que lidar com _ no espaço de trabalho!",
 	  "pick":1
 	},
 	{
@@ -589,7 +589,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"O encontro às cegas estava indo muito mal. Mas aí nós descobrimos que temos um interesse mútuo em _.",
+	  "text":"Nosso encontro às cegas estava indo muito mal. Mas aí nós descobrimos que temos um interesse mútuo em _.",
 	  "pick":1
 	},
 	{
@@ -677,7 +677,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"Em troca da minha alma, o diabo me prometeu _, mas tudo que ele me deu foi _.",
+	  "text":"Em troca da minha alma o diabo me prometeu _, mas tudo que ele me deu foi _.",
 	  "pick":2
 	},
 	{
@@ -777,6 +777,10 @@
 	  "pick":1
 	},
 	{
+	  "text":"Perry o ornitorrinco! Contemple o meu _inator!",
+	  "pick":1
+	},
+	{
 	  "text":"Terno social: R$1.500,00\nJantar pra dois no Coco Bambu: R$350,00\nO olhar na cara dela quando você a surpreender com _: Não tem preço.",
 	  "pick":1
 	},
@@ -837,7 +841,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"Em sua carta de despedida, Getúlio Vargas notóriamente avisou os Brasileiros sobre os perigos de _.",
+	  "text":"Em sua carta de despedida, Getúlio Vargas notoriamente avisou os Brasileiros sobre os perigos de _.",
 	  "pick":1
 	},
 	{
@@ -849,7 +853,7 @@
 	  "pick":1
 	},
 	{
-	  "text":"A SUA MÃE É TÃO GORDA, MAS TÃO GORDA QUE ELA _!",
+	  "text":"A SUA MÃE É TÃO GORDA, MAS TÃO GORDA, QUE ELA _!",
 	  "pick":1
 	},
 	{
@@ -857,7 +861,7 @@
 	  "pick":2
 	},
 	{
-	  "text":"Oi, aqui é o Marcos da contabilidade. Nós encontramos uma multa de R$1.200,00 com a legenda \"_\" no seu nome. Você poderia nos explicar?",
+	  "text":"Oi, aqui é o Marcos da contabilidade. Nós encontramos uma multa de R$1.200,00 com a descrição \"_\" no seu nome. Você poderia nos explicar?",
 	  "pick":1
 	},
 	{
