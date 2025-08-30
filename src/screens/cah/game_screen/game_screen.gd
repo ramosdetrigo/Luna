@@ -150,6 +150,8 @@ func _on_chat_button_toggled(toggled: bool) -> void:
 
 
 func _on_confirm_panel_cancel_pressed() -> void:
+	for connection in %ConfirmPanel.ok_pressed.get_connections():
+		%ConfirmPanel.ok_pressed.disconnect(connection.callable)
 	%ConfirmPanel.fade(true, false)
 
 

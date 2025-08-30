@@ -69,6 +69,9 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
+	print("Cartas brancas: %d" % len(CARDS.whiteCards))
+	print("Cartas pretas: %d" % len(CARDS.blackCards))
+	
 	#print(random_black())
 	#print(random_white())
 

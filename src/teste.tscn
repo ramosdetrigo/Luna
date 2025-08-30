@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://h6336xo13i5u"]
+
+[ext_resource type="Script" uid="uid://cidv71uy5qn47" path="res://src/teste.gd" id="1_b6nnh"]
+
+[node name="Teste" type="Node2D"]
+script = ExtResource("1_b6nnh")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_right = 522.0
+offset_bottom = 353.0
+bbcode_enabled = true

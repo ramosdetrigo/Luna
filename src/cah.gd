@@ -67,3 +67,51 @@ const custom_cards: Dictionary[String, Dictionary] = {
 	"<Felps bombado>": {"text": "", "texture": textures[9]},
 	"<Pau>": {"text": "", "texture": textures[10]}
 }
+
+
+# Wraps emojis in white color BBCode
+func wrap_emojis(text: String) -> String:
+	const wrap_in = "<:!in!:>"
+	const wrap_out = "<:!out!:>"
+	const wrap_out_in = wrap_out + wrap_in
+	var out := ""
+	var i := 0
+	while i < text.length():
+		var ch = text.substr(i, 1)
+
+		# quick regex check for base emoji
+		if RegEx.create_from_string("[\\p{Extended_Pictographic}]").search(ch):
+			var cluster = ch
+			i += 1
+			# absorb modifiers, ZWJ sequences, variation selectors
+			while i < text.length():
+				var next = text.substr(i, 1)
+				var cp = next.unicode_at(0)
+				# Zero Width Joiner → continue cluster
+				if cp == 0x200D:
+					cluster += next
+					i += 1
+					if i < text.length():
+						cluster += text.substr(i, 1)
+						i += 1
+					continue
+				# Fitzpatrick skin tones
+				elif cp >= 0x1F3FB and cp <= 0x1F3FF:
+					cluster += next
+					i += 1
+					continue
+				# Variation Selector-16 (emoji presentation)
+				elif cp == 0xFE0F:
+					cluster += next
+					i += 1
+					continue
+				else:
+					break
+			out += wrap_in + cluster + wrap_out
+		else:
+			out += ch
+			i += 1
+	out = out.replace(wrap_out_in, "")
+	out = out.replace(wrap_in, "[color=#ffffff]")
+	out = out.replace(wrap_out, "[/color]")
+	return out

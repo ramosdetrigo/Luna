@@ -186,7 +186,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		var cards: Array[String] = []
 		for card in nodes.white_card_holder.get_cards():
 			if card.is_editable():
-				cards.push_back(card.get_display_text())
+				cards.push_back(CAH.wrap_emojis(card.get_display_text()))
 				card.set_edit_visible(false)
 			else:
 				cards.push_back(card.text)

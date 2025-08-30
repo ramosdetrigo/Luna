@@ -31,6 +31,7 @@ CAH="*res://src/cah.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/mode=3
 window/handheld/orientation=1
 
 [editor_plugins]
