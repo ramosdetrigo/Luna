@@ -191,9 +191,9 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 			else:
 				cards.push_back(card.text)
 		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
-		nodes.client.choose_white.rpc_id(1, card_group)
+		nodes.client.server_player_chose_white.rpc_id(1, card_group)
 	else:
-		nodes.client.cancel_ready.rpc_id(1)
+		nodes.client.server_cancel_ready.rpc_id(1)
 		var white_choices = state.black_cards[0].pick
 		for card in nodes.white_card_holder.get_cards():
 			if card.is_editable():

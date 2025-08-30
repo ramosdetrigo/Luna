@@ -31,7 +31,7 @@ func create_client() -> void:
 
 #region CLIENT RPC
 @rpc("authority", "call_remote", "reliable")
-func add_cards(new_cards: Array) -> void:
+func client_add_cards(new_cards: Array) -> void:
 	var card_nodes: Array[Card] = []
 	for card_text in new_cards:
 		var card = CAH.CARD_SCENE.instantiate()
@@ -46,19 +46,14 @@ func add_cards(new_cards: Array) -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func add_message(message: String) -> void:
+func client_add_message(message: String) -> void:
 	if not %Chat.visible:
 		%NotifyBall.show()
 	%Chat.add_message(message)
 
 
 @rpc("authority", "call_remote", "reliable")
-func notify(message: String) -> void:
-	add_message(message)
-
-
-@rpc("authority", "call_remote", "reliable")
-func update_state(new_state: Dictionary) -> void:
+func client_update_state(new_state: Dictionary) -> void:
 	game_state.draw = new_state.draw
 	game_state.vote_mode = new_state.vote_mode
 	game_state.edit_all_black = new_state.edit_all_black
@@ -100,12 +95,12 @@ func update_state(new_state: Dictionary) -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func update_player_list(player_list: Array[Dictionary]) -> void:
+func client_update_player_list(player_list: Array[Dictionary]) -> void:
 	%PlayerList.update_player_list(player_list)
 
 
 @rpc("authority", "call_remote", "reliable")
-func judge_flipped_group(card_group: Array[String]) -> void:
+func client_group_flipped(card_group: Array[String]) -> void:
 	for group in %JudgeScroller.get_card_list():
 		if group is not CardGroup:
 			continue
@@ -117,41 +112,60 @@ func judge_flipped_group(card_group: Array[String]) -> void:
 
 # the player is kicked anyways. this is just for a pretty message in the disconnect screen lol
 @rpc("authority", "call_remote", "reliable")
-func kicked() -> void:
-	disconnected.emit("VOCÊ FOI EXPULSO.")
+func client_disconnect(reason: String) -> void:
+	disconnected.emit(reason)
+
+
+@rpc("authority", "call_remote", "reliable")
+func client_get_rooms(_rooms: Array[Dictionary]) -> void: pass
+
+
+@rpc("authority", "call_remote", "reliable")
+func client_invalid_room_name(_reason: String) -> void: pass
+
+
+@rpc("authority", "call_remote", "reliable")
+func client_room_created() -> void: pass
 #endregion CLIENT RPC
 
 
 #region SERVER RPC
 @rpc("any_peer", "call_remote", "reliable")
-func name_changed(_new_name: String) -> void: pass
+func server_join_room(_username: String, _room_name: String, _password: String) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func message_sent(_message: String) -> void: pass
+func server_message_sent(_message: String) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func choose_black(_black_card: Dictionary) -> void: pass
+func server_player_chose_black(_black_card: Dictionary) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func choose_white(_white_group: Dictionary) -> void: pass
+func server_player_chose_white(_white_group: Dictionary) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func winner_ready() -> void: pass
+# Only used on winner screen
+func server_player_ready() -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func cancel_ready() -> void: pass
+func server_cancel_ready() -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func new_cards_request(_card_num: int) -> void: pass
+func server_cards_request(_card_num: int) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func flip_group(_card_group: Array[String]) -> void: pass
+func server_group_flipped(_card_group: Array[String]) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func vote_for_kicking_player(_player_id: int) -> void: pass
+func server_kick_vote(_target_id: int) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func toggle_spectator(_toggle: bool) -> void: pass
+func server_toggle_spectator(_toggle: bool) -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func server_get_rooms() -> void: pass
+	
+@rpc("any_peer", "call_remote", "reliable")
+func server_create_room(_room_name: String, _password: String, _rules: Dictionary[String, bool]) -> void: pass
 #endregion SERVER RPC
 
 
@@ -159,7 +173,7 @@ func toggle_spectator(_toggle: bool) -> void: pass
 func _on_peer_connected(peer_id: int) -> void:
 	print("Client: Peer connected: %d" % peer_id)
 	if peer_id == 1: # only accept from server
-		name_changed.rpc_id(1, Global.CONFIGS.username)
+		server_join_room.rpc_id(1, Global.CONFIGS.username, "", "")
 
 func _on_peer_disconnected(peer_id: int) -> void:
 	print("Client: Peer disconnected: %d" % peer_id)
@@ -179,7 +193,7 @@ func _on_server_disconnected() -> void:
 
 # When the user sends a message via the chat screen
 func _on_message_sent(message: String) -> void:
-	message_sent.rpc_id(1, message)
+	server_message_sent.rpc_id(1, message)
 
 
 func _on_reset_cards_button_pressed() -> void:
@@ -198,11 +212,11 @@ func send_card_reset_request() -> void:
 	for card in %CardScroller.get_card_list():
 		if card is not Card: continue
 		%CardScroller.remove_card(card)
-	new_cards_request.rpc_id(1, 10)
+	server_cards_request.rpc_id(1, 10)
 
 
 func _on_player_list_player_vote_kicked(id: int) -> void:
-	vote_for_kicking_player.rpc_id(1, id)
+	server_kick_vote.rpc_id(1, id)
 
 
 func _on_spectate_button_pressed() -> void:
@@ -214,6 +228,6 @@ func _on_spectate_button_pressed() -> void:
 	%ConfirmPanel.fade(false, false)
 	%ConfirmPanel.ok_pressed.connect(func():
 		%SpectateButton.set_toggled(not %SpectateButton.is_toggled)
-		toggle_spectator.rpc_id(1, %SpectateButton.is_toggled)
+		server_toggle_spectator.rpc_id(1, %SpectateButton.is_toggled)
 		%ConfirmPanel.fade(true, false)
 	, CONNECT_ONE_SHOT)

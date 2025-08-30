@@ -71,9 +71,6 @@ func _ready() -> void:
 	
 	print("Cartas brancas: %d" % len(CARDS.whiteCards))
 	print("Cartas pretas: %d" % len(CARDS.blackCards))
-	
-	#print(random_black())
-	#print(random_white())
 
 
 #region HELPER
@@ -121,7 +118,7 @@ func change_role(player: Player, new_role: CAHState.PlayerRole) -> void:
 func random_black() -> Dictionary:
 	# re-shuffles the used cards if necessary.
 	if len(black_cards_pile) == 0:
-		black_cards_pile = CARDS.black_cards.duplicate()
+		black_cards_pile = CARDS.blackCards.duplicate()
 		black_cards_pile.shuffle()
 	return black_cards_pile.pop_back()
 
@@ -129,7 +126,7 @@ func random_black() -> Dictionary:
 func random_white() -> String:
 	# re-shuffles the used cards if necessary.
 	if len(white_cards_pile) == 0:
-		white_cards_pile = CARDS.white_cards.duplicate()
+		white_cards_pile = CARDS.whiteCards.duplicate()
 		white_cards_pile.shuffle()
 	return white_cards_pile.pop_back()
 
@@ -142,9 +139,11 @@ func all_category_players_ready(category: Dictionary[int, Player], ignore_zero: 
 			return false
 	return true
 
+
 func set_all_players_ready(r: bool) -> void:
 	for player: Player in player_list.values():
 		player.ready = r
+
 
 func get_highest_voted_whites(ignore_draws: bool = false) -> Array[Dictionary]:
 	var counting_dict: Dictionary[String, int] = {}
@@ -169,26 +168,38 @@ func get_highest_voted_whites(ignore_draws: bool = false) -> Array[Dictionary]:
 			max_groups.push_back(reverse_dict[key])
 	return max_groups
 
+
 func get_highest_voted_black() -> Dictionary:
-	var counting_dict: Dictionary[String, int] = {}
-	var reverse_dict: Dictionary[String, Dictionary] = {}
-	for judge: Player in role_judges.values():
-		var key = str(judge.choice_black)
-		if counting_dict.get(key) == null:
-			counting_dict.set(key, 0) # set serialized dict as key
-			reverse_dict.set(key, judge.choice_black)
-		counting_dict[key] += 1
-	
-	var max_count = 0
-	var max_group = {}
-	var keys = counting_dict.keys()
-	keys.shuffle() # helps with random choice if it's a draw
-	for key in keys:
-		var count = counting_dict[key]
-		if count > max_count:
-			max_count = count
-			max_group = reverse_dict[key]
-	return max_group
+	if not (game_state.vote_mode and game_state.edit_all_black):
+		var counting_dict: Dictionary[String, int] = {}
+		var reverse_dict: Dictionary[String, Dictionary] = {}
+		for judge: Player in role_judges.values():
+			var key = str(judge.choice_black)
+			if counting_dict.get(key) == null:
+				counting_dict.set(key, 0) # set serialized dict as key
+				reverse_dict.set(key, judge.choice_black)
+			counting_dict[key] += 1
+		
+		var max_count: int = 0
+		var max_group: Dictionary = {}
+		var keys = counting_dict.keys()
+		keys.shuffle() # helps with random choice if it's a draw
+		for key in keys:
+			var count = counting_dict[key]
+			if count > max_count:
+				max_count = count
+				max_group = reverse_dict[key]
+		return max_group
+	else: # Pick a random one if people can edit black cards
+		var black_choices: Array[Dictionary] = []
+		for judge: Player in role_judges.values():
+			black_choices.push_back(judge.choice_black)
+		
+		return black_choices[randi_range(0, len(black_choices) - 1)]
+
+
+func server_message(text: String) -> void:
+	client_add_message.rpc("[code][color=#71b7ff]SERVER: %s[/color][/code]" % text)
 #endregion HELPER
 
 
@@ -262,16 +273,16 @@ func send_state_to_all() -> void:
 	var state = dict_from_state(CAHState.ROLE_CONNECTING)
 	for player: Player in player_list.values():
 		state.player_role = player.role
-		update_state.rpc_id(player.id, state)
+		client_update_state.rpc_id(player.id, state)
 
 func send_player_list(to_id: int = -1) -> void:
 	var list: Array[Dictionary] = []
 	for player: Player in player_list.values():
 		list.push_back(player.into_dict())
 	if to_id == -1:
-		update_player_list.rpc(list)
+		client_update_player_list.rpc(list)
 	else:
-		update_player_list.rpc_id(to_id, list)
+		client_update_player_list.rpc_id(to_id, list)
 
 
 func check_all_ready() -> void:
@@ -280,6 +291,7 @@ func check_all_ready() -> void:
 			if all_category_players_ready(role_judges):
 				set_all_players_ready(false)
 				# Conta pra ver qual foi a carta preta mais escolhida
+				
 				var max_black = get_highest_voted_black()
 				game_state.black_cards = [max_black]
 				set_game_state(CAHState.STATE_CHOOSE_WHITE)
@@ -297,7 +309,7 @@ func check_all_ready() -> void:
 						var new_cards = []
 						for i in range(game_state.black_cards[0].pick):
 							new_cards.push_back(random_white())
-						add_cards.rpc_id(p.id, new_cards)
+						client_add_cards.rpc_id(p.id, new_cards)
 				
 				# Conta pra ver qual foi o grupo mais escolhido
 				# (ignora empates se já teve segundo turno)
@@ -336,17 +348,14 @@ func check_all_ready() -> void:
 # This function both handles new connections and name changes
 # (new connections require the name to be set up, etc.)
 @rpc("any_peer", "call_remote", "reliable")
-func name_changed(new_name: String) -> void:
+func server_join_room(username: String, _room_name: String, _password: String) -> void:
 	var id = multiplayer.get_remote_sender_id()
-	# If player is already in player list, just change its name
 	if id in player_list.keys():
-		player_list[id].name = new_name
-		send_player_list()
 		return
 	# Else, the player just joined. Create a new player!
 	var player = Player.new()
 	player.id = id
-	player.username = new_name
+	player.username = username
 	# Adds player to queue of next judges
 	if len(judge_queue) == 1:
 		# Prevents a player from being judge twice in a row
@@ -367,44 +376,44 @@ func name_changed(new_name: String) -> void:
 		# Caso contrário, vira player (modo voto em choose_white)
 		else:
 			change_role(player, CAHState.ROLE_PLAYER)
-			update_state.rpc_id(id, dict_from_state(player.role))
+			client_update_state.rpc_id(id, dict_from_state(player.role))
 	# Caso já exista juiz e seja modo votação
 	elif game_state.vote_mode and game_state.current_game_state != CAHState.STATE_CHOOSE_WHITE:
 		change_role(player, CAHState.ROLE_JUDGE)
-		update_state.rpc_id(id, dict_from_state(player.role))
+		client_update_state.rpc_id(id, dict_from_state(player.role))
 	# Caso contrário (modo normal e já tem juiz)
 	else:
 		change_role(player, CAHState.ROLE_PLAYER)
-		update_state.rpc_id(id, dict_from_state(player.role))
+		client_update_state.rpc_id(id, dict_from_state(player.role))
 	
 	# Generates their new cards
 	var new_cards = []
 	for i in range(10):
 		new_cards.push_back(random_white())
-	add_cards.rpc_id(id, new_cards)
+	client_add_cards.rpc_id(id, new_cards)
 
 	if game_state.current_game_state == CAHState.STATE_JUDGEMENT:
 		for card_group in flipped_cards:
-			judge_flipped_group.rpc_id(player.id, card_group)
+			client_group_flipped.rpc_id(player.id, card_group)
 	# generates a chat color for the player
 	var lgbt: Gradient = CAH.gradients[6]
 	var color = lgbt.sample(randf())
 	var hex = color.to_html(false)
 	player.color = hex
 	# Notifies everyone that a player has joined
-	notify.rpc("[code][color=#71b7ff]SERVER: %s entrou no jogo.[/color][/code]" % player.username)
+	server_message("%s entrou no jogo." % player.username)
 	send_player_list()
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func message_sent(message: String) -> void:
+func server_message_sent(message: String) -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player:
-		add_message.rpc("[b][color=#%s]%s[/color][/b]: %s" % [player.color, player.username, message])
+		client_add_message.rpc("[b][color=#%s]%s[/color][/b]: %s" % [player.color, player.username, message])
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func choose_black(black_card: Dictionary) -> void:
+func server_player_chose_black(black_card: Dictionary) -> void:
 	if game_state.current_game_state != CAHState.STATE_CHOOSE_BLACK:
 		return
 	var player = player_list.get(multiplayer.get_remote_sender_id())
@@ -418,7 +427,7 @@ func choose_black(black_card: Dictionary) -> void:
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func choose_white(white_group: Dictionary) -> void:
+func server_player_chose_white(white_group: Dictionary) -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player == null:
 		return
@@ -442,7 +451,8 @@ func choose_white(white_group: Dictionary) -> void:
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func winner_ready() -> void:
+# Only used on winner screen
+func server_player_ready() -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player and game_state.current_game_state == CAHState.STATE_WINNER:
 		player.ready = true
@@ -450,23 +460,24 @@ func winner_ready() -> void:
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func cancel_ready() -> void:
+func server_cancel_ready() -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player and game_state.current_game_state != CAHState.STATE_WINNER:
 		player.ready = false
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func new_cards_request(card_num: int) -> void:
+func server_cards_request(card_num: int) -> void:
 	var player = player_list.get(multiplayer.get_remote_sender_id())
 	if player:
 		var new_cards = []
 		for i in range(card_num):
 			new_cards.push_back(random_white())
-		add_cards.rpc_id(player.id, new_cards)
+		client_add_cards.rpc_id(player.id, new_cards)
+
 
 @rpc("any_peer", "call_remote", "reliable")
-func flip_group(card_group: Array[String]) -> void:
+func server_group_flipped(card_group: Array[String]) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var player = player_list.get(id)
 	if not player or player.role != CAHState.ROLE_JUDGE:
@@ -476,56 +487,57 @@ func flip_group(card_group: Array[String]) -> void:
 	for p in player_list.values():
 		if p == player:
 			continue
-		judge_flipped_group.rpc_id(p.id, card_group)
+		client_group_flipped.rpc_id(p.id, card_group)
+
 
 @rpc("any_peer", "call_remote", "reliable")
-func vote_for_kicking_player(player_id: int) -> void:
-	var player: Player = player_list.get(player_id)
-	if not player:
+func server_kick_vote(target_id: int) -> void:
+	var target: Player = player_list.get(target_id)
+	if not target:
 		return
 	# Checks if player already voted
 	var voter_id = multiplayer.get_remote_sender_id()
-	if voter_id in player.kick_votes:
+	if voter_id in target.kick_votes:
 		return
-	player.kick_votes.push_back(voter_id)
+	target.kick_votes.push_back(voter_id)
 	
-	if not player.votekick_timer:
-		player.kick_vote_target = max(floor(len(player_list) / 2.0), 1.0)
-		notify.rpc("[code][color=#71b7ff]SERVER: Um votekick para %s iniciou: %d/%d[/color][/code]"
-		% [player.username, len(player.kick_votes), player.kick_vote_target])
+	if not target.votekick_timer:
+		target.kick_vote_target = max(floor(len(player_list) / 2.0), 1.0)
+		server_message("Um votekick para %s iniciou: %d/%d"
+			% [target.username, len(target.kick_votes), target.kick_vote_target])
 		
-		player.votekick_timer = get_tree().create_timer(60.0)
-		player.votekick_timer.timeout.connect(func():
-			if not player:
+		target.votekick_timer = get_tree().create_timer(60.0)
+		target.votekick_timer.timeout.connect(func():
+			if not target:
 				return
-			player.votekick_timer = null
-			player.kick_votes.clear()
-			player.kick_vote_target = 0
-			notify.rpc("Votekick encerrado. %s não foi expulso." % player.username)
+			target.votekick_timer = null
+			target.kick_votes.clear()
+			target.kick_vote_target = 0
+			server_message("Votekick encerrado. %s não foi expulso." % target.username)
 			send_player_list()
 		)
 	else:
-		notify.rpc("[code][color=#71b7ff]SERVER: Votekick %s: %d/%d[/color][/code]"
-		% [player.username, len(player.kick_votes), player.kick_vote_target])
+		server_message("Votekick %s: %d/%d[/color][/code]"
+			% [target.username, len(target.kick_votes), target.kick_vote_target])
 	
-	if len(player.kick_votes) >= player.kick_vote_target:
+	if len(target.kick_votes) >= target.kick_vote_target:
 		# tells the player it was kicked
-		kicked.rpc_id(player.id)
+		client_disconnect.rpc_id(target.id, "VOCÊ FOI EXPULSO.")
 		# Disconnects the votekick timer
-		var f = player.votekick_timer.timeout.get_connections()[0].callable
-		player.votekick_timer.timeout.disconnect(f)
+		var f = target.votekick_timer.timeout.get_connections()[0].callable
+		target.votekick_timer.timeout.disconnect(f)
 		# erases player early
-		_on_peer_disconnected(player.id)
+		_on_peer_disconnected(target.id)
 		# force kicks the player after 2s.
 		get_tree().create_timer(2.0).timeout.connect(func():
-			if player.id in multiplayer.get_peers():
-				multiplayer.multiplayer_peer.disconnect_peer(player.id)
+			if target.id in multiplayer.get_peers():
+				multiplayer.multiplayer_peer.disconnect_peer(target.id)
 		)
 	send_player_list()
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func toggle_spectator(toggle: bool) -> void:
+func server_toggle_spectator(toggle: bool) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	var player = player_list.get(id)
 	if toggle:
@@ -534,7 +546,7 @@ func toggle_spectator(toggle: bool) -> void:
 		
 		# the game will reset itself when someone joins.
 		if len(role_judges) + len(role_players) == 0: # (ignore spectators)
-			update_state.rpc_id(player.id, dict_from_state(player.role))
+			client_update_state.rpc_id(player.id, dict_from_state(player.role))
 		# resets the game if the player was the only remaining judge
 		elif (old_player_role == CAHState.ROLE_JUDGE and len(role_judges) == 0
 		and game_state.current_game_state != CAHState.STATE_WINNER):
@@ -542,40 +554,51 @@ func toggle_spectator(toggle: bool) -> void:
 			send_state_to_all()
 		# just change the role already
 		else:
-			update_state.rpc_id(player.id, dict_from_state(player.role))
+			client_update_state.rpc_id(player.id, dict_from_state(player.role))
 	else:
 		change_role(player, CAHState.ROLE_PLAYER)
 		if len(role_judges) == 0:
 			set_game_state(CAHState.STATE_CHOOSE_BLACK)
 			send_state_to_all()
 		else:
-			update_state.rpc_id(player.id, dict_from_state(player.role))
+			client_update_state.rpc_id(player.id, dict_from_state(player.role))
 	check_all_ready()
 	send_player_list()
+
+# these are used only on the big server
+@rpc("any_peer", "call_remote", "reliable")
+func server_get_rooms() -> void: pass
+@rpc("any_peer", "call_remote", "reliable")
+func server_create_room(_room_name: String, _password: String, _rules: Dictionary[String, bool]) -> void: pass
 #endregion SERVER RPC
 
 
 #region CLIENT RPC
 @rpc("authority", "call_remote", "reliable")
-func add_cards(_new_cards: Array) -> void: pass
+func client_add_cards(_new_cards: Array) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
-func add_message(_message: String) -> void: pass
+func client_add_message(_message: String) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
-func notify(_message: String) -> void: pass
+func client_update_state(_new_state: Dictionary) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
-func update_state(_new_state: Dictionary) -> void: pass
+func client_update_player_list(_players: Array[Dictionary]) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
-func update_player_list(_players: Array[Dictionary]) -> void: pass
+func client_group_flipped(_card_group: Array[String]) -> void: pass
 
 @rpc("authority", "call_remote", "reliable")
-func judge_flipped_group(_card_group: Array[String]) -> void: pass
+func client_disconnect(_reason: String) -> void: pass
 
+# these are used only on the big server
 @rpc("authority", "call_remote", "reliable")
-func kicked() -> void: pass
+func client_get_rooms(_rooms: Array[Dictionary]) -> void: pass
+@rpc("authority", "call_remote", "reliable")
+func client_invalid_room_name(_reason: String) -> void: pass
+@rpc("authority", "call_remote", "reliable")
+func client_room_created() -> void: pass
 #endregion CLIENT RPC
 
 
@@ -602,7 +625,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	and game_state.current_game_state != CAHState.STATE_WINNER):
 		set_game_state(CAHState.STATE_CHOOSE_BLACK)
 		send_state_to_all()
-	notify.rpc("[code][color=#71b7ff]SERVER: %s saiu do jogo.[/color][/code]" % player.username)
+	server_message("%s saiu do jogo." % player.username)
 	check_all_ready()
 	send_player_list()
 #endregion

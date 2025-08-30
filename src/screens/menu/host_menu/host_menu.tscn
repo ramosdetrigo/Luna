@@ -62,16 +62,20 @@ size_flags_vertical = 3
 [node name="VoteMode" parent="VBoxContainer" index="4" instance=ExtResource("6_a5t43")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Não tem juiz. Todos enviam respostas e tanto a escolha da carta preta quanto a melhor resposta são decididos por votação."
 label_text = "Modo democrático"
 
 [node name="EditBlack" parent="VBoxContainer" index="5" instance=ExtResource("6_a5t43")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Todas as cartas pretas serão editáveis.
+(Se usado no modo votação, a carta preta será escolhida aleatoriamente dentre as escolhas enviadas.)"
 label_text = "Cartas p. editáveis"
 
 [node name="EditWhite" parent="VBoxContainer" index="6" instance=ExtResource("6_a5t43")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Todas as cartas brancas serão editáveis."
 label_text = "Cartas b. editáveis"
 
 [node name="Host" parent="VBoxContainer" index="7" instance=ExtResource("3_4ndd0")]

@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://fh8lchidi1by"]
+
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="1_ls7vf"]
+[ext_resource type="Script" uid="uid://b658w8rwjlj64" path="res://src/ui_elements/tooltip/tooltip.gd" id="1_n2q5e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2q5e"]
+bg_color = Color(0.1, 0.1, 0.1, 0.768627)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[node name="Tooltip" type="PanelContainer"]
+offset_right = 400.0
+offset_bottom = 47.0
+theme = ExtResource("1_ls7vf")
+theme_override_styles/panel = SubResource("StyleBoxFlat_n2q5e")
+script = ExtResource("1_n2q5e")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+theme = ExtResource("1_ls7vf")
+theme_override_font_sizes/font_size = 28
+text = "Custom tooltip Custom tooltip Custom tooltip Custom tooltip Custom tooltip Custom tooltip Custom tooltip "
+autowrap_mode = 3

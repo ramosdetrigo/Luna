@@ -242,9 +242,9 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 			if cg.cards == cards:
 				card_group = cg
 				break
-		nodes.client.choose_white.rpc_id(1, card_group)
+		nodes.client.server_player_chose_white.rpc_id(1, card_group)
 	else:
-		nodes.client.cancel_ready.rpc_id(1)
+		nodes.client.server_cancel_ready.rpc_id(1)
 		get_right_slot_group().set_clickable(true)
 		nodes.top_label.animate_text("Qual a melhor resposta?")
 
@@ -262,4 +262,4 @@ func flip_card_group(group: CardGroup) -> void:
 	var cards: Array[String] = []
 	for card in group.get_cards():
 		cards.push_back(card.text)
-	nodes.client.flip_group.rpc_id(1, cards)
+	nodes.client.server_group_flipped.rpc_id(1, cards)

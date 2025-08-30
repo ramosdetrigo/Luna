@@ -121,6 +121,6 @@ func _exit_tree() -> void:
 
 
 func _on_bottom_button_pressed() -> void:
-	nodes.client.winner_ready.rpc_id(1)
+	nodes.client.server_player_ready.rpc_id(1)
 	nodes.top_label.animate_text("Aguarde os outros jogadores...")
 	nodes.button_controller.toggle_button(false)

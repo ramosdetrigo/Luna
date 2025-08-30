@@ -1,15 +1,19 @@
-[gd_scene load_steps=17 format=3 uid="uid://bgei4l44scxyg"]
+[gd_scene load_steps=19 format=3 uid="uid://bgei4l44scxyg"]
 
 [ext_resource type="Script" uid="uid://d11fr76d7gvjv" path="res://src/card_ui/card/card.gd" id="1_of7fp"]
 [ext_resource type="Texture2D" uid="uid://bh1wjx00rc4ff" path="res://assets/images/cards/white_front.png" id="2_mxmy7"]
 [ext_resource type="Script" uid="uid://dkatnti28hcwg" path="res://src/ui_elements/draggable/draggable.gd" id="2_tgw1k"]
 [ext_resource type="Theme" uid="uid://sfftfr7d567s" path="res://assets/resources/themes/theme_cards.tres" id="3_feltw"]
 [ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="4_js1fh"]
+[ext_resource type="Shader" uid="uid://cjmr8x5i687ej" path="res://src/card_ui/card/text_edit.gdshader" id="4_wnunt"]
 [ext_resource type="Texture2D" uid="uid://b37i0kp2vgepa" path="res://assets/images/ui/checkmark.png" id="5_cxcvc"]
 [ext_resource type="Texture2D" uid="uid://0av12aiq7agl" path="res://assets/images/ui/pencil.png" id="5_feltw"]
 [ext_resource type="Material" uid="uid://dkpbibxjep4ot" path="res://src/card_ui/card/edge.tres" id="5_tgw1k"]
 [ext_resource type="Texture2D" uid="uid://cfncsj4ixc2ja" path="res://assets/images/cards/border.png" id="7_spel0"]
 [ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="11_wnunt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wnunt"]
+shader = ExtResource("4_wnunt")
 
 [sub_resource type="Environment" id="Environment_tgw1k"]
 ambient_light_source = 2
@@ -85,7 +89,7 @@ mouse_filter = 2
 
 [node name="TextEdit" type="TextEdit" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
-visible = false
+material = SubResource("ShaderMaterial_wnunt")
 layout_mode = 0
 offset_left = 40.978
 offset_top = 48.143
@@ -95,14 +99,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 theme = ExtResource("3_feltw")
 theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
-text = "LGBTQ people
-    Article    Talk    Read    View source    View history Tools Page semi-protected
-From Wikipedia, the free encyclopedia
-\"LGBTQ\" redirects here. For the term, see LGBTQ (term). For other uses, see LGBTQ (disambiguation).
-A six-band rainbow flag representing the LGBTQ community
-Part of a series on LGBTQ people      
-    LGBTQLesbianGayBisexualTransgenderQueer
-LGBTQ people are individuals who are lesbian, gay, bisexual, transgender, queer, or questioning. Many variants of the initialism are used; LGBTQIA+ people incorporates intersex, asexual, aromantic, agender, and other individuals.[1] The group is generally conceived as broadly encompassing all individuals who are part of a sexual or gender minority. "
+text = "banana🏳️‍⚧️🏳️‍⚧️🏳️‍⚧️🏳️‍⚧️"
 placeholder_text = "Carta editável"
 editable = false
 context_menu_enabled = false

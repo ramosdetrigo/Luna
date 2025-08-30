@@ -60,3 +60,12 @@ func set_toggled(state : bool) -> void:
 	is_toggled = state
 	button_pressed = is_toggled
 	pulse_button.set_toggled(state)
+
+
+const tooltip_scene = preload("res://src/ui_elements/tooltip/tooltip.tscn")
+func _make_custom_tooltip(for_text: String) -> Object:
+	if for_text == "":
+		return
+	var tooltip = tooltip_scene.instantiate()
+	tooltip.text = for_text
+	return tooltip

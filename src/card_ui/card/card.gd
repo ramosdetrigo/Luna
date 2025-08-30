@@ -102,13 +102,9 @@ func set_editable(toggle: bool) -> void:
 	if card_type == BLACK_CARD:
 		%PickSlider.visible = editable
 		%TextEdit.material = null
-		%TextEdit.add_theme_color_override("default_color", Color.WHITE)
-		%TextEdit.add_theme_color_override("font_readonly_color", Color.WHITE)
 	else:
 		%PickSlider.hide()
 		%TextEdit.material = CAH.TEXTEDIT_MATERIAL
-		%TextEdit.remove_theme_color_override("default_color")
-		%TextEdit.add_theme_color_override("font_readonly_color", Color.BLACK)
 
 
 func set_edit_visible(toggle: bool, pick_visible: bool = true) -> void:
