@@ -17,6 +17,9 @@ func refresh_rooms() -> void:
 	Global.CONFIGS.ip = Global.REMOTE_SERVER_IP
 	for child in %RoomList.get_children():
 		%RoomList.remove_child(child)
+	if client:
+		remove_child(client)
+		client = null
 	# Creates client
 	client = Client.new()
 	add_child(client)

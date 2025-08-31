@@ -21,15 +21,22 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
+func _exit_tree() -> void:
+	if multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer.close()
+		multiplayer.multiplayer_peer = null
+
+
 func create_client() -> void:
 	var peer = WebSocketMultiplayerPeer.new()
 	var ip = Global.CONFIGS.ip
-	if Global.CONFIGS.ip == "":
+	if Global.CONFIGS.ip.strip_edges() == "":
 		ip = "localhost"
-	var error = peer.create_client("ws://%s:%d" % [ip, Global.CONFIGS.port])
+	var error = peer.create_client("wss://%s:%d" % [ip, Global.CONFIGS.port])
 	if error:
 		disconnected.emit(str(error))
 	multiplayer.multiplayer_peer = peer
+	print(ip)
 	print("Client created!")
 
 
@@ -137,6 +144,10 @@ func client_invalid_room_name(reason: String) -> void:
 @rpc("authority", "call_remote", "reliable")
 func client_room_created() -> void:
 	room_created.emit()
+
+@rpc("authority", "call_remote", "reliable")
+func client_ping() -> void:
+	server_pong.rpc_id(1)
 #endregion CLIENT RPC
 
 
@@ -174,9 +185,12 @@ func server_toggle_spectator(_toggle: bool) -> void: pass
 
 @rpc("any_peer", "call_remote", "reliable")
 func server_get_rooms() -> void: pass
-	
+
 @rpc("any_peer", "call_remote", "reliable")
 func server_create_room(_room_name: String, _password: String, _rules: Dictionary[String, bool]) -> void: pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func server_pong() -> void: pass
 #endregion SERVER RPC
 
 

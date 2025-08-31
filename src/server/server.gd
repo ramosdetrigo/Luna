@@ -575,6 +575,9 @@ func server_get_rooms() -> void:
 func server_create_room(_room_name: String, _password: String, _rules: Dictionary[String, bool]) -> void:
 	# nn dá pra criar sala em server local lol lmao
 	client_invalid_room_name.rpc_id(multiplayer.get_remote_sender_id(), "Servidor local")
+
+@rpc("any_peer", "call_remote", "reliable")
+func server_pong() -> void: pass
 #endregion SERVER RPC
 
 
@@ -604,6 +607,9 @@ func client_get_rooms(_rooms: Array[Dictionary]) -> void: pass
 func client_invalid_room_name(_reason: String) -> void: pass
 @rpc("authority", "call_remote", "reliable")
 func client_room_created() -> void: pass
+
+@rpc("authority", "call_remote", "reliable")
+func client_ping() -> void: pass
 #endregion CLIENT RPC
 
 

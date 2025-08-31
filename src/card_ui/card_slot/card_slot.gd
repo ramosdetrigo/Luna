@@ -45,9 +45,6 @@ func get_cards() -> Array[Control]:
 	return cards
 
 
-
-
-
 func _on_child_entered_tree(node: Node) -> void:
 	node.custom_minimum_size.y = 0
 

@@ -127,9 +127,6 @@ func _on_viewport_size_changed() -> void:
 
 
 func exit_game(reason: String = "DESCONECTADO.") -> void:
-	%Client.multiplayer.multiplayer_peer.close()
-	%Client.multiplayer.multiplayer_peer = null
-	%Client.queue_free()
 	scale_fade(true)
 	if reason == "VOCÊ SAIU DO JOGO.":
 		Global.play_audio(Global.SFX[3])
