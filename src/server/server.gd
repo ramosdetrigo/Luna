@@ -567,9 +567,14 @@ func server_toggle_spectator(toggle: bool) -> void:
 
 # these are used only on the big server
 @rpc("any_peer", "call_remote", "reliable")
-func server_get_rooms() -> void: pass
+func server_get_rooms() -> void:
+	# manda uma lista vazia pq né
+	var a: Array[Dictionary] = []
+	client_get_rooms.rpc_id(multiplayer.get_remote_sender_id(), a)
 @rpc("any_peer", "call_remote", "reliable")
-func server_create_room(_room_name: String, _password: String, _rules: Dictionary[String, bool]) -> void: pass
+func server_create_room(_room_name: String, _password: String, _rules: Dictionary[String, bool]) -> void:
+	# nn dá pra criar sala em server local lol lmao
+	client_invalid_room_name.rpc_id(multiplayer.get_remote_sender_id(), "Servidor local")
 #endregion SERVER RPC
 
 

@@ -1,9 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://ch0x40qo6s5rt"]
+[gd_scene load_steps=14 format=3 uid="uid://ch0x40qo6s5rt"]
 
 [ext_resource type="PackedScene" uid="uid://ll5oqpyb1htl" path="res://src/ui_elements/screen/screen.tscn" id="1_77jpu"]
 [ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="2_cw552"]
 [ext_resource type="Script" uid="uid://dolmgvyknfa40" path="res://src/screens/menu/join_menu/join_menu.gd" id="2_ore20"]
+[ext_resource type="PackedScene" uid="uid://dx0us2dbgwv3b" path="res://src/ui_elements/pulse_checkbox/Pulse_checkbox.tscn" id="3_74cxi"]
 [ext_resource type="PackedScene" uid="uid://c36lew5uiwsgp" path="res://src/ui_elements/floating_button/Floating_button.tscn" id="3_u17jk"]
+[ext_resource type="Script" uid="uid://bgqglerkcylxx" path="res://addons/SmoothScroll/SmoothScrollContainer.gd" id="4_gunid"]
+[ext_resource type="PackedScene" uid="uid://ct0o4u7jepmja" path="res://src/ui_elements/pulse_button/Pulse_button.tscn" id="5_8xr6g"]
+[ext_resource type="Script" uid="uid://b7h0k2h2qwlqv" path="res://addons/SmoothScroll/scroll_damper/expo_scroll_damper.gd" id="5_74cxi"]
+[ext_resource type="Texture2D" uid="uid://b4h2ic7le63fx" path="res://assets/images/ui/plus_white.png" id="5_wcx4d"]
+[ext_resource type="Texture2D" uid="uid://bu5ewrblarsia" path="res://assets/images/ui/return_white.png" id="6_biymf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_74cxi"]
+bg_color = Color(0.19, 0.19, 0.19, 0.752941)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+
+[sub_resource type="Resource" id="Resource_8xr6g"]
+script = ExtResource("5_74cxi")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
+
+[sub_resource type="Resource" id="Resource_wcx4d"]
+script = ExtResource("5_74cxi")
+friction = 4.0
+minimum_velocity = 0.4
+rebound_strength = 7.0
 
 [node name="JoinMenu" instance=ExtResource("1_77jpu")]
 anchors_preset = 15
@@ -21,42 +47,130 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -281.0
+offset_right = 175.0
+offset_bottom = 281.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(175, 166)
+pivot_offset = Vector2(175, 281)
 theme_override_constants/separation = 24
+alignment = 1
 
-[node name="Nickname" type="LineEdit" parent="VBoxContainer" index="0"]
+[node name="Separator3" type="Control" parent="VBoxContainer" index="0"]
+visible = false
+layout_mode = 2
+
+[node name="IPCheck" parent="VBoxContainer" index="1" instance=ExtResource("3_74cxi")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "Entrar por IP"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_cw552")
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/PanelContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="PanelContainer" parent="VBoxContainer/PanelContainer/VBox" index="0"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_74cxi")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBox/Control" index="0"]
+layout_mode = 2
+
+[node name="CreateRoomButton" parent="VBoxContainer/PanelContainer/VBox/Control/HBoxContainer" index="0" instance=ExtResource("5_8xr6g")]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme = ExtResource("2_cw552")
+icon = ExtResource("5_wcx4d")
+expand_icon = true
+is_toggleable = false
+is_toggled = false
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/VBox/Control/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_cw552")
+theme_override_font_sizes/font_size = 20
+text = "Lista de salas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RefreshButton" parent="VBoxContainer/PanelContainer/VBox/Control/HBoxContainer" index="2" instance=ExtResource("5_8xr6g")]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme = ExtResource("2_cw552")
+icon = ExtResource("6_biymf")
+expand_icon = true
+is_toggleable = false
+is_toggled = false
+
+[node name="RoomListScroll" type="ScrollContainer" parent="VBoxContainer/PanelContainer/VBox" index="1"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+script = ExtResource("4_gunid")
+wheel_scroll_damper = SubResource("Resource_8xr6g")
+dragging_scroll_damper = SubResource("Resource_wcx4d")
+metadata/_custom_type_script = "uid://bgqglerkcylxx"
+
+[node name="RoomList" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBox/RoomListScroll" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Nickname" type="LineEdit" parent="VBoxContainer" index="3"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_cw552")
 placeholder_text = "Nickname"
 caret_blink = true
 
-[node name="Separator3" type="Control" parent="VBoxContainer" index="1"]
+[node name="Password" type="LineEdit" parent="VBoxContainer" index="4"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
+theme = ExtResource("2_cw552")
+placeholder_text = "Senha da sala"
+caret_blink = true
+secret = true
 
-[node name="IP" type="LineEdit" parent="VBoxContainer" index="2"]
+[node name="IP" type="LineEdit" parent="VBoxContainer" index="5"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme = ExtResource("2_cw552")
 placeholder_text = "IP do servidor"
 caret_blink = true
 
-[node name="Separator" type="Control" parent="VBoxContainer" index="3"]
+[node name="Separator" type="Control" parent="VBoxContainer" index="6"]
+visible = false
 layout_mode = 2
 
-[node name="Join" parent="VBoxContainer" index="4" instance=ExtResource("3_u17jk")]
+[node name="Join" parent="VBoxContainer" index="7" instance=ExtResource("3_u17jk")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Entrar"
 
-[node name="Separator2" type="Control" parent="VBoxContainer" index="5"]
+[node name="Separator2" type="Control" parent="VBoxContainer" index="8"]
 layout_mode = 2
 
-[node name="Back" parent="VBoxContainer" index="6" instance=ExtResource("3_u17jk")]
+[node name="Back" parent="VBoxContainer" index="9" instance=ExtResource("3_u17jk")]
 layout_mode = 2
 text = "Voltar"
 
+[connection signal="pressed" from="VBoxContainer/IPCheck" to="." method="_on_ip_check_pressed"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/VBox/Control/HBoxContainer/CreateRoomButton" to="." method="_on_create_room_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/VBox/Control/HBoxContainer/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="focus_entered" from="VBoxContainer/Nickname" to="." method="_on_nickname_focus_entered"]
 [connection signal="text_changed" from="VBoxContainer/Nickname" to="." method="_on_nickname_text_changed"]
-[connection signal="text_changed" from="VBoxContainer/IP" to="." method="_on_ip_text_changed"]
+[connection signal="focus_entered" from="VBoxContainer/Password" to="." method="_on_password_focus_entered"]
+[connection signal="text_changed" from="VBoxContainer/Password" to="." method="_on_password_text_changed"]
 [connection signal="pressed" from="VBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="VBoxContainer/Back" to="." method="_on_back_pressed"]

@@ -14,7 +14,16 @@ func _ready():
 	text = ""
 
 
+func _process(_delta: float) -> void:
+	if disabled:
+		$Label.modulate = Color.hex(0xdfdfdf80)
+	else:
+		$Label.modulate = Color.WHITE
+
+
 func _on_mouse_entered():
+	if disabled:
+		return
 	var duration = animation_speed * ( (((label.scale.x - 1) /  (target_scale - 1)) - 1) * -1)
 	
 	if scale_tween != null: scale_tween.kill()
@@ -23,6 +32,9 @@ func _on_mouse_entered():
 
 
 func _on_mouse_exited():
+	if disabled:
+		scale = Vector2(1,1)
+		return
 	var duration = animation_speed * ((label.scale.x - 1) /  (target_scale - 1))
 	
 	if scale_tween != null: scale_tween.kill()

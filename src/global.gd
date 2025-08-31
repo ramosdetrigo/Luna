@@ -1,6 +1,7 @@
 extends Node
 
 const SAVE_FILE_NAME: String = "user://configs.json"
+const REMOTE_SERVER_IP: String = "168.75.108.248"
 var SERVER_NODE: Server
 
 signal audio_volume_changed(new_volume: float)
@@ -19,10 +20,12 @@ var SCREENS : Array[PackedScene] = [
 var CONFIGS : Dictionary = {
 	join = true,
 	username = "",
-	ip = "",
+	ip = Global.REMOTE_SERVER_IP,
 	port = 12112,
 	audio_volume = 1.0,
-	music_volume = 1.0
+	music_volume = 1.0,
+	room_name = "",
+	room_password = "",
 }
 const MUSIC : Array[AudioStreamOggVorbis] = [
 	preload("res://assets/audio/music/Clean soul.ogg"), # 0
@@ -68,6 +71,7 @@ func save_configs() -> void:
 
 func set_username(new_username: String):
 	CONFIGS.username = new_username
+	save_timer.start()
 
 
 func set_audio_volume(volume: float):

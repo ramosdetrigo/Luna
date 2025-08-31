@@ -15,7 +15,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("2_gt7fn")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." index="0"]
+[node name="RulesScreen" type="VBoxContainer" parent="." index="0"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -23,27 +26,87 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -175.0
+offset_top = -102.0
+offset_right = 175.0
+offset_bottom = 102.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(175, 192)
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(175, 128)
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="VoteMode" parent="RulesScreen" index="0" instance=ExtResource("6_a5t43")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Não tem juiz. Todos enviam respostas e tanto a escolha da carta preta quanto a melhor resposta são decididos por votação."
+label_text = "Modo democrático"
+
+[node name="EditBlack" parent="RulesScreen" index="1" instance=ExtResource("6_a5t43")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Todas as cartas pretas serão editáveis.
+(Se usado no modo votação, a carta preta será escolhida aleatoriamente dentre as escolhas enviadas.)"
+label_text = "Cartas p. editáveis"
+
+[node name="EditWhite" parent="RulesScreen" index="2" instance=ExtResource("6_a5t43")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Todas as cartas brancas serão editáveis."
+label_text = "Cartas b. editáveis"
+
+[node name="Separator7" type="Control" parent="RulesScreen" index="3"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackRules" parent="RulesScreen" index="4" instance=ExtResource("3_4ndd0")]
+layout_mode = 2
+text = "Voltar"
+
+[node name="CreateScreen" type="VBoxContainer" parent="." index="1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -184.0
+offset_right = 175.0
+offset_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(175, 280)
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="HostLocal" parent="CreateScreen" index="0" instance=ExtResource("6_a5t43")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Abre o servidor em LAN. Os jogadores só poderão entrar via IP."
+target_scale = 1.05
+label_text = "Hostear localmente"
+
+[node name="Configs" type="VBoxContainer" parent="CreateScreen" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="AskJoin" parent="VBoxContainer" index="0" instance=ExtResource("6_a5t43")]
+[node name="AskJoin" parent="CreateScreen/Configs" index="0" instance=ExtResource("6_a5t43")]
 unique_name_in_owner = true
 layout_mode = 2
 target_scale = 1.05
 label_text = "Entrar no jogo"
 is_toggled = true
 
-[node name="Separator7" type="Control" parent="VBoxContainer" index="1"]
+[node name="Separator7" type="Control" parent="CreateScreen/Configs" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Nickname" type="LineEdit" parent="VBoxContainer" index="2"]
+[node name="Nickname" type="LineEdit" parent="CreateScreen/Configs" index="2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 48)
 layout_mode = 2
@@ -53,87 +116,94 @@ theme = ExtResource("7_7nsnv")
 placeholder_text = "Nickname"
 clear_button_enabled = true
 caret_blink = true
-caret_force_displayed = true
 
-[node name="Separator6" type="Control" parent="VBoxContainer" index="3"]
+[node name="RoomName" type="LineEdit" parent="CreateScreen/Configs" index="3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("7_7nsnv")
+placeholder_text = "Nome da sala"
+clear_button_enabled = true
+caret_blink = true
+
+[node name="Password" type="LineEdit" parent="CreateScreen/Configs" index="4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("7_7nsnv")
+placeholder_text = "Senha"
+clear_button_enabled = true
+caret_blink = true
+secret = true
+
+[node name="Separator8" type="Control" parent="CreateScreen/Configs" index="5"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VoteMode" parent="VBoxContainer" index="4" instance=ExtResource("6_a5t43")]
+[node name="Rules" parent="CreateScreen/Configs" index="6" instance=ExtResource("3_4ndd0")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Não tem juiz. Todos enviam respostas e tanto a escolha da carta preta quanto a melhor resposta são decididos por votação."
-label_text = "Modo democrático"
+text = "Editar regras"
 
-[node name="EditBlack" parent="VBoxContainer" index="5" instance=ExtResource("6_a5t43")]
+[node name="Host" parent="CreateScreen" index="2" instance=ExtResource("3_4ndd0")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Todas as cartas pretas serão editáveis.
-(Se usado no modo votação, a carta preta será escolhida aleatoriamente dentre as escolhas enviadas.)"
-label_text = "Cartas p. editáveis"
+text = "Criar sala"
 
-[node name="EditWhite" parent="VBoxContainer" index="6" instance=ExtResource("6_a5t43")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "Todas as cartas brancas serão editáveis."
-label_text = "Cartas b. editáveis"
-
-[node name="Host" parent="VBoxContainer" index="7" instance=ExtResource("3_4ndd0")]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Abrir servidor"
-
-[node name="Close" parent="VBoxContainer" index="8" instance=ExtResource("3_4ndd0")]
+[node name="Close" parent="CreateScreen" index="3" instance=ExtResource("3_4ndd0")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Fechar servidor"
 expand_icon = true
 
-[node name="Separator5" type="Control" parent="VBoxContainer" index="9"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Error" type="HBoxContainer" parent="VBoxContainer" index="10"]
+[node name="Error" type="HBoxContainer" parent="CreateScreen" index="4"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.823529, 0.0588235, 0.223529, 1)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Error" index="0"]
+[node name="TextureRect" type="TextureRect" parent="CreateScreen/Error" index="0"]
 layout_mode = 2
 texture = ExtResource("6_d5psg")
 expand_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Error" index="1"]
+[node name="ErrorText" type="RichTextLabel" parent="CreateScreen/Error" index="1"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = ExtResource("7_7nsnv")
 bbcode_enabled = true
-text = "Erro abrindo servidor"
+text = "Erro criando servidor"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Separator4" type="Control" parent="VBoxContainer" index="11"]
+[node name="Separator5" type="Control" parent="CreateScreen" index="5"]
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="Separator3" type="Control" parent="VBoxContainer" index="12"]
+[node name="Separator6" type="Control" parent="CreateScreen" index="6"]
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="Back" parent="VBoxContainer" index="13" instance=ExtResource("3_4ndd0")]
+[node name="Back" parent="CreateScreen" index="7" instance=ExtResource("3_4ndd0")]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Voltar
 "
 
-[connection signal="pressed" from="VBoxContainer/AskJoin" to="." method="_on_ask_join_pressed"]
-[connection signal="focus_entered" from="VBoxContainer/Nickname" to="." method="_on_nickname_focus_entered"]
-[connection signal="text_changed" from="VBoxContainer/Nickname" to="." method="_on_nickname_text_changed"]
-[connection signal="toggled" from="VBoxContainer/VoteMode" to="." method="_on_vote_mode_toggled"]
-[connection signal="pressed" from="VBoxContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="VBoxContainer/Close" to="." method="close_server"]
-[connection signal="gui_input" from="VBoxContainer/Error" to="." method="_on_error_gui_input"]
-[connection signal="pressed" from="VBoxContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="toggled" from="RulesScreen/VoteMode" to="." method="_on_vote_mode_toggled"]
+[connection signal="pressed" from="RulesScreen/BackRules" to="." method="_on_back_rules_pressed"]
+[connection signal="pressed" from="CreateScreen/HostLocal" to="." method="_on_host_local_pressed"]
+[connection signal="pressed" from="CreateScreen/Configs/AskJoin" to="." method="_on_ask_join_pressed"]
+[connection signal="focus_entered" from="CreateScreen/Configs/Nickname" to="." method="_on_nickname_focus_entered"]
+[connection signal="text_changed" from="CreateScreen/Configs/Nickname" to="." method="_on_nickname_text_changed"]
+[connection signal="pressed" from="CreateScreen/Configs/Rules" to="." method="_on_rules_pressed"]
+[connection signal="pressed" from="CreateScreen/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CreateScreen/Close" to="." method="close_server"]
+[connection signal="gui_input" from="CreateScreen/Error" to="." method="_on_error_gui_input"]
+[connection signal="pressed" from="CreateScreen/Back" to="." method="_on_back_pressed"]

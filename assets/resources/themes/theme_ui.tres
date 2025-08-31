@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://8b0nu8iueg0s"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://8b0nu8iueg0s"]
 
 [ext_resource type="FontFile" uid="uid://2n84f3l26n4a" path="res://assets/fonts/jost/Jost-Regular.ttf" id="1_gch6j"]
 [ext_resource type="FontFile" uid="uid://dc414c3nnnvnv" path="res://assets/fonts/helvetica/HelveticaNeue Light.ttf" id="2_mvmfk"]
@@ -55,6 +55,14 @@ border_color = Color(0.419608, 0.352941, 0.909804, 1)
 shadow_color = Color(0, 0, 0, 0.0980392)
 shadow_size = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2q5e"]
+bg_color = Color(0.1, 0.1, 0.1, 0.768627)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
 [resource]
 default_font = ExtResource("1_gch6j")
 default_font_size = 32
@@ -96,6 +104,7 @@ LineEdit/colors/font_color = Color(1, 1, 1, 1)
 LineEdit/fonts/font = ExtResource("2_mvmfk")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_tfqle")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_p5wcy")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_n2q5e")
 PopupMenu/font_sizes/font_separator_size = 16
 PopupMenu/font_sizes/font_size = 16
 PopupMenu/font_sizes/title_font_size = 16

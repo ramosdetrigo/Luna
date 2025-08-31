@@ -1,0 +1,96 @@
+[gd_scene load_steps=5 format=3 uid="uid://7nntx7bjlo6"]
+
+[ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="1_aw12l"]
+[ext_resource type="Script" uid="uid://de5qd1px6h1x4" path="res://src/screens/menu/join_menu/room_entry.gd" id="2_r3us4"]
+[ext_resource type="Texture2D" uid="uid://bwx3di4s3cysl" path="res://assets/images/ui/singleplayer.png" id="3_b7t8v"]
+[ext_resource type="Texture2D" uid="uid://c2dp732eiket3" path="res://assets/images/ui/locked.png" id="4_ebqim"]
+
+[node name="RoomEntry" type="PanelContainer"]
+custom_minimum_size = Vector2(348, 42)
+offset_right = 348.0
+offset_bottom = 42.0
+theme = ExtResource("1_aw12l")
+script = ExtResource("2_r3us4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="NameContainer" type="Control" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(255, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="RoomName" type="Label" parent="MarginContainer/HBoxContainer/NameContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -15.0
+offset_right = 69.0
+offset_bottom = 15.0
+grow_vertical = 2
+theme = ExtResource("1_aw12l")
+theme_override_font_sizes/font_size = 20
+text = "servidor"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PlayerCountContainer" type="Control" parent="MarginContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="PlayerCount" type="Label" parent="MarginContainer/HBoxContainer/PlayerCountContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.5
+offset_top = -15.0
+offset_right = 11.5
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_aw12l")
+theme_override_font_sizes/font_size = 20
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 40)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_b7t8v")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Lock" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 40)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_ebqim")
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

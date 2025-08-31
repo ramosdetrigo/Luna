@@ -2,9 +2,13 @@ extends Node
 class_name Client
 
 signal state_updated
+signal room_created
+signal invalid_room_name(reason: String)
 signal disconnected(reason: String)
 signal new_cards_added(card: Array[Card])
+signal rooms_refreshed(rooms: Array[Dictionary])
 var game_state: CAHState = CAHState.dummy_state()
+
 
 func _ready() -> void:
 	var interface = MultiplayerAPI.create_default_interface()
@@ -27,6 +31,10 @@ func create_client() -> void:
 		disconnected.emit(str(error))
 	multiplayer.multiplayer_peer = peer
 	print("Client created!")
+
+
+func join_server() -> void:
+	server_join_room.rpc_id(1, Global.CONFIGS.username, Global.CONFIGS.room_name, Global.CONFIGS.room_password)
 
 
 #region CLIENT RPC
@@ -117,15 +125,18 @@ func client_disconnect(reason: String) -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func client_get_rooms(_rooms: Array[Dictionary]) -> void: pass
+func client_get_rooms(rooms: Array[Dictionary]) -> void:
+	rooms_refreshed.emit(rooms)
 
 
 @rpc("authority", "call_remote", "reliable")
-func client_invalid_room_name(_reason: String) -> void: pass
+func client_invalid_room_name(reason: String) -> void:
+	invalid_room_name.emit(reason)
 
 
 @rpc("authority", "call_remote", "reliable")
-func client_room_created() -> void: pass
+func client_room_created() -> void:
+	room_created.emit()
 #endregion CLIENT RPC
 
 
@@ -172,8 +183,6 @@ func server_create_room(_room_name: String, _password: String, _rules: Dictionar
 #region MULTIPLAYER CALLBACKS
 func _on_peer_connected(peer_id: int) -> void:
 	print("Client: Peer connected: %d" % peer_id)
-	if peer_id == 1: # only accept from server
-		server_join_room.rpc_id(1, Global.CONFIGS.username, "", "")
 
 func _on_peer_disconnected(peer_id: int) -> void:
 	print("Client: Peer disconnected: %d" % peer_id)

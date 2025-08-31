@@ -53,6 +53,9 @@ func _ready() -> void:
 			clean_right_slot()
 		
 		# Move a carta pro local certo (pro centro se não for jogador)
+		if selected_black_card.is_editable():
+			selected_black_card.set_text(selected_black_card.get_display_text())
+		selected_black_card.set_edit_visible(false, false)
 		var old_pos = selected_black_card.dragger.global_position
 		if state.player_role != CAHState.ROLE_PLAYER:
 			selected_black_card.reparent(nodes.center_card_slot)

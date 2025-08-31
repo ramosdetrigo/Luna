@@ -63,7 +63,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 77)
 layout_mode = 2
 mouse_filter = 2
-text = "Hostear"
+text = "Criar sala"
 
 [node name="Separator4" type="Control" parent="VBoxContainer"]
 layout_mode = 2

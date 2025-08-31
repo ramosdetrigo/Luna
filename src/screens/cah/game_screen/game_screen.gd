@@ -50,6 +50,7 @@ func _ready() -> void:
 	%ConnectingPanel.toggle_visible(true)
 	%Client.game_state = game_state
 	%Client.create_client()
+	%Client.multiplayer.connected_to_server.connect(%Client.join_server)
 	_on_viewport_size_changed.call_deferred()
 
 
