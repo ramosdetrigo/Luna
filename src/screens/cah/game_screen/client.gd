@@ -32,7 +32,7 @@ func create_client() -> void:
 	var ip = Global.CONFIGS.ip
 	if Global.CONFIGS.ip.strip_edges() == "":
 		ip = "localhost"
-	var error = peer.create_client("wss://%s:%d" % [ip, Global.CONFIGS.port])
+	var error = peer.create_client("ws://%s:%d" % [ip, Global.CONFIGS.port])
 	if error:
 		disconnected.emit(str(error))
 	multiplayer.multiplayer_peer = peer
