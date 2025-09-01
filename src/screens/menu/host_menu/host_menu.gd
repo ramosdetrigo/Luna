@@ -107,7 +107,7 @@ func _on_host_pressed() -> void:
 				if Global.CONFIGS.join:
 					Global.CONFIGS.ip = Global.REMOTE_SERVER_IP
 					Global.CONFIGS.room_name = %RoomName.text
-					Global.CONFIGS.password = %Password.text
+					Global.CONFIGS.room_password = %Password.text
 					scale_fade(true)
 					change_scene.emit(Global.SCREENS[4]))
 			# If the room is invalid tell the player
