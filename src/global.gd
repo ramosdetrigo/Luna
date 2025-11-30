@@ -1,7 +1,7 @@
 extends Node
 
 const SAVE_FILE_NAME: String = "user://configs.json"
-const REMOTE_SERVER_IP: String = "168.75.108.248"
+const REMOTE_SERVER_IP: String = "lunacch.oops.wtf"
 var SERVER_NODE: Server
 
 signal audio_volume_changed(new_volume: float)

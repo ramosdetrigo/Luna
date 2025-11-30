@@ -30,11 +30,20 @@ func _exit_tree() -> void:
 func create_client() -> void:
 	var peer = WebSocketMultiplayerPeer.new()
 	var ip = Global.CONFIGS.ip
+	
 	if Global.CONFIGS.ip.strip_edges() == "":
 		ip = "localhost"
-	var error = peer.create_client("ws://%s:%d" % [ip, Global.CONFIGS.port])
+	
+	# use secure server if not a locally hosted server
+	var error
+	if ip == Global.REMOTE_SERVER_IP:
+		error = peer.create_client("wss://%s:%d" % [ip, Global.CONFIGS.port])
+	else:
+		error = peer.create_client("ws://%s:%d" % [ip, Global.CONFIGS.port])
+	
 	if error:
 		disconnected.emit(str(error))
+	
 	multiplayer.multiplayer_peer = peer
 	print(ip)
 	print("Client created!")

@@ -8,6 +8,9 @@ var has_virtual_keyboard: bool = DisplayServer.has_feature(DisplayServer.FEATURE
 
 
 func _ready() -> void:
+	if OS.has_feature("web_android") or OS.has_feature("web_ios"):
+		pass
+	
 	%Menu.scale_fade(false)
 	for song in Global.MUSIC:
 		song_queue.push_back(song)

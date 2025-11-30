@@ -20,8 +20,8 @@ var target_size: Vector2 = Vector2(1.0, 1.0)
 var clickable: bool = true
 
 # Thresholds for card dragging
-var drag_threshold: float = 10.0 if OS.get_name() == "Android" else 10.0
-var drag_cos_threshold: float = 0.85 if OS.get_name() == "Android" else 1.0
+var drag_threshold: float = 10.0
+var drag_cos_threshold: float = 1.0
 
 var _try_grab: bool
 var _grabbed: bool
@@ -32,6 +32,20 @@ var _position_tween: Tween
 var _modulate_tween: Tween
 
 var _child: CanvasItem = null
+
+
+func _ready() -> void:
+	if true or OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios"):
+		drag_cos_threshold = 0.85
+	
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	gui_input.connect(_on_gui_input)
+	resized.connect(_on_resized)
+	# Change _child if necessary
+	child_entered_tree.connect(_update_child)
+	child_exiting_tree.connect(_update_child)
+	_update_child(null)
 
 
 #region HELPERS
@@ -185,16 +199,6 @@ func _update_child(_node: Node) -> void:
 		_child.size = size
 		_child.pivot_offset = size/2.0 # fixes scaling
 	_child.scale = Vector2(1.0, 1.0)
-
-func _ready() -> void:
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
-	gui_input.connect(_on_gui_input)
-	resized.connect(_on_resized)
-	# Change _child if necessary
-	child_entered_tree.connect(_update_child)
-	child_exiting_tree.connect(_update_child)
-	_update_child(null)
 
 
 func _exit_tree() -> void:
