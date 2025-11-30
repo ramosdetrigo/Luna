@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bgei4l44scxyg"]
+[gd_scene load_steps=21 format=3 uid="uid://bgei4l44scxyg"]
 
 [ext_resource type="Script" uid="uid://d11fr76d7gvjv" path="res://src/card_ui/card/card.gd" id="1_of7fp"]
 [ext_resource type="Texture2D" uid="uid://bh1wjx00rc4ff" path="res://assets/images/cards/white_front.png" id="2_mxmy7"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://0av12aiq7agl" path="res://assets/images/ui/pencil.png" id="5_feltw"]
 [ext_resource type="Material" uid="uid://dkpbibxjep4ot" path="res://src/card_ui/card/edge.tres" id="5_tgw1k"]
 [ext_resource type="Texture2D" uid="uid://cfncsj4ixc2ja" path="res://assets/images/cards/border.png" id="7_spel0"]
+[ext_resource type="Texture2D" uid="uid://btot01ow8qsw8" path="res://assets/images/ui/return.png" id="9_dmdcw"]
+[ext_resource type="Texture2D" uid="uid://c0pionkcgb03a" path="res://assets/images/ui/upload.png" id="11_kl0kr"]
 [ext_resource type="Theme" uid="uid://8b0nu8iueg0s" path="res://assets/resources/themes/theme_ui.tres" id="11_wnunt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wnunt"]
@@ -87,6 +89,18 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="CustomImage" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 40.978027
+offset_top = 39.143005
+offset_right = 494.97803
+offset_bottom = 770.143
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
 [node name="TextEdit" type="TextEdit" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_wnunt")
@@ -99,7 +113,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 theme = ExtResource("3_feltw")
 theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
-text = "banana🏳️‍⚧️🏳️‍⚧️🏳️‍⚧️🏳️‍⚧️"
+text = "Trans rights! 🏳️‍⚧️"
 placeholder_text = "Carta editável"
 editable = false
 context_menu_enabled = false
@@ -162,9 +176,9 @@ expand_mode = 1
 [node name="TextViewportTexture" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 40.978
-offset_top = 39.143
-offset_right = 494.978
+offset_left = 40.978027
+offset_top = 39.143005
+offset_right = 494.97803
 offset_bottom = 770.143
 mouse_filter = 2
 texture = SubResource("ViewportTexture_m0gau")
@@ -178,15 +192,37 @@ material = ExtResource("5_tgw1k")
 position = Vector2(267, 406)
 texture = ExtResource("7_spel0")
 
-[node name="TextEditButton" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff" instance=ExtResource("4_js1fh")]
+[node name="ButtonsContainer" type="HBoxContainer" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.97536945
+anchor_right = 0.5
+anchor_bottom = 0.97536945
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(50, 50)
+theme_override_constants/separation = 100
+metadata/_edit_use_anchors_ = true
+
+[node name="ImageSelectButton" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/ButtonsContainer" instance=ExtResource("4_js1fh")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+is_toggled = false
+texture_on = ExtResource("9_dmdcw")
+texture_off = ExtResource("11_kl0kr")
+
+[node name="TextEditButton" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/ButtonsContainer" instance=ExtResource("4_js1fh")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
-layout_mode = 1
-offset_left = -48.7579
-offset_top = 336.0
-offset_right = 51.2421
-offset_bottom = 436.0
-pivot_offset = Vector2(50, 50)
+layout_mode = 2
 is_toggled = false
 texture_on = ExtResource("5_cxcvc")
 texture_off = ExtResource("5_feltw")
@@ -233,8 +269,27 @@ layout_mode = 2
 mouse_filter = 2
 border_width = 3.0
 
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open an image"
+mode_overrides_title = false
+file_mode = 0
+access = 1
+filters = PackedStringArray("*.png,*.jpg,*.jpeg,*.webp,*.svg;Image Files")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+unique_name_in_owner = true
+use_threads = true
+timeout = 5.0
+
 [connection signal="resized" from="." to="." method="_on_image_container_resized"]
 [connection signal="resized" from="ImageContainer" to="." method="_on_image_container_resized"]
 [connection signal="focus_entered" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextEdit" to="." method="_on_text_edit_focus_entered"]
-[connection signal="pulse_toggled" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/TextEditButton" to="." method="_on_text_edit_button_toggled"]
+[connection signal="pulse_toggled" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/ButtonsContainer/ImageSelectButton" to="." method="_on_image_select_button_toggled"]
+[connection signal="pulse_toggled" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/ButtonsContainer/TextEditButton" to="." method="_on_text_edit_button_toggled"]
 [connection signal="value_changed" from="ImageContainer/CenterControl/ImageControl/Image/CardStuff/PickSlider" to="." method="_on_pick_slider_value_changed"]
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

@@ -41,7 +41,6 @@ class Player:
 # All cards from the cards.json file
 # whiteCards: [string]
 # blackCards: [{text: string, pick: number}]
-var CARDS: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/cards.json"))
 var white_cards_pile: Array = []
 var black_cards_pile: Array = []
 
@@ -58,8 +57,8 @@ var game_state: CAHState = CAHState.new()
 func _ready() -> void:
 	# We work by shuffling the arrays and taking cards from the top.
 	# When we reach a threshold, we shuffle everything again
-	white_cards_pile = CARDS.whiteCards.duplicate()
-	black_cards_pile = CARDS.blackCards.duplicate()
+	white_cards_pile = CAH.CARDS.whiteCards.duplicate()
+	black_cards_pile = CAH.CARDS.blackCards.duplicate()
 	white_cards_pile.shuffle()
 	black_cards_pile.shuffle()
 	
@@ -69,8 +68,8 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
-	print("Cartas brancas: %d" % len(CARDS.whiteCards))
-	print("Cartas pretas: %d" % len(CARDS.blackCards))
+	print("Cartas brancas: %d" % len(CAH.CARDS.whiteCards))
+	print("Cartas pretas: %d" % len(CAH.CARDS.blackCards))
 
 
 #region HELPER
@@ -118,7 +117,7 @@ func change_role(player: Player, new_role: CAHState.PlayerRole) -> void:
 func random_black() -> Dictionary:
 	# re-shuffles the used cards if necessary.
 	if len(black_cards_pile) == 0:
-		black_cards_pile = CARDS.blackCards.duplicate()
+		black_cards_pile = CAH.CARDS.blackCards.duplicate()
 		black_cards_pile.shuffle()
 	return black_cards_pile.pop_back()
 
@@ -126,7 +125,7 @@ func random_black() -> Dictionary:
 func random_white() -> String:
 	# re-shuffles the used cards if necessary.
 	if len(white_cards_pile) == 0:
-		white_cards_pile = CARDS.whiteCards.duplicate()
+		white_cards_pile = CAH.CARDS.whiteCards.duplicate()
 		white_cards_pile.shuffle()
 	return white_cards_pile.pop_back()
 

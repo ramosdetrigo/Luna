@@ -5,9 +5,6 @@ extends AspectRatioContainer
 signal clicked
 signal grabbed
 signal dropped
-# Signals if the card was toggled to be edited etc.
-signal editing
-signal edited
 
 enum CardType {
 	BLACK_CARD,
@@ -17,6 +14,7 @@ enum CardType {
 const BLACK_CARD: CardType = CardType.BLACK_CARD
 const WHITE_CARD: CardType = CardType.WHITE_CARD
 var target_image: CompressedTexture2D = CAH.textures[2]
+var custom_image: Image
 
 # The card's text
 @export_multiline
@@ -98,7 +96,7 @@ func set_editable(toggle: bool) -> void:
 	editable = toggle
 	%CardText.visible = not editable
 	%TextEdit.visible = editable
-	%TextEditButton.visible = editable
+	%ButtonsContainer.visible = editable
 	if card_type == BLACK_CARD:
 		%PickSlider.visible = editable
 		%TextEdit.material = null
@@ -108,7 +106,7 @@ func set_editable(toggle: bool) -> void:
 
 
 func set_edit_visible(toggle: bool, pick_visible: bool = true) -> void:
-	%TextEditButton.visible = toggle
+	%ButtonsContainer.visible = toggle
 	if card_type == BLACK_CARD:
 		%PickSlider.visible = pick_visible
 	else:
@@ -158,6 +156,11 @@ func set_flipped(toggle: bool, no_tween: bool = false) -> void:
 		_flip_tween.tween_property(%ImageControl, "scale", Vector2(1.0, 1.0), 0.1)
 		_flip_tween.play()
 	, CONNECT_ONE_SHOT)
+
+
+func set_pick(value: int) -> void:
+	%PickSlider.set_value(value)
+
 
 func get_display_text() -> String:
 	if text == "[Carta editável]":
@@ -246,10 +249,6 @@ func _ready() -> void:
 	set_flipped(flipped, true)
 
 
-func _on_image_container_resized() -> void:
-	tween_image_scale(get_image_target_scale(),0.2)
-
-
 func _process(delta: float) -> void:
 	if text == "<glitch_text>":
 		%CardText.text = _random_text()
@@ -257,11 +256,68 @@ func _process(delta: float) -> void:
 		%Cube.rotate_y(0.5 * delta)
 
 
+func _on_image_container_resized() -> void:
+	tween_image_scale(get_image_target_scale(),0.2)
+
+
+func _on_image_select_button_toggled(toggled: bool) -> void:
+	if not toggled:
+		custom_image = null
+		%CustomImage.texture = null
+		%CustomImage.hide()
+	else:
+		%FileDialog.show()
+
+
+func _on_file_dialog_file_selected(path: String) -> void:
+	var img = Image.new()
+	var error = img.load(path)
+	print("file selected!")
+	if error != OK:
+		return
+	
+	custom_image = img
+	%CustomImage.texture = ImageTexture.create_from_image(custom_image)
+	%CustomImage.show()
+	%ImageSelectButton.set_toggled(true)
+
+
+func _on_file_dialog_canceled() -> void:
+	if custom_image == null:
+		%ImageSelectButton.set_toggled(false)
+
+
+func _on_http_request_request_completed(result: int, _response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result != HTTPRequest.RESULT_SUCCESS:
+		return
+	
+	# Gets the image from the request
+	var img
+	for field: String in headers:
+		if field.contains("Content-Type: image/"):
+			var img_type = field.replace("Content-Type: image/", "")
+			img = Global.load_image_from_buffer(img_type, body)
+			break
+	
+	# Checks if its a valid image
+	if img == null:
+		return
+	else:
+		%TextEdit.text = ""
+		custom_image = img
+		%CustomImage.texture = ImageTexture.create_from_image(custom_image)
+		%CustomImage.show()
+		%ImageSelectButton.set_toggled(true)
+
+
 func _on_text_edit_button_toggled(toggled_on: bool) -> void:
+	%ImageSelectButton.visible = card_type == WHITE_CARD and toggled_on
+	
 	%TextEdit.editable = toggled_on
 	%TextEdit.selecting_enabled = toggled_on
 	
-	# Toggle for "all editable mode"
+	# In "all editable mode" the card comes as non-editable.
+	# Here we make it editable and set the textedit text to the current card text.
 	if not editable:
 		var previous_text = get_display_text()
 		set_text("[Carta editável]")
@@ -272,12 +328,30 @@ func _on_text_edit_button_toggled(toggled_on: bool) -> void:
 		%TextEdit.grab_focus()
 		%TextEdit.mouse_filter = MOUSE_FILTER_STOP
 		%TextEdit.mouse_default_cursor_shape = CURSOR_IBEAM
-		editing.emit()
 	else:
 		%TextEdit.release_focus()
 		%TextEdit.mouse_filter = MOUSE_FILTER_IGNORE
 		%TextEdit.mouse_default_cursor_shape = CURSOR_ARROW
-		edited.emit()
+		# Check if the textedit is an url and an image.
+		# If it is, we'll try to change custom_image to the url download.
+		if card_type == WHITE_CARD:
+			var urlRegex = RegEx.create_from_string('^(http|https)://[^ "]+$')
+			var result = urlRegex.search(%TextEdit.text)
+			if result:
+				%HTTPRequest.request(%TextEdit.text)
+
+
+func _on_pick_slider_value_changed(value: float) -> void:
+	pick = value
+	if pick == 1:
+		%PickLabel.text = "1 resposta"
+	else:
+		%PickLabel.text = "%d respostas" % value
+
+
+func _on_text_edit_focus_entered() -> void:
+	@warning_ignore("narrowing_conversion")
+	Global.TEXT_EDIT_Y = dragger.global_position.y + dragger.size.y
 #endregion CALLBACKS
 
 
@@ -293,20 +367,3 @@ func set_clickable(clickable: bool) -> void:
 #func _input(event: InputEvent) -> void:
 	#if event.is_pressed():
 		#set_flipped(not flipped)
-
-
-func set_pick(value: int) -> void:
-	%PickSlider.set_value(value)
-
-
-func _on_pick_slider_value_changed(value: float) -> void:
-	pick = value
-	if pick == 1:
-		%PickLabel.text = "1 resposta"
-	else:
-		%PickLabel.text = "%d respostas" % value
-
-
-func _on_text_edit_focus_entered() -> void:
-	@warning_ignore("narrowing_conversion")
-	Global.TEXT_EDIT_Y = dragger.global_position.y + dragger.size.y

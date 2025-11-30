@@ -5,6 +5,7 @@ const CARD_GROUP_SCENE: PackedScene = preload("res://src/card_ui/card_group/card
 
 # 534,812: base card image resolution
 const CARD_IMAGE_SIZE: Vector2 = Vector2(534, 812)
+var CARDS: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/cards.json"))
 
 # Shader material that fixes that stupid emoji bug
 const TEXTEDIT_MATERIAL = preload("res://src/card_ui/card/text_edit_material.tres")
@@ -55,6 +56,7 @@ const textures: Array[CompressedTexture2D] = [
 	preload("res://assets/images/cards/brasil.png"),        # 8
 	preload("res://assets/images/cards/felps_bombado.png"), # 9
 	preload("res://assets/images/cards/pau.png"),           # 10
+	preload("res://assets/images/cards/bunda.png"),         # 11
 ]
 # Lookup table for custom cards that use specific textures.
 const custom_cards: Dictionary[String, Dictionary] = {
@@ -65,7 +67,8 @@ const custom_cards: Dictionary[String, Dictionary] = {
 	"<Bolsonaro>": {"text": "", "texture": textures[7]},
 	"<Brasil>": {"text": "", "texture": textures[8]},
 	"<Felps bombado>": {"text": "", "texture": textures[9]},
-	"<Pau>": {"text": "", "texture": textures[10]}
+	"<Pau>": {"text": "", "texture": textures[10]},
+	"<Bunda>": {"text": "", "texture": textures[11]},
 }
 
 

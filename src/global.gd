@@ -119,3 +119,27 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_configs()
 		get_tree().quit()
+
+
+## Uses the right load function depending on image type
+func load_image_from_buffer(extension: String, buffer: PackedByteArray) -> Image:
+	var img = Image.new()
+	var error: Error
+	match extension.to_lower():
+		"jpg", "jpeg":
+			error = img.load_jpg_from_buffer(buffer)
+		"png":
+			error = img.load_png_from_buffer(buffer)
+		"webp":
+			error = img.load_webp_from_buffer(buffer)
+		"svg", "svg+xml":
+			error = img.load_svg_from_buffer(buffer)
+		"bmp":
+			error = img.load_bmp_from_buffer(buffer)
+		"ktx":
+			error = img.load_ktx_from_buffer(buffer)
+		_:
+			return null
+	if error != OK:
+		return null
+	return img
