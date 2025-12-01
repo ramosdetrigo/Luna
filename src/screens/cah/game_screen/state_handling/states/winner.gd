@@ -65,9 +65,17 @@ func _ready() -> void:
 	wch_tweener.finished.connect(func():
 		for card in nodes.white_card_holder.get_cards():
 			nodes.white_card_holder.remove_card(card)
-		for card_text in state.choice_groups[0].cards:
-			var new_card = CAH.CARD_SCENE.instantiate()
-			new_card.text = card_text
+		for card_info: Dictionary in state.choice_groups[0].cards:
+			var new_card: Card = CAH.CARD_SCENE.instantiate()
+			
+			new_card.text = card_info["text"]
+			if card_info.get("custom_image"):
+				new_card.set_custom_image_from_webp(card_info["custom_image"])
+			elif card_info.get("custom_gif"):
+				new_card.set_custom_animated_image(card_info["custom_gif"])
+			
+			# I think this is a hack to prevent errors in add_card
+			# because of godot quirks and stuff... I *think*. It's been so long...
 			nodes.white_card_holder.add_child(new_card)
 			nodes.white_card_holder.add_card(new_card)
 	)

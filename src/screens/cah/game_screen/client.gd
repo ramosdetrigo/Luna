@@ -57,12 +57,16 @@ func join_server() -> void:
 @rpc("authority", "call_remote", "reliable")
 func client_add_cards(new_cards: Array) -> void:
 	var card_nodes: Array[Card] = []
-	for card_text in new_cards:
-		var card = CAH.CARD_SCENE.instantiate()
-		card.text = card_text
+	for card_info: Dictionary in new_cards:
+		var card: Card = CAH.CARD_SCENE.instantiate()
+		
+		card.text = card_info["text"]
+		# We don't need to set custom_image data. These are hand cards, not answer cards.
+		
 		%CardScroller.add_child(card)
 		%CardScroller.add_card(card)
 		card_nodes.push_back(card)
+		
 		# Modo "edite todas as brancas" etc
 		if game_state.edit_all_white:
 			card.set_edit_visible(true)
@@ -123,6 +127,7 @@ func client_update_player_list(player_list: Array[Dictionary]) -> void:
 	%PlayerList.update_player_list(player_list)
 
 
+# TODO: fix flip code
 @rpc("authority", "call_remote", "reliable")
 func client_group_flipped(card_group: Array[String]) -> void:
 	for group in %JudgeScroller.get_card_list():

@@ -198,8 +198,8 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 			var card_dict = {"text": card_text}
 			
 			# custom_image field is always a webp.
-			if card.custom_image:
-				card["custom_image"] = card.custom_image.save_webp_to_buffer(true, 0.9)
+			if not card.custom_image.is_empty():
+				card["custom_image"] = card.custom_image
 			elif not card.custom_gif.is_empty():
 				card_dict["custom_gif"] = card.custom_gif
 			cards.push_back(card_dict)

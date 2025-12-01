@@ -15,7 +15,7 @@ const BLACK_CARD: CardType = CardType.BLACK_CARD
 const WHITE_CARD: CardType = CardType.WHITE_CARD
 var target_image: CompressedTexture2D = CAH.textures[2]
 ## Either Image or SpriteFrames
-var custom_image: Image
+var custom_image: PackedByteArray
 var custom_gif: PackedByteArray
 
 # The card's text
@@ -235,7 +235,7 @@ static func _random_text() -> String:
 
 
 func set_custom_image(img: Image) -> void:
-	custom_image = img
+	custom_image = img.save_webp_to_buffer(true, 0.9)
 	custom_gif = []
 	
 	# Scales image down to preserve space if necessary
@@ -256,8 +256,20 @@ func set_custom_image(img: Image) -> void:
 	%ImageSelectButton.set_toggled(true)
 
 
+func set_custom_image_from_webp(webp_buffer: PackedByteArray) -> void:
+	custom_image = webp_buffer
+	custom_gif = []
+	
+	# Scales image down to preserve space if necessary
+	var img = Image.new()
+	img.load_webp_from_buffer(webp_buffer)
+	%CustomImage.texture = ImageTexture.create_from_image(img)
+	%CustomImage.show()
+	%ImageSelectButton.set_toggled(true)
+
+
 func set_custom_animated_image(gif_data: PackedByteArray) -> void:
-	custom_image = null
+	custom_image = []
 	custom_gif = gif_data
 	
 	var anim: SpriteFrames = GifManager.sprite_frames_from_buffer(gif_data)
@@ -278,7 +290,7 @@ func set_custom_animated_image(gif_data: PackedByteArray) -> void:
 
 
 func clear_custom_image() -> void:
-	custom_image = null
+	custom_image = []
 	custom_gif = []
 	%CustomImage.texture = null
 	%CustomAnimatedImage.sprite_frames = null

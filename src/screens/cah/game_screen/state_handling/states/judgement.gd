@@ -234,8 +234,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		for card in get_right_slot_group().get_cards():
 			# No editable cards here! No special cases.
 			var card_dict = {"text": card.text}
-			
-			if card.custom_image:
+			if not card.custom_image.is_empty():
 				card["custom_image"] = card.custom_image
 			elif not card.custom_gif.is_empty():
 				card_dict["custom_gif"] = card.custom_gif

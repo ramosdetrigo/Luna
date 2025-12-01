@@ -76,9 +76,15 @@ clickable: bool = true, draggable: bool = true, vertical: bool = false, flipped:
 	
 	# we need to add the card group somewhere to make its child card _ready etc.
 	nodes.confetti.add_child(card_group)
-	for card_text in choice_group.cards:
-		var new_card = CAH.CARD_SCENE.instantiate()
-		new_card.text = card_text
+	for card_info: Dictionary in choice_group.cards:
+		var new_card: Card = CAH.CARD_SCENE.instantiate()
+		
+		new_card.text = card_info["text"]
+		if card_info.get("custom_image"):
+			new_card.set_custom_image_from_webp(card_info["custom_image"])
+		elif card_info.get("custom_gif"):
+			new_card.set_custom_animated_image(card_info["custom_gif"])
+		
 		# we need to add the card somewhere before adding it, 
 		# else its child nodes will not exist and add_card will throw a fatal error
 		card_group.add_child(new_card)
