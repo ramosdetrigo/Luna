@@ -230,12 +230,17 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		get_right_slot_group().set_clickable(false)
 		nodes.top_label.animate_text("Aguarde os outros.")
 		
-		var cards: Array[String] = []
+		var cards: Array[Dictionary] = []
 		for card in get_right_slot_group().get_cards():
-			if card.is_editable():
-				cards.push_back(card.get_display_text())
-			else:
-				cards.push_back(card.text)
+			# No editable cards here! No special cases.
+			var card_dict = {"text": card.text}
+			
+			if card.custom_image:
+				card["custom_image"] = card.custom_image
+			elif not card.custom_gif.is_empty():
+				card_dict["custom_gif"] = card.custom_gif
+			
+			cards.push_back(card_dict)
 		
 		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
 		for cg in state.choice_groups:

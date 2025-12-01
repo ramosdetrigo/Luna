@@ -186,6 +186,8 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		nodes.white_card_holder.set_draggable(true)
 		nodes.top_label.animate_text("Aguarde os outros.")
 		
+		# We send a dict with fields "text" and optional
+		# "custom_image" or "custom_gif" if the card has a custom image.
 		var cards: Array[Dictionary] = []
 		for card in nodes.white_card_holder.get_cards():
 			var card_text = card.text
@@ -195,8 +197,9 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 			
 			var card_dict = {"text": card_text}
 			
+			# custom_image field is always a webp.
 			if card.custom_image:
-				card["custom_image"] = card.custom_image
+				card["custom_image"] = card.custom_image.save_webp_to_buffer(true, 0.9)
 			elif not card.custom_gif.is_empty():
 				card_dict["custom_gif"] = card.custom_gif
 			cards.push_back(card_dict)

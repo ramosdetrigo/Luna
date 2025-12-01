@@ -25,6 +25,12 @@ const ROLE_JUDGE: PlayerRole = PlayerRole.ROLE_JUDGE
 const ROLE_SPECTATOR: PlayerRole = PlayerRole.ROLE_SPECTATOR
 const ROLE_CONNECTING: PlayerRole = PlayerRole.ROLE_CONNECTING
 
+
+## cards should be a dict containing:
+## 1. "text" field with card text,
+## 2. "custom_image" or "custom_gif" field if there is a custom image on the card
+## custom_image should always be a webp packedbytearray
+## custom_gif should always be a gif packedbytearray.
 static func new_choice_group(cards: Array[Dictionary], player: String, id: int = 0) -> Dictionary:
 	return {
 		"cards": cards,
