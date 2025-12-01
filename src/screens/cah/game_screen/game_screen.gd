@@ -65,7 +65,6 @@ func _on_client_state_updated() -> void:
 
 
 #region BASIC_UI
-# TODO: mobile layout.
 # Dynamic resize that matches most resolutions nicely
 func _on_viewport_size_changed() -> void:
 	# we don't need this because anchors 😎

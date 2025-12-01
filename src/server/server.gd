@@ -75,6 +75,8 @@ func _ready() -> void:
 #region HELPER
 func create_server() -> Error:
 	var peer = WebSocketMultiplayerPeer.new()
+	peer.outbound_buffer_size = Global.PACKET_BUFFER_SIZE
+	peer.inbound_buffer_size = Global.PACKET_BUFFER_SIZE
 	var error = peer.create_server(Global.CONFIGS.port)
 	if error:
 		return error

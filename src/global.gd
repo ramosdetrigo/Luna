@@ -2,6 +2,8 @@ extends Node
 
 const SAVE_FILE_NAME: String = "user://configs.json"
 const REMOTE_SERVER_IP: String = "lunacch.oops.wtf"
+const MAX_FILE_SIZE: int = 10485760 # 10MiB
+const PACKET_BUFFER_SIZE: int = MAX_FILE_SIZE * 3 + 524288 # 30MiB + 0.5MiB
 var SERVER_NODE: Server
 
 signal audio_volume_changed(new_volume: float)
@@ -138,9 +140,6 @@ func load_image_from_buffer(extension: String, buffer: PackedByteArray) -> Image
 			error = img.load_bmp_from_buffer(buffer)
 		"ktx":
 			error = img.load_ktx_from_buffer(buffer)
-		"gif":
-			#TODO: load gif from web
-			pass
 		_:
 			return null
 	if error != OK:

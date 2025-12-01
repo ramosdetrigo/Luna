@@ -29,6 +29,9 @@ func _exit_tree() -> void:
 
 func create_client() -> void:
 	var peer = WebSocketMultiplayerPeer.new()
+	peer.outbound_buffer_size = Global.PACKET_BUFFER_SIZE
+	peer.inbound_buffer_size = Global.PACKET_BUFFER_SIZE
+	
 	var ip = Global.CONFIGS.ip
 	
 	if Global.CONFIGS.ip.strip_edges() == "":
@@ -57,11 +60,9 @@ func join_server() -> void:
 @rpc("authority", "call_remote", "reliable")
 func client_add_cards(new_cards: Array) -> void:
 	var card_nodes: Array[Card] = []
-	for card_info: Dictionary in new_cards:
+	for card_text: String in new_cards:
 		var card: Card = CAH.CARD_SCENE.instantiate()
-		
-		card.text = card_info["text"]
-		# We don't need to set custom_image data. These are hand cards, not answer cards.
+		card.text = card_text
 		
 		%CardScroller.add_child(card)
 		%CardScroller.add_card(card)

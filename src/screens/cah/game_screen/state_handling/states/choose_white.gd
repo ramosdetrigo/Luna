@@ -199,7 +199,7 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 			
 			# custom_image field is always a webp.
 			if not card.custom_image.is_empty():
-				card["custom_image"] = card.custom_image
+				card_dict["custom_image"] = card.custom_image
 			elif not card.custom_gif.is_empty():
 				card_dict["custom_gif"] = card.custom_gif
 			cards.push_back(card_dict)

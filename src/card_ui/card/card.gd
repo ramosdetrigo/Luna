@@ -44,7 +44,8 @@ var _scale_tween: Tween
 var _flip_tween: Tween
 
 @onready var dragger: Draggable = %ImageContainer
-
+var web_file_access: FileAccessWeb
+var android_file_access
 
 #region METHODS
 func set_text(new_text: String) -> void:
@@ -235,7 +236,6 @@ static func _random_text() -> String:
 
 
 func set_custom_image(img: Image) -> void:
-	custom_image = img.save_webp_to_buffer(true, 0.9)
 	custom_gif = []
 	
 	# Scales image down to preserve space if necessary
@@ -250,6 +250,7 @@ func set_custom_image(img: Image) -> void:
 	var s = min(scale_x, scale_y)
 	if s <= 0.98: # 0.98 instead of 1.0 for error margin etc.
 		img.resize(img_size.x * s, img_size.y * s, Image.INTERPOLATE_LANCZOS)
+	custom_image = img.save_webp_to_buffer(true, 0.9)
 	
 	%CustomImage.texture = ImageTexture.create_from_image(img)
 	%CustomImage.show()
@@ -269,6 +270,9 @@ func set_custom_image_from_webp(webp_buffer: PackedByteArray) -> void:
 
 
 func set_custom_animated_image(gif_data: PackedByteArray) -> void:
+	if gif_data.size() > Global.MAX_FILE_SIZE:
+		return
+	
 	custom_image = []
 	custom_gif = gif_data
 	
@@ -301,6 +305,15 @@ func clear_custom_image() -> void:
 
 #region CALLBACKS
 func _ready() -> void:
+	if Engine.has_singleton("GodotGetImage"):
+		android_file_access = Engine.get_singleton("GodotGetImage")
+		android_file_access.setOptions({"image_format" : "png"})
+	if OS.get_name() == "Web":
+		web_file_access = FileAccessWeb.new()
+		web_file_access.loaded.connect(_on_web_file_access_loaded)
+		web_file_access.error.connect(_on_file_dialog_canceled)
+		web_file_access.upload_cancelled.connect(_on_file_dialog_canceled)
+	
 	toggle_glow(glowing)
 	%ImageContainer.grabbed.connect(func(): grabbed.emit())
 	%ImageContainer.dropped.connect(func(): dropped.emit())
@@ -330,7 +343,36 @@ func _on_image_select_button_toggled(toggled: bool) -> void:
 	if not toggled:
 		clear_custom_image()
 	else:
-		%FileDialog.show()
+		if OS.get_name() == "Android" and android_file_access:
+			# request getting image from gallery
+			android_file_access.getGalleryImage()
+			
+			# Request completed successfully.
+			android_file_access.connect("image_request_completed", func(dict):
+				var img_buffer = dict.values()[0]
+				var img = Image.new()
+				await get_tree().process_frame # fixes black images
+				var error = img.load_png_from_buffer(img_buffer)
+				if error == OK:
+					set_custom_image(img)
+			, CONNECT_ONE_SHOT)
+			
+			android_file_access.connect("error", func(_error):
+				if custom_image == null and custom_gif == null:
+					%ImageSelectButton.set_toggled(false)
+				, CONNECT_ONE_SHOT)
+			
+			# Read images permission not granted by player, resend permission request
+			android_file_access.connect("permission_not_granted_by_user", func():
+				android_file_access.resendPermission()
+			, CONNECT_ONE_SHOT)
+		elif OS.get_name() == "Web":
+			print("web!")
+			web_file_access.open("*.png,*.jpg,*.jpeg,*.webp,*.svg,*.gif;Image Files")
+		else:
+			print("não web!")
+			print(OS.get_name())
+			%FileDialog.show()
 
 
 func _on_file_dialog_file_selected(path: String) -> void:
@@ -344,8 +386,18 @@ func _on_file_dialog_file_selected(path: String) -> void:
 			set_custom_image(img)
 
 
+func _on_web_file_access_loaded(_file_name: String, file_type: String, base64_data: String) -> void:
+	var bytes = Marshalls.base64_to_raw(base64_data)
+	file_type = file_type.to_lower().replace("image/", "")
+	if file_type == "gif":
+		set_custom_animated_image(bytes)
+	else:
+		var img = Global.load_image_from_buffer(file_type, bytes)
+		set_custom_image(img)
+
+
 func _on_file_dialog_canceled() -> void:
-	if custom_image == null:
+	if custom_image == null and custom_gif == null:
 		%ImageSelectButton.set_toggled(false)
 
 
