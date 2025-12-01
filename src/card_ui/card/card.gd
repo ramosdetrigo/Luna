@@ -14,7 +14,9 @@ enum CardType {
 const BLACK_CARD: CardType = CardType.BLACK_CARD
 const WHITE_CARD: CardType = CardType.WHITE_CARD
 var target_image: CompressedTexture2D = CAH.textures[2]
+## Either Image or SpriteFrames
 var custom_image: Image
+var custom_gif: PackedByteArray
 
 # The card's text
 @export_multiline
@@ -230,6 +232,58 @@ static func _random_text() -> String:
 		output += c
 	
 	return output
+
+
+func set_custom_image(img: Image) -> void:
+	custom_image = img
+	custom_gif = []
+	
+	# Scales image down to preserve space if necessary
+	const bound_rect := Vector2(454, 731) # CustomImage node size
+	var img_size := img.get_size()
+	var scale_x := 1.0
+	var scale_y := 1.0
+	if img_size.x > bound_rect.x:
+		scale_x = bound_rect.x / img_size.x
+	if img_size.y > bound_rect.y:
+		scale_y = bound_rect.y / img_size.y
+	var s = min(scale_x, scale_y)
+	if s <= 0.98: # 0.98 instead of 1.0 for error margin etc.
+		img.resize(img_size.x * s, img_size.y * s, Image.INTERPOLATE_LANCZOS)
+	
+	%CustomImage.texture = ImageTexture.create_from_image(img)
+	%CustomImage.show()
+	%ImageSelectButton.set_toggled(true)
+
+
+func set_custom_animated_image(gif_data: PackedByteArray) -> void:
+	custom_image = null
+	custom_gif = gif_data
+	
+	var anim: SpriteFrames = GifManager.sprite_frames_from_buffer(gif_data)
+	%CustomAnimatedImage.sprite_frames = anim
+	
+	# Scales keeping aspect ratio
+	var gif_res := anim.get_frame_texture("gif", 0).get_size()
+	var rect_res: Vector2 = %CustomImage.size
+	var scale_x := rect_res.x / gif_res.x
+	var scale_y := rect_res.y / gif_res.y
+	var s = min(scale_x, scale_y)
+	%CustomAnimatedImage.scale = Vector2(s, s)
+	
+	# Plays and shows the gif
+	%CustomAnimatedImage.play("gif")
+	%CustomImage.show()
+	%ImageSelectButton.set_toggled(true)
+
+
+func clear_custom_image() -> void:
+	custom_image = null
+	custom_gif = []
+	%CustomImage.texture = null
+	%CustomAnimatedImage.sprite_frames = null
+	%CustomImage.hide()
+	%ImageSelectButton.set_toggled(false)
 #endregion METHODS
 
 
@@ -262,24 +316,20 @@ func _on_image_container_resized() -> void:
 
 func _on_image_select_button_toggled(toggled: bool) -> void:
 	if not toggled:
-		custom_image = null
-		%CustomImage.texture = null
-		%CustomImage.hide()
+		clear_custom_image()
 	else:
 		%FileDialog.show()
 
 
 func _on_file_dialog_file_selected(path: String) -> void:
 	var img = Image.new()
-	var error = img.load(path)
-	print("file selected!")
-	if error != OK:
-		return
-	
-	custom_image = img
-	%CustomImage.texture = ImageTexture.create_from_image(custom_image)
-	%CustomImage.show()
-	%ImageSelectButton.set_toggled(true)
+	if path.ends_with(".gif"):
+		var gif_data: PackedByteArray = FileAccess.get_file_as_bytes(path)
+		set_custom_animated_image(gif_data)
+	else:
+		var error = img.load(path)
+		if error == OK:
+			set_custom_image(img)
 
 
 func _on_file_dialog_canceled() -> void:
@@ -292,22 +342,18 @@ func _on_http_request_request_completed(result: int, _response_code: int, header
 		return
 	
 	# Gets the image from the request
-	var img
 	for field: String in headers:
-		if field.contains("Content-Type: image/"):
+		if field.begins_with("Content-Type: image/"):
 			var img_type = field.replace("Content-Type: image/", "")
-			img = Global.load_image_from_buffer(img_type, body)
-			break
-	
-	# Checks if its a valid image
-	if img == null:
-		return
-	else:
-		%TextEdit.text = ""
-		custom_image = img
-		%CustomImage.texture = ImageTexture.create_from_image(custom_image)
-		%CustomImage.show()
-		%ImageSelectButton.set_toggled(true)
+			if img_type == "gif":
+				%TextEdit.text = ""
+				set_custom_animated_image(body)
+			else:
+				var img = Global.load_image_from_buffer(img_type, body)
+				if img:
+					%TextEdit.text = ""
+					set_custom_image(img)
+			return
 
 
 func _on_text_edit_button_toggled(toggled_on: bool) -> void:

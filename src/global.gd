@@ -138,6 +138,9 @@ func load_image_from_buffer(extension: String, buffer: PackedByteArray) -> Image
 			error = img.load_bmp_from_buffer(buffer)
 		"ktx":
 			error = img.load_ktx_from_buffer(buffer)
+		"gif":
+			#TODO: load gif from web
+			pass
 		_:
 			return null
 	if error != OK:

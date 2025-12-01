@@ -186,13 +186,21 @@ func _on_bottom_button_toggled(toggled: bool) -> void:
 		nodes.white_card_holder.set_draggable(true)
 		nodes.top_label.animate_text("Aguarde os outros.")
 		
-		var cards: Array[String] = []
+		var cards: Array[Dictionary] = []
 		for card in nodes.white_card_holder.get_cards():
+			var card_text = card.text
 			if card.is_editable():
-				cards.push_back(CAH.wrap_emojis(card.get_display_text()))
+				card_text = CAH.wrap_emojis(card.get_display_text())
 				card.set_edit_visible(false)
-			else:
-				cards.push_back(card.text)
+			
+			var card_dict = {"text": card_text}
+			
+			if card.custom_image:
+				card["custom_image"] = card.custom_image
+			elif not card.custom_gif.is_empty():
+				card_dict["custom_gif"] = card.custom_gif
+			cards.push_back(card_dict)
+		
 		var card_group = CAHState.new_choice_group(cards, Global.CONFIGS.username)
 		nodes.client.server_player_chose_white.rpc_id(1, card_group)
 	else:

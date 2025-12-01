@@ -91,7 +91,6 @@ mouse_filter = 2
 
 [node name="CustomImage" type="TextureRect" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
 offset_left = 40.978027
 offset_top = 39.143005
@@ -100,6 +99,10 @@ offset_bottom = 770.143
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
+
+[node name="CustomAnimatedImage" type="AnimatedSprite2D" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff/CustomImage"]
+unique_name_in_owner = true
+position = Vector2(227, 365.5)
 
 [node name="TextEdit" type="TextEdit" parent="ImageContainer/CenterControl/ImageControl/Image/CardStuff"]
 unique_name_in_owner = true
@@ -275,7 +278,7 @@ title = "Open an image"
 mode_overrides_title = false
 file_mode = 0
 access = 1
-filters = PackedStringArray("*.png,*.jpg,*.jpeg,*.webp,*.svg;Image Files")
+filters = PackedStringArray("*.png,*.jpg,*.jpeg,*.webp,*.svg,*.gif;Image Files")
 show_hidden_files = true
 use_native_dialog = true
 
