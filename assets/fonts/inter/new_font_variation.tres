@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" format=3 uid="uid://cb2c307srfpey"]
+
+[ext_resource type="FontFile" uid="uid://c60ubkjho3xts" path="res://assets/fonts/inter/Inter_18pt-Bold.ttf" id="1_hqv7v"]
+
+[resource]
+base_font = ExtResource("1_hqv7v")

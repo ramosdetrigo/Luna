@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://crifadt6elvi7"]
+
+[ext_resource type="Theme" uid="uid://b101sm3jedmg4" path="res://resources/card_theme.tres" id="1_6u4wf"]
+[ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card.gd" id="2_ktuci"]
+[ext_resource type="Texture2D" uid="uid://cdvowps1pk6f7" path="res://assets/images/cards/black_front.png" id="3_ktuci"]
+[ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card_container.gd" id="4_sy11y"]
+[ext_resource type="Shader" uid="uid://bly5g5qb230lh" path="res://resources/animated_gradient.gdshader" id="5_6ligt"]
+[ext_resource type="Gradient" uid="uid://dgb6fuvsq3vq3" path="res://resources/gradients/trans.tres" id="6_6ligt"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6ligt"]
+gradient = ExtResource("6_6ligt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8w5pg"]
+resource_local_to_scene = true
+shader = ExtResource("5_6ligt")
+shader_parameter/gradient = SubResource("GradientTexture1D_6ligt")
+
+[node name="Card" type="AspectRatioContainer" unique_id=1166143910]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -315.5
+offset_top = -227.5
+offset_right = 284.0
+offset_bottom = 290.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_6u4wf")
+ratio = 0.6576
+script = ExtResource("2_ktuci")
+text = "Trans."
+card_type = 1
+
+[node name="CardContainer" type="Control" parent="." unique_id=1504185996]
+layout_mode = 2
+script = ExtResource("4_sy11y")
+
+[node name="CardTexture" type="Sprite2D" parent="CardContainer" unique_id=1252523938]
+unique_name_in_owner = true
+scale = Vector2(0.6372809, 0.6372809)
+texture = ExtResource("3_ktuci")
+centered = false
+
+[node name="EditableText" type="TextEdit" parent="CardContainer/CardTexture" unique_id=255072007]
+unique_name_in_owner = true
+visible = false
+offset_left = 40.0
+offset_top = 48.923553
+offset_right = 500.0
+offset_bottom = 780.9236
+theme = ExtResource("1_6u4wf")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = -19
+text = "Trans."
+placeholder_text = "Carta editável"
+backspace_deletes_composite_character_enabled = true
+wrap_mode = 1
+
+[node name="StaticTextContainer" type="SubViewportContainer" parent="CardContainer/CardTexture" unique_id=1576088520]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_8w5pg")
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 494.0
+offset_bottom = 772.0
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="CardContainer/CardTexture/StaticTextContainer" unique_id=1733909074]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+positional_shadow_atlas_size = 0
+positional_shadow_atlas_quad_0 = 0
+positional_shadow_atlas_quad_1 = 0
+positional_shadow_atlas_quad_2 = 0
+positional_shadow_atlas_quad_3 = 0
+size = Vector2i(454, 732)
+render_target_update_mode = 4
+
+[node name="StaticText" type="RichTextLabel" parent="CardContainer/CardTexture/StaticTextContainer/SubViewport" unique_id=860519546]
+unique_name_in_owner = true
+offset_right = 454.00003
+offset_bottom = 732.0
+mouse_filter = 2
+theme = ExtResource("1_6u4wf")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+bbcode_enabled = true
+text = "Trans."
+
+[connection signal="resized" from="CardContainer" to="CardContainer" method="_on_resized"]
