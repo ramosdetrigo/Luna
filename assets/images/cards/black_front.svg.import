@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfncsj4ixc2ja"
-path="res://.godot/imported/border.png-ff54f917693b7014dfbfad597998f88c.ctex"
+uid="uid://fnmsykomv66w"
+path="res://.godot/imported/black_front.svg-3c5e0cd1e825929eeb3997db98b9600b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/cards/border.png"
-dest_files=["res://.godot/imported/border.png-ff54f917693b7014dfbfad597998f88c.ctex"]
+source_file="res://assets/images/cards/black_front.svg"
+dest_files=["res://.godot/imported/black_front.svg-3c5e0cd1e825929eeb3997db98b9600b.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

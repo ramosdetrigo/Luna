@@ -11,14 +11,14 @@
 [resource]
 default_font = ExtResource("1_yyasy")
 default_font_size = 26
-RichTextLabel/font_sizes/bold_font_size = 46
-RichTextLabel/font_sizes/bold_italics_font_size = 46
-RichTextLabel/font_sizes/italics_font_size = 46
-RichTextLabel/font_sizes/mono_font_size = 46
-RichTextLabel/font_sizes/normal_font_size = 46
+RichTextLabel/font_sizes/bold_font_size = 48
+RichTextLabel/font_sizes/bold_italics_font_size = 48
+RichTextLabel/font_sizes/italics_font_size = 48
+RichTextLabel/font_sizes/mono_font_size = 48
+RichTextLabel/font_sizes/normal_font_size = 48
 RichTextLabel/fonts/normal_font = ExtResource("1_yyasy")
 TextEdit/colors/font_placeholder_color = Color(0.38999966, 0.38999972, 0.3899996, 1)
-TextEdit/font_sizes/font_size = 46
+TextEdit/font_sizes/font_size = 48
 TextEdit/styles/focus = SubResource("StyleBoxEmpty_yyasy")
 TextEdit/styles/normal = SubResource("StyleBoxEmpty_gde0o")
 TextEdit/styles/read_only = SubResource("StyleBoxEmpty_8agp5")

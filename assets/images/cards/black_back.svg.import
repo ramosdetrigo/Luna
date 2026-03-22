@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8li6o8xo3ob2"
-path="res://.godot/imported/blood.png-30e05cd1ac9f7ad4909b9e818c607841.ctex"
+uid="uid://ds311i05q56nr"
+path="res://.godot/imported/black_back.svg-4b648c2e397fee387e8a29a3303a4fd5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/cards/blood.png"
-dest_files=["res://.godot/imported/blood.png-30e05cd1ac9f7ad4909b9e818c607841.ctex"]
+source_file="res://assets/images/cards/black_back.svg"
+dest_files=["res://.godot/imported/black_back.svg-4b648c2e397fee387e8a29a3303a4fd5.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-const CARD_SIZE: Vector2 = Vector2(534, 812)
+const CARD_SIZE: Vector2 = Vector2(646, 896)
 
 @onready var card_texture: Sprite2D = %CardTexture
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d17bn6a2wvg0n"
-path="res://.godot/imported/black_back.png-d020cbef796bdc27d29c987c91f79084.ctex"
+uid="uid://chcttv6dg6kr1"
+path="res://.godot/imported/abelhas.png-f534c0b49c13f55ed828ea54221fd988.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/cards/black_back.png"
-dest_files=["res://.godot/imported/black_back.png-d020cbef796bdc27d29c987c91f79084.ctex"]
+source_file="res://assets/images/cards/abelhas.png"
+dest_files=["res://.godot/imported/abelhas.png-f534c0b49c13f55ed828ea54221fd988.ctex"]
 
 [params]
 

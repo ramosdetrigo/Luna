@@ -16,7 +16,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SpecialCards="*uid://cq0m4ka0gxn6i"
+CardData="*uid://cq0m4ka0gxn6i"
 
 [file_customization]
 

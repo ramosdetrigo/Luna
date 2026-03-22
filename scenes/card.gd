@@ -7,51 +7,19 @@ enum CardType {
 	BLACK
 }
 
-const CARD_TEXTURES: Dictionary[StringName, CompressedTexture2D] = {
-	&"WhiteFront": preload("uid://bh1wjx00rc4ff"),
-	&"WhiteBack": preload("uid://b0pg7e2eaag27"),
-	&"BlackFront": preload("uid://cdvowps1pk6f7"),
-}
-
-const CARD_TEXTURE_PATHS: Dictionary[StringName, StringName] = {
-	&"A": &"uid://dnseg6tysrahm",
-	&"big": &"uid://sbb0urccfasg",
-	&"abelhas": &"uid://8li6o8xo3ob2",
-	&"bolsonaro": &"uid://hn065orkgkqj",
-	&"brasil": &"uid://d4c1earvlqfs2",
-	&"bunda": &"uid://bx43m0gor77wn",
-	&"felps": &"uid://de5bs16pe5j77",
-	&"pau": &"uid://7tca80ivbv5v",
-}
-
-var SPECIAL_CARDS: Dictionary[String, SpecialCards.SpecialCard] = {
-	"Lésbicas.": SpecialCards.Lesbica.new(),
-	"Trans.": SpecialCards.Trans.new(),
-	"LGTV.": SpecialCards.LGBTCard.new(),
-}
-
-@onready var editable_text: TextEdit = %EditableText
-@onready var static_text: RichTextLabel = %StaticText
-@onready var card_texture: Sprite2D = %CardTexture
-@onready var static_text_container: SubViewportContainer = %StaticTextContainer
+@export var editable_text: TextEdit
+@export var static_text: RichTextLabel
+@export var card_texture: Sprite2D
+@export var static_text_container: SubViewportContainer
 
 
 @export_multiline var text: String = "" : set = set_text
 @export var card_type: CardType = CardType.WHITE : set = set_card_type
 @export var flipped: bool = false : set = flip
-@export var texture_override: CompressedTexture2D = null :
-	set(texture):
-		texture_override = texture
-		_update_texture()
+@export var texture_override: CompressedTexture2D = null : set = set_texture_override
+@export var height_override: float = -1.0
 
-# TODO: Card height override + get_card_height
-
-var special_card_node: Node = null :
-	set(node):
-		if special_card_node != null:
-			remove_child(special_card_node)
-		special_card_node = node
-		add_child(special_card_node)
+var card_modifier: CardModifier = null : set = set_card_modifier
 
 ## Sets the card's text
 func set_text(t: String) -> void:
@@ -66,17 +34,22 @@ func set_text(t: String) -> void:
 	set_card_type(card_type)
 	
 	# Special card check
-	var special_card: SpecialCards.SpecialCard = SPECIAL_CARDS.get(text)
-	print(text)
-	if special_card != null:
-		special_card_node = special_card
-		if not special_card.texture_path.is_empty():
-			# NOTE: Target for optimization (ResourceLoader.load etc)
-			texture_override = load(special_card.texture_path)
-		print("special_card")
-		special_card.post_init(self)
-	else:
-		special_card_node = null
+	set_card_modifier(CardData.get_card_modifier(self, t))
+
+
+func set_card_modifier(mod: CardModifier) -> void:
+	print(mod)
+	if card_modifier != null:
+		remove_child(card_modifier)
+	card_modifier = mod
+	if mod != null:
+		add_child(card_modifier)
+		card_modifier.apply()
+
+
+func set_texture_override(texture: CompressedTexture2D) -> void:
+	texture_override = texture
+	_update_texture()
 
 
 ## Sets the card's type and automatically changes its texture and text color
@@ -89,7 +62,7 @@ func set_card_type(type: CardType) -> void:
 	_update_texture()
 
 
-## Change text color for both static and editable text
+## Changes text color for both static and editable text
 func set_text_color(color: Color) -> void:
 	if not static_text: await ready
 	static_text.add_theme_color_override("default_color", color)
@@ -103,22 +76,28 @@ func set_texture(texture: CompressedTexture2D) -> void:
 	card_texture.texture = texture
 
 
-## Loads the card's texture from a path
-func set_texture_from_path(path: StringName) -> void:
-	set_texture(load(path))
-
-
 func flip(f: bool = not flipped) -> void:
 	flipped = f
 	_update_texture()
 
 
+func get_text_height() -> float:
+	const MARGIN: float = 10.0
+	if height_override != -1.0: return height_override
+	# FIXME: is scale needed?
+	# static_text has "fit content" enabled, so the size is just
+	# size.y + y offset + a little margin
+	return static_text.size.y + static_text.position.y + MARGIN
+
+
 func _update_texture() -> void:
-	if flipped: # Optimization: we don't use black flipped cards
-		set_texture(CARD_TEXTURES["WhiteBack"])
+	if flipped:
+		# Memory optimization: we don't use black flipped cards,
+		# so the black_back texture is never loaded
+		set_texture(CardData.MAIN_TEXTURES["white_back"])
 	elif texture_override != null:
 		set_texture(texture_override)
 	elif card_type == CardType.WHITE:
-		set_texture(CARD_TEXTURES["WhiteFront"])
+		set_texture(CardData.MAIN_TEXTURES["white_front"])
 	else: 
-		set_texture(CARD_TEXTURES["BlackFront"])
+		set_texture(CardData.MAIN_TEXTURES["black_front"])
