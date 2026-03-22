@@ -1,6 +1,10 @@
 [gd_resource type="Theme" format=3 uid="uid://b101sm3jedmg4"]
 
+[ext_resource type="FontFile" uid="uid://dby2nof0yei62" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_uedn2"]
 [ext_resource type="FontFile" uid="uid://c60ubkjho3xts" path="res://assets/fonts/inter/Inter_18pt-Bold.ttf" id="1_yyasy"]
+[ext_resource type="FontFile" uid="uid://dssoqepi1s7eb" path="res://assets/fonts/inter/Inter_18pt-BlackItalic.ttf" id="2_ntw4p"]
+[ext_resource type="FontFile" uid="uid://dts08v20l5jow" path="res://assets/fonts/inter/Inter_18pt-BoldItalic.ttf" id="3_lr7kf"]
+[ext_resource type="FontFile" uid="uid://dcmdv1tartwmu" path="res://assets/fonts/monospace/ChivoMono-Bold.ttf" id="4_hd7e1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yyasy"]
 
@@ -16,6 +20,10 @@ RichTextLabel/font_sizes/bold_italics_font_size = 48
 RichTextLabel/font_sizes/italics_font_size = 48
 RichTextLabel/font_sizes/mono_font_size = 48
 RichTextLabel/font_sizes/normal_font_size = 48
+RichTextLabel/fonts/bold_font = ExtResource("1_uedn2")
+RichTextLabel/fonts/bold_italics_font = ExtResource("2_ntw4p")
+RichTextLabel/fonts/italics_font = ExtResource("3_lr7kf")
+RichTextLabel/fonts/mono_font = ExtResource("4_hd7e1")
 RichTextLabel/fonts/normal_font = ExtResource("1_yyasy")
 TextEdit/colors/font_placeholder_color = Color(0.38999966, 0.38999972, 0.3899996, 1)
 TextEdit/font_sizes/font_size = 48
