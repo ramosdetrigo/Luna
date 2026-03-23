@@ -17,6 +17,8 @@ enum CardType {
 @export var edit_button: Button
 @export var cancel_edit_button: Button
 @export var card_border: Sprite2D
+@export var texture_container: Draggable
+
 
 
 @export_multiline var text: String = "" : set = set_text

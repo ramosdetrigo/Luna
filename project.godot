@@ -23,7 +23,8 @@ CardData="*uid://cq0m4ka0gxn6i"
 folder_colors={
 "res://assets/": "orange",
 "res://resources/": "purple",
-"res://scenes/": "teal"
+"res://scenes/": "teal",
+"res://scripts/": "green"
 }
 
 [physics]

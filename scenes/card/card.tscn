@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://b101sm3jedmg4" path="res://resources/card_theme.tres" id="1_6u4wf"]
 [ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card/card.gd" id="2_ktuci"]
 [ext_resource type="Texture2D" uid="uid://fnmsykomv66w" path="res://assets/images/cards/black_front.svg" id="4_b2sko"]
-[ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/card_container.gd" id="4_sy11y"]
+[ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/texture_container.gd" id="4_sy11y"]
 [ext_resource type="Theme" uid="uid://cqtwf6mg2wos5" path="res://resources/themes/theme_ui2.tres" id="5_2ufkr"]
 [ext_resource type="Texture2D" uid="uid://baomsxsk5qvkx" path="res://assets/images/cards/border.svg" id="5_788ek"]
 [ext_resource type="Shader" uid="uid://b3wfdwsebm0pq" path="res://resources/card_border.gdshader" id="5_v07qs"]
@@ -36,7 +36,7 @@ resource_local_to_scene = true
 shader = ExtResource("8_esy5w")
 shader_parameter/gradient = SubResource("GradientTexture1D_esy5w")
 
-[node name="Card" type="AspectRatioContainer" unique_id=1166143910 node_paths=PackedStringArray("editable_text", "static_text", "card_texture", "static_text_container", "buttons_container", "confirm_edit_button", "edit_button", "cancel_edit_button", "card_border")]
+[node name="Card" type="AspectRatioContainer" unique_id=1166143910 node_paths=PackedStringArray("editable_text", "static_text", "card_texture", "static_text_container", "buttons_container", "confirm_edit_button", "edit_button", "cancel_edit_button", "card_border", "texture_container")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -44,8 +44,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -298.0
 offset_top = -226.0
-offset_right = 298.0
-offset_bottom = 226.0
+offset_right = 333.0
+offset_bottom = 204.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_6u4wf")
@@ -60,18 +60,21 @@ confirm_edit_button = NodePath("TextureContainer/CardTexture/ButtonsContainer/Co
 edit_button = NodePath("TextureContainer/CardTexture/ButtonsContainer/EditButton")
 cancel_edit_button = NodePath("TextureContainer/CardTexture/ButtonsContainer/CancelEditButton")
 card_border = NodePath("TextureContainer/CardTexture/CardBorder")
+texture_container = NodePath("TextureContainer")
 text = "Trans."
 card_type = 1
 editable = true
 
-[node name="TextureContainer" type="Control" parent="." unique_id=1504185996]
+[node name="TextureContainer" type="Control" parent="." unique_id=1504185996 node_paths=PackedStringArray("drag_target")]
 layout_mode = 2
 script = ExtResource("4_sy11y")
-min_drag_angle = null
+drag_target = NodePath("CardTexture")
+max_drag_cos = 0.95
+drag_threshold = 10.0
 
 [node name="CardTexture" type="Sprite2D" parent="TextureContainer" unique_id=1252523938]
 unique_name_in_owner = true
-scale = Vector2(0.5009084, 0.5009084)
+scale = Vector2(0.47652793, 0.47652793)
 texture = ExtResource("4_b2sko")
 centered = false
 
@@ -195,7 +198,7 @@ custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 expand_icon = true
 
-[connection signal="gui_input" from="TextureContainer" to="TextureContainer" method="_on_gui_input"]
+[connection signal="ready" from="TextureContainer" to="TextureContainer" method="_on_resized"]
 [connection signal="resized" from="TextureContainer" to="TextureContainer" method="_on_resized"]
 [connection signal="pressed" from="TextureContainer/CardTexture/ButtonsContainer/EditButton" to="." method="toggle_editing" binds= [true]]
 [connection signal="pressed" from="TextureContainer/CardTexture/ButtonsContainer/ConfirmEditButton" to="." method="confirm_edit"]
