@@ -16,6 +16,7 @@ enum CardType {
 @export var confirm_edit_button: Button
 @export var edit_button: Button
 @export var cancel_edit_button: Button
+@export var card_border: Sprite2D
 
 
 @export_multiline var text: String = "" : set = set_text
@@ -24,6 +25,7 @@ enum CardType {
 @export var texture_override: CompressedTexture2D = null : set = set_texture_override
 @export var height_override: float = -1.0
 @export var editable: bool = false : set = set_editable
+
 
 var card_modifier: CardModifier = null : set = set_card_modifier
 
@@ -42,6 +44,13 @@ func toggle_editing(toggle: bool) -> void:
 	edit_button.visible = not toggle
 	confirm_edit_button.visible = toggle
 	cancel_edit_button.visible = toggle
+
+
+func toggle_border(toggle: bool) -> void:
+	if toggle:
+		card_border.fade_in()
+	else:
+		card_border.fade_out()
 
 
 func confirm_edit() -> void:
