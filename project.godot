@@ -17,6 +17,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 CardData="*uid://cq0m4ka0gxn6i"
+ImageLoader="*uid://412abcld6u4i"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_gif/plugin.cfg")
 
 [file_customization]
 

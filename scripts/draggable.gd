@@ -1,6 +1,10 @@
 class_name Draggable
 extends Control
 
+signal pressed
+signal drag_started
+signal drag_stopped
+
 @export var drag_target: CanvasItem
 
 @export_range(0.0, 1.0) var min_drag_cos: float = 0.0
@@ -20,6 +24,7 @@ func tween_position(target: Vector2, time: float = 0.2) -> void:
 	pos_tween.set_trans(Tween.TRANS_BACK)
 	pos_tween.tween_property(drag_target, "position", target, time)
 
+
 func _ready() -> void:
 	gui_input.connect(_on_gui_input)
 
@@ -30,7 +35,10 @@ func _on_gui_input(event: InputEvent) -> void:
 		if trying_drag:
 			drag_anchor = get_local_mouse_position()
 		else:
+			if not dragging:
+				pressed.emit()
 			dragging = false
+			drag_stopped.emit()
 			tween_position(Vector2.ZERO)
 	elif event is InputEventMouseMotion:
 		var drag_vector: Vector2 = get_local_mouse_position() - drag_anchor
@@ -41,5 +49,6 @@ func _on_gui_input(event: InputEvent) -> void:
 				trying_drag = false
 			else:
 				dragging = true
+				drag_started.emit()
 		if not dragging: return
 		tween_position(drag_vector)

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://rmlt3vqx8inf"]
+
+[ext_resource type="Script" uid="uid://dc17iuyfedmp0" path="res://scenes/test.gd" id="1_errlg"]
+
+[node name="Test" type="TextureRect" unique_id=316414684]
+custom_minimum_size = Vector2(100, 100)
+offset_right = 633.0
+offset_bottom = 371.0
+expand_mode = 2
+stretch_mode = 5
+script = ExtResource("1_errlg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1320485050]
+
+[node name="GIFPlayer" type="GIFPlayer" parent="." unique_id=1521658936]
+expand_mode = 2
+stretch_mode = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

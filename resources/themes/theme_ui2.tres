@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://2n84f3l26n4a" path="res://assets/fonts/jost/Jost-Regular.ttf" id="1_a11io"]
 [ext_resource type="StyleBox" uid="uid://cyxjkwym446vt" path="res://resources/stylebox/stylebox_normal.tres" id="1_jdi31"]
 [ext_resource type="StyleBox" uid="uid://c2dqc2o3icuwt" path="res://resources/stylebox/stylebox_hover.tres" id="2_v1nuj"]
+[ext_resource type="StyleBox" uid="uid://b2pb61avvtlcd" path="res://resources/stylebox/stylebox_hover_pressed.tres" id="3_r2wuc"]
 [ext_resource type="StyleBox" uid="uid://djgjbckx5idtf" path="res://resources/stylebox/stylebox_pressed.tres" id="4_ie5it"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfe6c"]
@@ -39,5 +40,6 @@ Button/fonts/font = ExtResource("1_a11io")
 Button/styles/disabled = SubResource("StyleBoxFlat_yfe6c")
 Button/styles/focus = SubResource("StyleBoxEmpty_rdbpa")
 Button/styles/hover = ExtResource("2_v1nuj")
+Button/styles/hover_pressed = ExtResource("3_r2wuc")
 Button/styles/normal = ExtResource("1_jdi31")
 Button/styles/pressed = ExtResource("4_ie5it")

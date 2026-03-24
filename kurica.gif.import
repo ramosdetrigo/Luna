@@ -1,0 +1,16 @@
+[remap]
+
+importer="texture_gif"
+importer_version=1
+type="GIFTexture"
+uid="uid://duc430k775pao"
+path="res://.godot/imported/kurica.gif-8efb331ba0a9cacb7de7644cbd303a70.res"
+
+[deps]
+
+source_file="res://kurica.gif"
+dest_files=["res://.godot/imported/kurica.gif-8efb331ba0a9cacb7de7644cbd303a70.res"]
+
+[params]
+
+storage/compress=true

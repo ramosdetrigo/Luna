@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://b101sm3jedmg4" path="res://resources/card_theme.tres" id="1_6u4wf"]
 [ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card/card.gd" id="2_ktuci"]
-[ext_resource type="Texture2D" uid="uid://fnmsykomv66w" path="res://assets/images/cards/black_front.svg" id="4_b2sko"]
+[ext_resource type="Texture2D" uid="uid://fnmsykomv66w" path="res://assets/images/cards/black_front.svg" id="4_j4tui"]
 [ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/texture_container.gd" id="4_sy11y"]
 [ext_resource type="Theme" uid="uid://cqtwf6mg2wos5" path="res://resources/themes/theme_ui2.tres" id="5_2ufkr"]
 [ext_resource type="Texture2D" uid="uid://baomsxsk5qvkx" path="res://assets/images/cards/border.svg" id="5_788ek"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://bo5wj776nk4qv" path="res://assets/images/ui/cross.png" id="8_788ek"]
 [ext_resource type="Shader" uid="uid://bly5g5qb230lh" path="res://resources/animated_gradient.gdshader" id="8_esy5w"]
 [ext_resource type="Gradient" uid="uid://dgb6fuvsq3vq3" path="res://resources/gradients/trans.tres" id="9_7p3a7"]
+[ext_resource type="PackedScene" uid="uid://d1svbwfd616gq" path="res://scenes/card/custom_image_container/custom_image_container.tscn" id="10_h0iti"]
+[ext_resource type="Texture2D" uid="uid://ctw2nn0xept7i" path="res://assets/images/ui/image.png" id="13_7p3a7"]
 
 [sub_resource type="Gradient" id="Gradient_v07qs"]
 interpolation_mode = 2
@@ -28,13 +30,13 @@ gradient = SubResource("Gradient_v07qs")
 shader = ExtResource("5_v07qs")
 shader_parameter/gradient = SubResource("GradientTexture1D_0iqnq")
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_esy5w"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_j4tui"]
 gradient = ExtResource("9_7p3a7")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7p3a7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h0iti"]
 resource_local_to_scene = true
 shader = ExtResource("8_esy5w")
-shader_parameter/gradient = SubResource("GradientTexture1D_esy5w")
+shader_parameter/gradient = SubResource("GradientTexture1D_j4tui")
 
 [node name="Card" type="AspectRatioContainer" unique_id=1166143910 node_paths=PackedStringArray("editable_text", "static_text", "card_texture", "static_text_container", "buttons_container", "confirm_edit_button", "edit_button", "cancel_edit_button", "card_border", "texture_container")]
 anchors_preset = 8
@@ -62,20 +64,18 @@ cancel_edit_button = NodePath("TextureContainer/CardTexture/ButtonsContainer/Can
 card_border = NodePath("TextureContainer/CardTexture/CardBorder")
 texture_container = NodePath("TextureContainer")
 text = "Trans."
-card_type = 1
-editable = true
+type = 1
 
 [node name="TextureContainer" type="Control" parent="." unique_id=1504185996 node_paths=PackedStringArray("drag_target")]
 layout_mode = 2
 script = ExtResource("4_sy11y")
 drag_target = NodePath("CardTexture")
-max_drag_cos = 0.95
 drag_threshold = 10.0
 
 [node name="CardTexture" type="Sprite2D" parent="TextureContainer" unique_id=1252523938]
 unique_name_in_owner = true
 scale = Vector2(0.47652793, 0.47652793)
-texture = ExtResource("4_b2sko")
+texture = ExtResource("4_j4tui")
 centered = false
 
 [node name="CardBorder" type="Sprite2D" parent="TextureContainer/CardTexture" unique_id=1858501268]
@@ -90,7 +90,7 @@ fade_time = 0.25
 
 [node name="StaticTextContainer" type="SubViewportContainer" parent="TextureContainer/CardTexture" unique_id=1576088520]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_7p3a7")
+material = SubResource("ShaderMaterial_h0iti")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -141,39 +141,28 @@ placeholder_text = "Carta editável"
 backspace_deletes_composite_character_enabled = true
 wrap_mode = 1
 
-[node name="CustomImage" type="TextureRect" parent="TextureContainer/CardTexture" unique_id=954118601]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 38.0
-offset_top = 30.0
-offset_right = -38.0
-offset_bottom = -46.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="CustomImage" parent="TextureContainer/CardTexture" unique_id=1475148250 instance=ExtResource("10_h0iti")]
+image_type = 0
 
 [node name="ButtonsContainer" type="HBoxContainer" parent="TextureContainer/CardTexture" unique_id=41829132]
-anchors_preset = -1
+visible = false
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.98200005
 anchor_right = 0.5
-anchor_bottom = 0.98200005
-offset_left = -140.0
-offset_top = -69.87207
-offset_right = 140.0
-offset_bottom = 70.12793
+offset_left = -190.0
+offset_top = 810.0
+offset_right = 190.0
+offset_bottom = 950.0
 grow_horizontal = 2
-grow_vertical = 0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 theme = ExtResource("5_2ufkr")
-theme_override_constants/separation = 100
+theme_override_constants/separation = 70
 alignment = 1
 
 [node name="EditButton" type="Button" parent="TextureContainer/CardTexture/ButtonsContainer" unique_id=1304941585]
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
-theme_override_constants/icon_max_width = 100
+theme_override_constants/icon_max_width = 90
 icon = ExtResource("6_kaf1t")
 icon_alignment = 1
 expand_icon = true
@@ -182,20 +171,27 @@ expand_icon = true
 visible = false
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
+theme_override_constants/icon_max_width = 110
 icon = ExtResource("7_b2sko")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ImageButton" type="Button" parent="TextureContainer/CardTexture/ButtonsContainer" unique_id=515493005]
+visible = false
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+theme_override_constants/icon_max_width = 70
+icon = ExtResource("13_7p3a7")
+icon_alignment = 1
 expand_icon = true
 
 [node name="CancelEditButton" type="Button" parent="TextureContainer/CardTexture/ButtonsContainer" unique_id=1985431328]
 visible = false
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
+theme_override_constants/icon_max_width = 110
 icon = ExtResource("8_788ek")
-expand_icon = true
-
-[node name="UploadButton" type="Button" parent="TextureContainer/CardTexture/ButtonsContainer" unique_id=515493005]
-visible = false
-custom_minimum_size = Vector2(140, 140)
-layout_mode = 2
+icon_alignment = 1
 expand_icon = true
 
 [connection signal="ready" from="TextureContainer" to="TextureContainer" method="_on_resized"]

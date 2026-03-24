@@ -1,0 +1,15 @@
+[configuration]
+
+entry_symbol = "godot_gif_init"
+compatibility_minimum = "4.1"
+reloadable = true
+
+[libraries]
+
+linux.debug.x86_64 = "libgodot_gif.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "libgodot_gif.linux.template_release.x86_64.so"
+
+[icons]
+
+GIFTexture = "icons/GIFTexture.svg"
+GIFPlayer = "icons/GIFPlayer.svg"
