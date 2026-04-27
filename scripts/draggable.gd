@@ -5,14 +5,17 @@ signal pressed
 signal drag_started
 signal drag_stopped
 
-@export var drag_target: Sprite2D
+@export var drag_target: Control
 @export_range(0.0, 1.0) var min_drag_cos: float = 0.0
 @export_range(0.0, 1.0) var max_drag_cos: float = 1.0
 @export var drag_threshold: float = 20.0
+@export var rotation_amount: float = 0.25
+@export var rotation_min_speed: float = 250.0
 
 var trying_drag: bool = false
 var dragging: bool = false
 var drag_anchor: Vector2 = Vector2(0.0, 0.0)
+var previous_mouse_position: Vector2 = Vector2(0.0, 0.0)
 var pos_tween: Tween
 var rot_tween: Tween
 
@@ -23,6 +26,17 @@ static func _sigmoid(x: float) -> float:
 
 func _ready() -> void:
 	gui_input.connect(_on_gui_input)
+	previous_mouse_position = get_local_mouse_position()
+
+
+func _process(_delta: float) -> void:
+	if dragging:
+		# Applies a small rotation to the card depending on drag speed
+		var drag_dx: float = get_local_mouse_position().x - previous_mouse_position.x;
+		var s: float = sign(drag_dx)
+		var amount: float = abs(drag_dx) / rotation_min_speed
+		tween_rotation( clamp(amount, 0.0, rotation_amount) * s )
+	previous_mouse_position = get_local_mouse_position()
 
 
 func tween_position(target: Vector2, time: float = 0.2) -> void:
