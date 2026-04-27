@@ -1,7 +1,6 @@
 class_name CubeMod
 extends CardModifierComponent
 
-
 const CUBE_SCENE: PackedScene = preload("res://scenes/card/card_modifier/mods/cube_mod/card_cube.tscn")
 
 

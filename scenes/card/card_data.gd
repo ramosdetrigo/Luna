@@ -1,7 +1,6 @@
 @tool
 extends Node
 
-
 const TEXTURES: Dictionary[StringName, String] = {
 	&"white_front": "uid://du0agvqxdn2oy",
 	&"white_back": "uid://3i1vrj47g4ae",
@@ -16,28 +15,24 @@ const TEXTURES: Dictionary[StringName, String] = {
 	&"felps_bombado": "uid://yr2wv7j4a3cs",
 	&"pau": "uid://2ixd0l7tvpom",
 }
-
 const MAIN_TEXTURES: Dictionary[StringName, CompressedTexture2D] = {
 	&"white_front": preload(TEXTURES[&"white_front"]),
 	&"white_back": preload(TEXTURES[&"white_back"]),
 	&"black_front": preload(TEXTURES[&"black_front"]),
 }
-
-
 const GRADIENTS: Dictionary[String, Gradient] = {
 	"AROACE": preload("uid://dwjs35fa16x6x"),
 	"AROMANTIC": preload("uid://dae1biehv85f4"),
-	"ASEXUAL" : preload("uid://q0oc3eap4q2n"),
-	"BISEXUAL" : preload("uid://ovsqk053rybw"),
-	"DEMISEXUAL" : preload("uid://c45ssesfu2vc"),
-	"GAY" : preload("uid://v0dl8p057d6h"),
-	"LESBIAN" : preload("uid://dl6urtyf2jyps"),
-	"LGBT" : preload("uid://dbt0m1xngjiuw"),
-	"NONBINARY" : preload("uid://bmuy44q2gekoc"),
-	"PANSEXUAL" : preload("uid://cikll1nkhdxvr"),
-	"TRANS" : preload("uid://dgb6fuvsq3vq3"),
+	"ASEXUAL": preload("uid://q0oc3eap4q2n"),
+	"BISEXUAL": preload("uid://ovsqk053rybw"),
+	"DEMISEXUAL": preload("uid://c45ssesfu2vc"),
+	"GAY": preload("uid://v0dl8p057d6h"),
+	"LESBIAN": preload("uid://dl6urtyf2jyps"),
+	"LGBT": preload("uid://dbt0m1xngjiuw"),
+	"NONBINARY": preload("uid://bmuy44q2gekoc"),
+	"PANSEXUAL": preload("uid://cikll1nkhdxvr"),
+	"TRANS": preload("uid://dgb6fuvsq3vq3"),
 }
-
 
 var CARDS: Dictionary[Array, Array] = {
 	["Cubo."]: [CubeMod.new()],

@@ -18,19 +18,21 @@ func deserialize_texture(data: Dictionary) -> Texture2D:
 		var mipmaps = data.get("mipmaps")
 		var width = data.get("width")
 		var height = data.get("height")
-		
+
 		var img: Image = Image.create_from_data(width, height, mipmaps, format, bytes)
 		return ImageTexture.create_from_image(img)
 	return null
 
 
 func serialize_url(url: String) -> Dictionary:
-	if not is_url(url): return {}
+	if not is_url(url):
+		return { }
 	return { "format": "url", "url": url }
 
 
 func serialize_texture(texture: Texture2D) -> Dictionary:
-	if texture == null: return {}
+	if texture == null:
+		return { }
 	if texture is GIFTexture:
 		return { "format": "gif", "data": texture.data }
 	else:
@@ -38,7 +40,8 @@ func serialize_texture(texture: Texture2D) -> Dictionary:
 
 
 func serialize_image(image: Image) -> Dictionary:
-	if image == null: return {}
+	if image == null:
+		return { }
 	var data = image.data.duplicate()
 	data["format"] = image.get_format()
 	return data
@@ -50,22 +53,23 @@ func is_url(text: String) -> bool:
 
 
 func download_image(url: String) -> Texture2D:
-	if not is_url(url): return null
-	
+	if not is_url(url):
+		return null
+
 	var response = await http_request(url)
 	var result: int = response[0]
 	var headers: PackedStringArray = response[2]
 	var body: PackedByteArray = response[3]
-	
+
 	if result != HTTPRequest.RESULT_SUCCESS:
 		return null
-	
+
 	# Tries to get the image from the request
 	for field: String in headers:
 		if field.begins_with("Content-Type: image/"):
 			var img_type = field.replace("Content-Type: image/", "")
 			return load_image_from_buffer(img_type, body)
-	
+
 	# If the request has no image
 	return null
 
@@ -82,6 +86,7 @@ func http_request(url) -> Array:
 func load_image_from_buffer(extension: String, buffer: PackedByteArray) -> Texture2D:
 	var img: Image = Image.new()
 	var error: Error
+	print(buffer.size())
 	match extension.to_lower():
 		"jpg", "jpeg":
 			error = img.load_jpg_from_buffer(buffer)

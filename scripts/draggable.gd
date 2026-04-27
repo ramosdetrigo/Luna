@@ -5,8 +5,7 @@ signal pressed
 signal drag_started
 signal drag_stopped
 
-@export var drag_target: CanvasItem
-
+@export var drag_target: Sprite2D
 @export_range(0.0, 1.0) var min_drag_cos: float = 0.0
 @export_range(0.0, 1.0) var max_drag_cos: float = 1.0
 @export var drag_threshold: float = 20.0
@@ -14,19 +13,35 @@ signal drag_stopped
 var trying_drag: bool = false
 var dragging: bool = false
 var drag_anchor: Vector2 = Vector2(0.0, 0.0)
-
 var pos_tween: Tween
+var rot_tween: Tween
+
+
+static func _sigmoid(x: float) -> float:
+	return (2.0 / 1.0 + pow(2.0, -x)) - 1
+
+
+func _ready() -> void:
+	gui_input.connect(_on_gui_input)
+
 
 func tween_position(target: Vector2, time: float = 0.2) -> void:
-	if pos_tween: pos_tween.kill()
+	if pos_tween:
+		pos_tween.kill()
 	pos_tween = create_tween()
 	pos_tween.set_ease(Tween.EASE_OUT)
 	pos_tween.set_trans(Tween.TRANS_BACK)
 	pos_tween.tween_property(drag_target, "position", target, time)
 
 
-func _ready() -> void:
-	gui_input.connect(_on_gui_input)
+# TODO: card rotation?
+func tween_rotation(target: float, time: float = 0.2) -> void:
+	if rot_tween:
+		rot_tween.kill()
+	rot_tween = create_tween()
+	rot_tween.set_ease(Tween.EASE_OUT)
+	rot_tween.set_trans(Tween.TRANS_BACK)
+	rot_tween.tween_property(drag_target, "rotation", target, time)
 
 
 func _on_gui_input(event: InputEvent) -> void:
@@ -40,6 +55,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			dragging = false
 			drag_stopped.emit()
 			tween_position(Vector2.ZERO)
+			tween_rotation(0.0)
 	elif event is InputEventMouseMotion:
 		var drag_vector: Vector2 = get_local_mouse_position() - drag_anchor
 		var drag_cos: float = absf(drag_vector.normalized().dot(Vector2.RIGHT))
@@ -50,5 +66,6 @@ func _on_gui_input(event: InputEvent) -> void:
 			else:
 				dragging = true
 				drag_started.emit()
-		if not dragging: return
+		if not dragging:
+			return
 		tween_position(drag_vector)

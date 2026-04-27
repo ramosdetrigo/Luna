@@ -8,8 +8,10 @@ signal drag_stopped
 
 enum CardType {
 	WHITE,
-	BLACK
+	BLACK,
 }
+
+const CARD_SCENE: PackedScene = preload("uid://crifadt6elvi7")
 
 # Node exports
 @export var editable_text: TextEdit
@@ -23,29 +25,32 @@ enum CardType {
 @export var card_border: Sprite2D
 @export var texture_container: CardTextureContainer
 @export var custom_image: CustomImageContainer
-
-
-
-@export_multiline var text: String = "" : set = set_text
-@export var type: CardType = CardType.WHITE : set = set_card_type
-@export var flipped: bool = false : set = flip
-@export var texture_override: CompressedTexture2D = null : set = set_texture_override
+@export_multiline var text: String = "":
+	set = set_text
+@export var type: CardType = CardType.WHITE:
+	set = set_card_type
+@export var flipped: bool = false:
+	set = flip
+@export var texture_override: CompressedTexture2D = null:
+	set = set_texture_override
 ## Text's height in number of lines (-1 disables override)
 @export var height_override: float = -1.0
-@export var editable: bool = false : set = set_editable
-@export var glowing_border: bool = false : set = toggle_border
+@export var editable: bool = false:
+	set = set_editable
+@export var glowing_border: bool = false:
+	set = toggle_border
+
+var card_modifier: CardModifier = null:
+	set = set_card_modifier
 
 
-var card_modifier: CardModifier = null : set = set_card_modifier
-
-
-const CARD_SCENE: PackedScene = preload("uid://crifadt6elvi7")
 static func new_card(card_text: String, card_type: CardType, is_editable: bool = false, is_flipped: bool = false) -> Card:
 	var card: Card = CARD_SCENE.instantiate()
 	card.editable = is_editable
 	card.flipped = is_flipped
 	card.type = card_type
 	card.text = card_text # set text last 'cause set_text could override editable
+
 	return card
 
 
@@ -58,9 +63,10 @@ func _ready() -> void:
 ## Makes the card editable or not - Shows or hides the edit buttons
 func set_editable(edit: bool) -> void:
 	editable = edit
-	if not buttons_container: await ready
+	if not buttons_container:
+		await ready
 	buttons_container.visible = editable
-	
+
 	toggle_editing(false)
 
 
@@ -69,7 +75,7 @@ func set_editable(edit: bool) -> void:
 func toggle_editing(toggle: bool) -> void:
 	editable_text.visible = toggle
 	static_text.visible = not toggle
-	
+
 	edit_button.visible = not toggle
 	confirm_edit_button.visible = toggle
 	cancel_edit_button.visible = toggle
@@ -99,15 +105,16 @@ func cancel_edit() -> void:
 ## Sets the card's text and updates its texture, modifier, etc.
 func set_text(t: String) -> void:
 	text = t
-	if not editable_text: await ready
+	if not editable_text:
+		await ready
 	editable_text.text = t
 	static_text.text = t
-	
+
 	# Card reset
 	texture_override = null
 	static_text_container.material = null
 	set_card_type(type)
-	
+
 	# Special card check
 	set_card_modifier(CardData.get_card_modifier(self, t))
 
@@ -141,7 +148,8 @@ func set_card_type(card_type: CardType) -> void:
 
 ## Changes text color for both static and editable text
 func set_text_color(color: Color) -> void:
-	if not static_text: await ready
+	if not static_text:
+		await ready
 	static_text.add_theme_color_override("default_color", color)
 	editable_text.add_theme_color_override("font_color", color)
 	editable_text.add_theme_color_override("font_readonly_color", color)
@@ -149,7 +157,8 @@ func set_text_color(color: Color) -> void:
 
 ## Sets the card's texture
 func set_texture(texture: CompressedTexture2D) -> void:
-	if not card_texture: await ready
+	if not card_texture:
+		await ready
 	card_texture.texture = texture
 
 
@@ -182,5 +191,5 @@ func _update_texture() -> void:
 		set_texture(texture_override)
 	elif type == CardType.WHITE:
 		set_texture(CardData.MAIN_TEXTURES["white_front"])
-	else: 
+	else:
 		set_texture(CardData.MAIN_TEXTURES["black_front"])

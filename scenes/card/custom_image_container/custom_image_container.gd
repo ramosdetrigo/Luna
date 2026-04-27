@@ -10,13 +10,12 @@ enum ImageType {
 @export var static_image: TextureRect
 @export var animated_image: GIFPlayer
 @export var image_type: ImageType = ImageType.NO_IMAGE
-@export var image_url: String = "" : set = set_image_url
+@export var image_url: String = "":
+	set = set_image_url
 
 
 #func _ready() -> void:
-	#await set_image_url("https://media.tenor.com/AbHVaTiljsMAAAAM/kurica.gif") # watsap
-
-
+#await set_image_url("https://wallpaperaccess.com/full/11729.jpg") # watsap
 func get_image_data() -> Dictionary:
 	if image_url != "":
 		return ImageLoader.serialize_url(image_url)
@@ -26,7 +25,7 @@ func get_image_data() -> Dictionary:
 		ImageType.ANIMATED:
 			return ImageLoader.serialize_texture(animated_image.gif)
 		_:
-			return {}
+			return { }
 
 
 func set_image(image: Texture2D) -> void:
@@ -52,6 +51,12 @@ func set_image_data(data: Dictionary) -> void:
 	set_image(texture)
 
 
+func remove_image() -> void:
+	image_type = ImageType.NO_IMAGE
+	static_image.texture = null
+	animated_image.gif = null
+
+
 func _set_static(image: Texture2D) -> void:
 	image_type = ImageType.STATIC
 	static_image.texture = image
@@ -60,9 +65,3 @@ func _set_static(image: Texture2D) -> void:
 func _set_animated(gif: GIFTexture) -> void:
 	image_type = ImageType.ANIMATED
 	animated_image.gif = gif
-
-
-func remove_image() -> void:
-	image_type = ImageType.NO_IMAGE
-	static_image.texture = null
-	animated_image.gif = null
