@@ -1,3 +1,4 @@
+@tool
 class_name CardModifier
 extends Resource
 ## Base mod schema:
@@ -7,17 +8,34 @@ extends Resource
 ## "texture_override": String (path || base64 || url)
 ## "height_override": int (line count)
 
+@export_group("Text override")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "")
 var override_text: bool = false
+@export_multiline
 var text: String = ""
+
+@export_group("Text color override")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "")
 var override_text_color: bool = false
-var text_color: Color = Color.BLACK
+@export var text_color: Color = Color.BLACK
+
+@export_group("Texture override")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "")
 var override_texture: bool = false
+@export_file("*.png", "*.jpg", "*.jpeg", "*.webp", "*.svg")
 var texture_path: String = ""
+
+@export_group("Height override")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "")
 var override_height: bool = false
-var height: int = 0
+@export var height: int = 0
 
 
-func _init(mod_data: Dictionary):
+func _init(mod_data = null):
+	if mod_data is not Dictionary:
+		return
+
+	mod_data = mod_data as Dictionary
 	var t = mod_data.get("text_override")
 	if t is String:
 		override_text = true

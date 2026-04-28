@@ -25,9 +25,6 @@ const CARD_SCENE: PackedScene = preload("uid://crifadt6elvi7")
 @export var card_border: Sprite2D
 @export var texture_container: CardTextureContainer
 @export var custom_image: CustomImageContainer
-
-
-
 @export_multiline var text: String = "":
 	set = set_text
 @export var type: CardType = CardType.WHITE:
@@ -42,9 +39,8 @@ const CARD_SCENE: PackedScene = preload("uid://crifadt6elvi7")
 	set = set_editable
 @export var glowing_border: bool = false:
 	set = toggle_border
-
-@export var card_modifiers: Array[CardModifier] = []
-# 	set = set_card_modifiers
+@export var card_modifiers: Array[CardModifier] = []:
+	set = set_card_modifiers
 
 
 static func new_card(card_text: String, card_type: CardType, is_editable: bool = false, is_flipped: bool = false) -> Card:
@@ -61,6 +57,11 @@ func _ready() -> void:
 	texture_container.pressed.connect(pressed.emit)
 	texture_container.drag_started.connect(drag_started.emit)
 	texture_container.drag_stopped.connect(drag_stopped.emit)
+
+
+func _process(delta: float) -> void:
+	for mod: CardModifier in card_modifiers:
+		mod.process(self, delta)
 
 
 ## Makes the card editable or not - Shows or hides the edit buttons
@@ -120,14 +121,20 @@ func set_text(t: String) -> void:
 
 
 ## Changes the card's modifier for special cards
-# func set_card_modifiers(mods: Array[CardModifier]) -> void:
-# 	if len(card_modifiers) > 0.0:
-# 		card_modifier.remove()
-# 		remove_child(card_modifier)
-# 	card_modifier = mod
-# 	if mod != null:
-# 		add_child(card_modifier)
-# 		card_modifier.apply()
+func set_card_modifiers(mods: Array[CardModifier]) -> void:
+	# Awaits ready to prevent null nodes
+	if not self.static_text:
+		await ready
+	# Clean current mods
+	if len(card_modifiers) > 0.0:
+		for mod: CardModifier in card_modifiers:
+			if mod == null: continue
+			mod.remove(self)
+	# Add new mods
+	card_modifiers = mods
+	for mod: CardModifier in card_modifiers:
+		if mod == null: continue
+		mod.apply(self)
 
 
 ## Overrides the card's texture with another one

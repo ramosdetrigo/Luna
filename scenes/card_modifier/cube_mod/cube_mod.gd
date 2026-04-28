@@ -1,4 +1,5 @@
 # TODO: 3DObjMod
+@tool
 class_name CubeMod
 extends CardModifier
 

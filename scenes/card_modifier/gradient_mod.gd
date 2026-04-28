@@ -1,3 +1,4 @@
+@tool
 class_name GradientMod
 extends CardModifier
 ## Gradient mod schema:
@@ -22,12 +23,14 @@ const GRADIENTS: Dictionary[String, Gradient] = {
 	"TRANS": preload("uid://dgb6fuvsq3vq3"),
 }
 
-var gradient: Gradient = Gradient.new()
-var speed: float = 0.6
-var angle: float = 1.0
+@export var gradient: Gradient
+@export var speed: float = 0.6
+@export var angle: float = 1.0
 
 
-func _init(mod_data: Dictionary):
+func _init(mod_data = null):
+	if mod_data is not Dictionary:
+		return
 	super(mod_data)
 
 	var gradient_data = mod_data.get("gradient")

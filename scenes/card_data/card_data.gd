@@ -2,7 +2,9 @@
 class_name CardData
 extends Resource
 
+@export_multiline
 var text: String = ""
+@export
 var modifiers: Array[CardModifier] = []
 
 
