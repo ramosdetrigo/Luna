@@ -86,7 +86,7 @@ func http_request(url) -> Array:
 func load_image_from_buffer(extension: String, buffer: PackedByteArray) -> Texture2D:
 	var img: Image = Image.new()
 	var error: Error
-	print(buffer.size())
+
 	match extension.to_lower():
 		"jpg", "jpeg":
 			error = img.load_jpg_from_buffer(buffer)

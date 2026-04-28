@@ -5,3 +5,4 @@
 [resource]
 resource_local_to_scene = true
 shader = ExtResource("1_plvih")
+shader_parameter/angle = 0.0

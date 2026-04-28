@@ -1,14 +1,16 @@
 class_name CubeMod
-extends CardModifierComponent
+extends CardModifier
 
-const CUBE_SCENE: PackedScene = preload("res://scenes/card/card_modifier/mods/cube_mod/card_cube.tscn")
-
+const CUBE_SCENE: PackedScene = preload("uid://bu0q0do8jxixj")
+# TODO: 3DObjMod
 
 func apply(card: Card) -> void:
+	super(card)
 	card.card_texture.add_child(CUBE_SCENE.instantiate())
 
 
 func remove(card: Card) -> void:
+	super(card)
 	for node in card.card_texture.get_children():
 		if node is CardCube:
 			card.card_texture.remove_child(node)

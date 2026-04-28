@@ -5,7 +5,7 @@ signal pressed
 signal drag_started
 signal drag_stopped
 
-@export var drag_target: Control
+@export var drag_target: Sprite2D
 @export_range(0.0, 1.0) var min_drag_cos: float = 0.0
 @export_range(0.0, 1.0) var max_drag_cos: float = 1.0
 @export var drag_threshold: float = 20.0

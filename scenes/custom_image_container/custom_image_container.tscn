@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d1svbwfd616gq"]
 
-[ext_resource type="Script" uid="uid://dorgiyg311kgj" path="res://scenes/card/custom_image_container/custom_image_container.gd" id="1_s21i2"]
+[ext_resource type="Script" uid="uid://dorgiyg311kgj" path="res://scenes/custom_image_container/custom_image_container.gd" id="1_s21i2"]
 
 [node name="CustomImageContainer" type="MarginContainer" unique_id=1475148250 node_paths=PackedStringArray("static_image", "animated_image")]
 custom_minimum_size = Vector2(630, 880)
@@ -14,7 +14,6 @@ theme_override_constants/margin_bottom = 30
 script = ExtResource("1_s21i2")
 static_image = NodePath("StaticImage")
 animated_image = NodePath("AnimatedImage")
-image_type = null
 
 [node name="StaticImage" type="TextureRect" parent="." unique_id=1906600197]
 layout_mode = 2

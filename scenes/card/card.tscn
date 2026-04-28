@@ -1,19 +1,17 @@
 [gd_scene format=3 uid="uid://crifadt6elvi7"]
 
 [ext_resource type="Theme" uid="uid://b101sm3jedmg4" path="res://resources/card_theme.tres" id="1_6u4wf"]
-[ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card/card.gd" id="2_ktuci"]
-[ext_resource type="Texture2D" uid="uid://fnmsykomv66w" path="res://assets/images/cards/black_front.svg" id="4_j4tui"]
-[ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/texture_container.gd" id="4_sy11y"]
+[ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card/card.gd" id="2_0iqnq"]
+[ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/texture_container.gd" id="3_s65g1"]
+[ext_resource type="Texture2D" uid="uid://du0agvqxdn2oy" path="res://assets/images/cards/white_front.svg" id="4_s65g1"]
 [ext_resource type="Theme" uid="uid://cqtwf6mg2wos5" path="res://resources/themes/theme_ui2.tres" id="5_2ufkr"]
 [ext_resource type="Texture2D" uid="uid://baomsxsk5qvkx" path="res://assets/images/cards/border.svg" id="5_788ek"]
 [ext_resource type="Shader" uid="uid://b3wfdwsebm0pq" path="res://resources/card_border.gdshader" id="5_v07qs"]
 [ext_resource type="Texture2D" uid="uid://5dsifon6p35t" path="res://assets/images/ui/pencil.png" id="6_kaf1t"]
-[ext_resource type="Script" uid="uid://dp0f5wxkdlrne" path="res://scenes/card/card_border.gd" id="7_0iqnq"]
 [ext_resource type="Texture2D" uid="uid://xhssoic4sry8" path="res://assets/images/ui/checkmark.png" id="7_b2sko"]
+[ext_resource type="Script" uid="uid://dp0f5wxkdlrne" path="res://scenes/card/card_border.gd" id="7_esy5w"]
 [ext_resource type="Texture2D" uid="uid://bo5wj776nk4qv" path="res://assets/images/ui/cross.png" id="8_788ek"]
-[ext_resource type="Shader" uid="uid://bly5g5qb230lh" path="res://resources/animated_gradient.gdshader" id="8_esy5w"]
-[ext_resource type="Gradient" uid="uid://dgb6fuvsq3vq3" path="res://resources/gradients/trans.tres" id="9_7p3a7"]
-[ext_resource type="PackedScene" uid="uid://d1svbwfd616gq" path="res://scenes/card/custom_image_container/custom_image_container.tscn" id="10_h0iti"]
+[ext_resource type="PackedScene" uid="uid://d1svbwfd616gq" path="res://scenes/custom_image_container/custom_image_container.tscn" id="10_h0iti"]
 [ext_resource type="Texture2D" uid="uid://ctw2nn0xept7i" path="res://assets/images/ui/image.png" id="13_7p3a7"]
 
 [sub_resource type="Gradient" id="Gradient_v07qs"]
@@ -30,15 +28,7 @@ gradient = SubResource("Gradient_v07qs")
 shader = ExtResource("5_v07qs")
 shader_parameter/gradient = SubResource("GradientTexture1D_0iqnq")
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_j4tui"]
-gradient = ExtResource("9_7p3a7")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h0iti"]
-resource_local_to_scene = true
-shader = ExtResource("8_esy5w")
-shader_parameter/gradient = SubResource("GradientTexture1D_j4tui")
-
-[node name="Card" type="AspectRatioContainer" unique_id=1166143910 node_paths=PackedStringArray("editable_text", "static_text", "card_texture", "static_text_container", "buttons_container", "confirm_edit_button", "edit_button", "cancel_edit_button", "card_border", "texture_container")]
+[node name="Card" type="AspectRatioContainer" unique_id=1166143910 node_paths=PackedStringArray("editable_text", "static_text", "card_texture", "static_text_container", "buttons_container", "confirm_edit_button", "edit_button", "cancel_edit_button", "card_border", "texture_container", "custom_image")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -46,35 +36,33 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -323.0
 offset_top = -228.0
-offset_right = 341.0
-offset_bottom = 246.0
+offset_right = 390.0
+offset_bottom = 265.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_6u4wf")
 ratio = 0.7159
-script = ExtResource("2_ktuci")
-editable_text = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/EditableText")
-static_text = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/StaticTextContainer/SubViewport/StaticText")
-card_texture = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture")
-static_text_container = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/StaticTextContainer")
-buttons_container = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer")
-confirm_edit_button = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer/ConfirmEditButton")
-edit_button = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer/EditButton")
-cancel_edit_button = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer/CancelEditButton")
-card_border = NodePath("TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/CardBorder")
+script = ExtResource("2_0iqnq")
+editable_text = NodePath("TextureContainer/CardTextureAnchor/CardTexture/EditableText")
+static_text = NodePath("TextureContainer/CardTextureAnchor/CardTexture/StaticTextContainer/SubViewport/StaticText")
+card_texture = NodePath("TextureContainer/CardTextureAnchor/CardTexture")
+static_text_container = NodePath("TextureContainer/CardTextureAnchor/CardTexture/StaticTextContainer")
+buttons_container = NodePath("TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer")
+confirm_edit_button = NodePath("TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer/ConfirmEditButton")
+edit_button = NodePath("TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer/EditButton")
+cancel_edit_button = NodePath("TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer/CancelEditButton")
+card_border = NodePath("TextureContainer/CardTextureAnchor/CardTexture/CardBorder")
 texture_container = NodePath("TextureContainer")
-text = "Trans."
-type = 1
+custom_image = NodePath("TextureContainer/CardTextureAnchor/CardTexture/CustomImage")
+text = "Lésbicas."
+editable = true
 
 [node name="TextureContainer" type="Control" parent="." unique_id=1504185996 node_paths=PackedStringArray("drag_target")]
 layout_mode = 2
-script = ExtResource("4_sy11y")
-drag_target = NodePath("Anchor_00/CardTextureAnchor")
-drag_threshold = 10.0
-rotation_amount = null
-rotation_min_speed = null
+script = ExtResource("3_s65g1")
+drag_target = NodePath("CardTextureAnchor/CardTexture")
 
-[node name="Anchor_00" type="Control" parent="TextureContainer" unique_id=104909961]
+[node name="CardTextureAnchor" type="Control" parent="TextureContainer" unique_id=814169953]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -83,51 +71,37 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="CardTextureAnchor" type="Control" parent="TextureContainer/Anchor_00" unique_id=814169953]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.5252889, 0.5252889)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 
-[node name="CardTexture" type="Sprite2D" parent="TextureContainer/Anchor_00/CardTextureAnchor" unique_id=1252523938]
+[node name="CardTexture" type="Sprite2D" parent="TextureContainer/CardTextureAnchor" unique_id=1252523938]
 unique_name_in_owner = true
-position = Vector2(-323, -448)
-texture = ExtResource("4_j4tui")
-centered = false
+scale = Vector2(0.54634476, 0.54634476)
+texture = ExtResource("4_s65g1")
 
-[node name="CardBorder" type="Sprite2D" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture" unique_id=1858501268]
+[node name="CardBorder" type="Sprite2D" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=1858501268]
 visible = false
 modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_0iqnq")
-position = Vector2(8, 0)
+position = Vector2(-315, -448)
 texture = ExtResource("5_788ek")
 centered = false
-script = ExtResource("7_0iqnq")
-fade_time = 0.25
+script = ExtResource("7_esy5w")
 
-[node name="StaticTextContainer" type="SubViewportContainer" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture" unique_id=1576088520]
+[node name="StaticTextContainer" type="SubViewportContainer" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=1576088520]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_h0iti")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 58.0
-offset_top = 50.0
-offset_right = -58.0
-offset_bottom = -66.0
+offset_left = -265.0
+offset_top = -398.0
+offset_right = -381.0
+offset_bottom = -514.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="SubViewport" type="SubViewport" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/StaticTextContainer" unique_id=1733909074]
+[node name="SubViewport" type="SubViewport" parent="TextureContainer/CardTextureAnchor/CardTexture/StaticTextContainer" unique_id=1733909074]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
@@ -139,52 +113,54 @@ positional_shadow_atlas_quad_3 = 0
 size = Vector2i(530, 780)
 render_target_update_mode = 4
 
-[node name="StaticText" type="RichTextLabel" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/StaticTextContainer/SubViewport" unique_id=860519546]
+[node name="StaticText" type="RichTextLabel" parent="TextureContainer/CardTextureAnchor/CardTexture/StaticTextContainer/SubViewport" unique_id=860519546]
 unique_name_in_owner = true
 offset_right = 530.0
 mouse_filter = 2
 theme = ExtResource("1_6u4wf")
-theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "Trans."
+text = "Lésbicas."
 fit_content = true
 scroll_active = false
 
-[node name="EditableText" type="TextEdit" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture" unique_id=255072007]
+[node name="EditableText" type="TextEdit" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=255072007]
 unique_name_in_owner = true
 visible = false
-offset_left = 58.0
-offset_top = 58.837982
-offset_right = 588.0
-offset_bottom = 838.838
+offset_left = -265.0
+offset_top = -389.162
+offset_right = 265.0
+offset_bottom = 390.838
 theme = ExtResource("1_6u4wf")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_readonly_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -21
-text = "Trans."
+text = "Lésbicas."
 placeholder_text = "Carta editável"
 backspace_deletes_composite_character_enabled = true
 wrap_mode = 1
 
-[node name="CustomImage" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture" unique_id=1475148250 instance=ExtResource("10_h0iti")]
-image_type = 0
+[node name="CustomImage" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=1475148250 instance=ExtResource("10_h0iti")]
+offset_left = -323.0
+offset_top = -448.0
+offset_right = 307.0
+offset_bottom = 432.0
 
-[node name="ButtonsContainer" type="HBoxContainer" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture" unique_id=41829132]
-visible = false
+[node name="ButtonsContainer" type="HBoxContainer" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=41829132]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -190.0
-offset_top = 810.0
-offset_right = 190.0
-offset_bottom = 950.0
+offset_left = -513.0
+offset_top = 362.0
+offset_right = -133.0
+offset_bottom = 502.0
 grow_horizontal = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 theme = ExtResource("5_2ufkr")
 theme_override_constants/separation = 70
 alignment = 1
 
-[node name="EditButton" type="Button" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=1304941585]
+[node name="EditButton" type="Button" parent="TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=1304941585]
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 theme_override_constants/icon_max_width = 90
@@ -192,7 +168,7 @@ icon = ExtResource("6_kaf1t")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ConfirmEditButton" type="Button" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=53341507]
+[node name="ConfirmEditButton" type="Button" parent="TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=53341507]
 visible = false
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
@@ -201,7 +177,7 @@ icon = ExtResource("7_b2sko")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ImageButton" type="Button" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=515493005]
+[node name="ImageButton" type="Button" parent="TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=515493005]
 visible = false
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
@@ -210,7 +186,7 @@ icon = ExtResource("13_7p3a7")
 icon_alignment = 1
 expand_icon = true
 
-[node name="CancelEditButton" type="Button" parent="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=1985431328]
+[node name="CancelEditButton" type="Button" parent="TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer" unique_id=1985431328]
 visible = false
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
@@ -221,6 +197,5 @@ expand_icon = true
 
 [connection signal="ready" from="TextureContainer" to="TextureContainer" method="_on_resized"]
 [connection signal="resized" from="TextureContainer" to="TextureContainer" method="_on_resized"]
-[connection signal="pressed" from="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer/EditButton" to="." method="toggle_editing" binds= [true]]
-[connection signal="pressed" from="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer/ConfirmEditButton" to="." method="confirm_edit"]
-[connection signal="pressed" from="TextureContainer/Anchor_00/CardTextureAnchor/CardTexture/ButtonsContainer/CancelEditButton" to="." method="cancel_edit"]
+[connection signal="pressed" from="TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer/ConfirmEditButton" to="." method="confirm_edit"]
+[connection signal="pressed" from="TextureContainer/CardTextureAnchor/CardTexture/ButtonsContainer/CancelEditButton" to="." method="cancel_edit"]

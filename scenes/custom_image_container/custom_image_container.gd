@@ -14,8 +14,10 @@ enum ImageType {
 	set = set_image_url
 
 
-#func _ready() -> void:
-#await set_image_url("https://wallpaperaccess.com/full/11729.jpg") # watsap
+# func _ready() -> void:
+# 	await set_image_url("https://wallpaperaccess.com/full/11729.jpg") # watsap
+
+
 func get_image_data() -> Dictionary:
 	if image_url != "":
 		return ImageLoader.serialize_url(image_url)

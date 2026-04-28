@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bu0q0do8jxixj"]
 
-[ext_resource type="Script" uid="uid://ewqrpl8o0qdx" path="res://scenes/card/card_modifier/mods/cube_mod/card_cube.gd" id="1_45lo5"]
+[ext_resource type="Script" path="res://scenes/card_data/card_modifier/mods/cube_mod/card_cube.gd" id="1_45lo5"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_l3kla"]
 

@@ -25,23 +25,26 @@ const CARD_SCENE: PackedScene = preload("uid://crifadt6elvi7")
 @export var card_border: Sprite2D
 @export var texture_container: CardTextureContainer
 @export var custom_image: CustomImageContainer
+
+
+
 @export_multiline var text: String = "":
 	set = set_text
 @export var type: CardType = CardType.WHITE:
 	set = set_card_type
 @export var flipped: bool = false:
 	set = flip
-@export var texture_override: CompressedTexture2D = null:
+@export var texture_override: Texture2D = null:
 	set = set_texture_override
 ## Text's height in number of lines (-1 disables override)
-@export var height_override: float = -1.0
+@export var height_override: int = -1
 @export var editable: bool = false:
 	set = set_editable
 @export var glowing_border: bool = false:
 	set = toggle_border
 
-var card_modifier: CardModifier = null:
-	set = set_card_modifier
+@export var card_modifiers: Array[CardModifier] = []
+# 	set = set_card_modifiers
 
 
 static func new_card(card_text: String, card_type: CardType, is_editable: bool = false, is_flipped: bool = false) -> Card:
@@ -115,19 +118,16 @@ func set_text(t: String) -> void:
 	static_text_container.material = null
 	set_card_type(type)
 
-	# Special card check
-	set_card_modifier(CardData.get_card_modifier(self, t))
-
 
 ## Changes the card's modifier for special cards
-func set_card_modifier(mod: CardModifier) -> void:
-	if card_modifier != null:
-		card_modifier.remove()
-		remove_child(card_modifier)
-	card_modifier = mod
-	if mod != null:
-		add_child(card_modifier)
-		card_modifier.apply()
+# func set_card_modifiers(mods: Array[CardModifier]) -> void:
+# 	if len(card_modifiers) > 0.0:
+# 		card_modifier.remove()
+# 		remove_child(card_modifier)
+# 	card_modifier = mod
+# 	if mod != null:
+# 		add_child(card_modifier)
+# 		card_modifier.apply()
 
 
 ## Overrides the card's texture with another one
@@ -186,10 +186,10 @@ func _update_texture() -> void:
 	if flipped:
 		# Memory optimization: we don't use black flipped cards,
 		# so the black_back texture is never loaded
-		set_texture(CardData.MAIN_TEXTURES["white_back"])
+		set_texture(CAHConsts.MAIN_TEXTURES["white_back"])
 	elif texture_override != null:
 		set_texture(texture_override)
 	elif type == CardType.WHITE:
-		set_texture(CardData.MAIN_TEXTURES["white_front"])
+		set_texture(CAHConsts.MAIN_TEXTURES["white_front"])
 	else:
-		set_texture(CardData.MAIN_TEXTURES["black_front"])
+		set_texture(CAHConsts.MAIN_TEXTURES["black_front"])
