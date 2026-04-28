@@ -1,5 +1,11 @@
 class_name GradientMod
 extends CardModifier
+## Gradient mod schema:
+## "mod_type": "gradient"
+## "target": Enum<Text, Texture, Both>
+## "gradient": <String || Array[Color]>
+## "gradient_speed": float
+## "gradient_angle": float
 
 const GRADIENT_SHADER: ShaderMaterial = preload("uid://mrb2o32b7sey")
 const GRADIENTS: Dictionary[String, Gradient] = {
@@ -16,19 +22,15 @@ const GRADIENTS: Dictionary[String, Gradient] = {
 	"TRANS": preload("uid://dgb6fuvsq3vq3"),
 }
 
-
-func gen_gradient(gradient: Gradient) -> GradientTexture1D:
-	var g = GradientTexture1D.new()
-	g.gradient = gradient
-	return g
+var gradient: Gradient = Gradient.new()
+var speed: float = 0.6
+var angle: float = 1.0
 
 
-func apply(card: Card) -> void:
-	super(card)
-	card.static_text_container.material = GRADIENT_SHADER.duplicate()
+func _init(mod_data: Dictionary):
+	super(mod_data)
 
-	var gradient: Gradient = Gradient.new()
-	var gradient_data = json_data.get("gradient")
+	var gradient_data = mod_data.get("gradient")
 	if gradient_data is String: # Case 1: pre-defined gradient
 		gradient = GRADIENTS[gradient_data]
 	elif gradient_data is Array: # Case 2: evenly spaced color array
@@ -38,12 +40,25 @@ func apply(card: Card) -> void:
 			var color: Color = Color(hex)
 			gradient.add_point(offset, color)
 			offset += offset_size
-	card.static_text_container.material.set_shader_parameter("gradient", gen_gradient(gradient))
 
-	var speed = json_data.get("gradient_speed")
-	if speed is float:
-		card.static_text_container.material.set_shader_parameter("speed", speed)
+	var s = mod_data.get("gradient_speed")
+	if s is float:
+		speed = s
 
-	var angle = json_data.get("gradient_angle")
-	if angle is float:
-		card.static_text_container.material.set_shader_parameter("angle", angle / 180.0)
+	var a = mod_data.get("gradient_angle")
+	if a is float:
+		angle = a / 180.0
+
+
+func gen_gradient_texture() -> GradientTexture1D:
+	var g = GradientTexture1D.new()
+	g.gradient = gradient
+	return g
+
+
+func apply(card: Card) -> void:
+	super(card)
+	card.static_text_container.material = GRADIENT_SHADER.duplicate()
+	card.static_text_container.material.set_shader_parameter("gradient", gen_gradient_texture())
+	card.static_text_container.material.set_shader_parameter("speed", speed)
+	card.static_text_container.material.set_shader_parameter("angle", angle)

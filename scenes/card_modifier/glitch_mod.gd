@@ -1,19 +1,25 @@
 class_name GlitchMod
 extends CardModifier
+## Glitch mod schema:
+## "mod_type": "glitch"
+## "character_pool": String
 
 var characters: String = "!@#$%¨&*()-=+_[]{}/?;:<>.,~^´`abcdefghijklmnopqrstuvwxyz"
 
 
-func apply(card: Card) -> void:
-	super(card)
-	var character_pool = json_data.get("character_pool")
+func _init(mod_data: Dictionary):
+	super(mod_data)
+	var character_pool = mod_data.get("character_pool")
 	if character_pool is String:
 		characters = character_pool
+
+
+func apply(card: Card) -> void:
+	super(card)
 	card.static_text.text = _random_text()
 
 
 func process(card: Card, _delta: float) -> void:
-	super(card, _delta)
 	card.static_text.text = _random_text()
 
 

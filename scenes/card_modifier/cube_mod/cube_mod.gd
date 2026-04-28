@@ -1,8 +1,9 @@
+# TODO: 3DObjMod
 class_name CubeMod
 extends CardModifier
 
 const CUBE_SCENE: PackedScene = preload("uid://bu0q0do8jxixj")
-# TODO: 3DObjMod
+
 
 func apply(card: Card) -> void:
 	super(card)

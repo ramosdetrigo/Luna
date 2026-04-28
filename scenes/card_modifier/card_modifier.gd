@@ -1,30 +1,56 @@
 class_name CardModifier
 extends Resource
+## Base mod schema:
+## "mod_type": "basic"
+## "text_override": String
+## "text_color_override": String (hex code)
+## "texture_override": String (path || base64 || url)
+## "height_override": int (line count)
 
-@export var json_data: Dictionary
+var override_text: bool = false
+var text: String = ""
+var override_text_color: bool = false
+var text_color: Color = Color.BLACK
+var override_texture: bool = false
+var texture_path: String = ""
+var override_height: bool = false
+var height: int = 0
 
 
-## By default it overrides the card's text with nothing!.
-func _init(json: Dictionary):
-	json_data = json
+func _init(mod_data: Dictionary):
+	var t = mod_data.get("text_override")
+	if t is String:
+		override_text = true
+		text = t
+
+	var c = mod_data.get("text_color_override")
+	if c is String:
+		override_text_color = true
+		text_color = Color(c)
+
+	var tx = mod_data.get("texture_override")
+	if tx is String:
+		override_texture = true
+		texture_path = tx
+
+	var h = mod_data.get("height_override")
+	if h is int:
+		override_height = true
+		height = h
 
 
 func apply(card: Card) -> void:
-	var text = json_data.get("text_override")
-	if text is String:
+	if override_text:
 		card.static_text.text = text
 
-	var color = json_data.get("text_color_override")
-	if color is String:
-		card.set_text_color(Color(color))
+	if override_text_color:
+		card.set_text_color(text_color)
 
 	# TODO: support Base64 & URL
-	var texture = json_data.get("texture_override")
-	if texture is String:
-		card.set_texture_override(load(texture))
+	if override_texture:
+		card.set_texture_override(load(texture_path))
 
-	var height = json_data.get("height_override")
-	if height is int:
+	if override_height:
 		card.height_override = height
 
 
