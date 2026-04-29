@@ -8,6 +8,12 @@ extends CardModifier
 ## "gradient_speed": float
 ## "gradient_angle": float
 
+enum GradientTarget {
+	TEXT,
+	TEXTURE,
+	BOTH,
+}
+
 const GRADIENT_SHADER: ShaderMaterial = preload("uid://mrb2o32b7sey")
 const GRADIENTS: Dictionary[String, Gradient] = {
 	"AROACE": preload("uid://dwjs35fa16x6x"),
@@ -23,11 +29,33 @@ const GRADIENTS: Dictionary[String, Gradient] = {
 	"TRANS": preload("uid://dgb6fuvsq3vq3"),
 }
 
-@export var gradient: Gradient
-@export var speed: float = 0.6
-@export var angle: float = 1.0
+@export var target: GradientTarget = GradientTarget.TEXT:
+	set(t):
+		target = t
+		if _target_card:
+			remove(_target_card)
+			apply(_target_card)
+@export var gradient: Gradient:
+	set(g):
+		gradient = g
+		if _target_card:
+			apply(_target_card)
+@export var speed: float = 0.6:
+	set(s):
+		speed = s
+		if _target_card:
+			apply(_target_card)
+@export var angle: float = 1.0:
+	set(a):
+		angle = a
+		if _target_card:
+			apply(_target_card)
+
+var _shader_material: ShaderMaterial = GRADIENT_SHADER.duplicate()
+var _gradient_texture: GradientTexture1D
 
 
+## Constructor from a dict following the mod's schema, usually obtained from a json.
 func _init(mod_data = null):
 	if mod_data is not Dictionary:
 		return
@@ -52,6 +80,8 @@ func _init(mod_data = null):
 	if a is float:
 		angle = a / 180.0
 
+	_gradient_texture = gen_gradient_texture()
+
 
 func gen_gradient_texture() -> GradientTexture1D:
 	var g = GradientTexture1D.new()
@@ -61,7 +91,37 @@ func gen_gradient_texture() -> GradientTexture1D:
 
 func apply(card: Card) -> void:
 	super(card)
-	card.static_text_container.material = GRADIENT_SHADER.duplicate()
-	card.static_text_container.material.set_shader_parameter("gradient", gen_gradient_texture())
+	match target:
+		GradientTarget.TEXT:
+			_apply_to_text(card)
+		GradientTarget.TEXTURE:
+			_apply_to_texture(card)
+		GradientTarget.BOTH:
+			_apply_to_text(card)
+			_apply_to_texture(card)
+
+
+func remove(card: Card) -> void:
+	super(card)
+	match target:
+		GradientTarget.TEXT:
+			card.static_text_container.material = null
+		GradientTarget.TEXTURE:
+			card.card_texture.material = null
+		GradientTarget.BOTH:
+			card.card_texture.material = null
+			card.static_text_container.material = null
+
+
+func _apply_to_text(card: Card) -> void:
+	card.static_text_container.material = _shader_material
+	card.static_text_container.material.set_shader_parameter("gradient", _gradient_texture)
 	card.static_text_container.material.set_shader_parameter("speed", speed)
 	card.static_text_container.material.set_shader_parameter("angle", angle)
+
+
+func _apply_to_texture(card: Card) -> void:
+	card.card_texture.material = _shader_material
+	card.card_texture.material.set_shader_parameter("gradient", _gradient_texture)
+	card.card_texture.material.set_shader_parameter("speed", speed)
+	card.card_texture.material.set_shader_parameter("angle", angle)

@@ -8,6 +8,7 @@ extends Resource
 ## "texture_override": String (path || base64 || url)
 ## "height_override": int (line count)
 
+# TODO: setters
 @export_group("Text override")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "")
 var override_text: bool = false
@@ -28,9 +29,13 @@ var texture_path: String = ""
 @export_group("Height override")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "")
 var override_height: bool = false
-@export var height: int = 0
+@export
+var height: int = 0
+
+var _target_card: Card
 
 
+## Constructor from a dict following the mod's schema, usually obtained from a json.
 func _init(mod_data = null):
 	if mod_data is not Dictionary:
 		return
@@ -58,6 +63,7 @@ func _init(mod_data = null):
 
 
 func apply(card: Card) -> void:
+	_target_card = card
 	if override_text:
 		card.static_text.text = text
 
@@ -76,5 +82,15 @@ func process(_card: Card, _delta: float) -> void:
 	pass
 
 
-func remove(_card: Card) -> void:
-	pass
+func remove(card: Card) -> void:
+	if override_text:
+		card.static_text.text = card.text
+
+	if override_texture:
+		card.set_texture_override(null)
+
+	if override_height:
+		card.height_override = -1
+
+	if override_text_color:
+		card.set_card_type(card.type)

@@ -5,17 +5,15 @@ extends CardModifier
 ## "mod_type": "glitch"
 ## "character_pool": String
 
-@export
-var characters: String = "!@#$%¨&*()-=+_[]{}/?;:<>.,~^´`abcdefghijklmnopqrstuvwxyz"
-@export
-var min_text_length: int = 8
-@export
-var max_text_length: int = 14
-@export
-var delay: float = 0.0
+@export var characters: String = "!@#$%¨&*()-=+_[]{}/?;:<>.,~^´`abcdefghijklmnopqrstuvwxyz"
+@export var min_text_length: int = 8
+@export var max_text_length: int = 14
+@export var delay: float = 0.0
 
 var _timer: float = 0.0
 
+
+## Constructor from a dict following the mod's schema, usually obtained from a json.
 func _init(mod_data = null):
 	if mod_data is not Dictionary:
 		return

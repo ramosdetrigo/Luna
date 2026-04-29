@@ -4,28 +4,16 @@
 [ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card/card.gd" id="2_0iqnq"]
 [ext_resource type="Script" uid="uid://622qavx66gx4" path="res://scenes/card_modifier/card_modifier.gd" id="3_7p3a7"]
 [ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/texture_container.gd" id="3_s65g1"]
-[ext_resource type="Script" uid="uid://b62o6v8rcf85k" path="res://scenes/card_modifier/glitch_mod.gd" id="4_j4tui"]
-[ext_resource type="Gradient" uid="uid://dl6urtyf2jyps" path="res://resources/gradients/lesbian.tres" id="4_odyjv"]
 [ext_resource type="Texture2D" uid="uid://du0agvqxdn2oy" path="res://assets/images/cards/white_front.svg" id="4_s65g1"]
 [ext_resource type="Theme" uid="uid://cqtwf6mg2wos5" path="res://resources/themes/theme_ui2.tres" id="5_2ufkr"]
 [ext_resource type="Texture2D" uid="uid://baomsxsk5qvkx" path="res://assets/images/cards/border.svg" id="5_788ek"]
-[ext_resource type="Script" uid="uid://bioj5i5qmage3" path="res://scenes/card_modifier/gradient_mod.gd" id="5_gy250"]
 [ext_resource type="Shader" uid="uid://b3wfdwsebm0pq" path="res://resources/card_border.gdshader" id="5_v07qs"]
 [ext_resource type="Texture2D" uid="uid://5dsifon6p35t" path="res://assets/images/ui/pencil.png" id="6_kaf1t"]
 [ext_resource type="Texture2D" uid="uid://xhssoic4sry8" path="res://assets/images/ui/checkmark.png" id="7_b2sko"]
 [ext_resource type="Script" uid="uid://dp0f5wxkdlrne" path="res://scenes/card/card_border.gd" id="7_esy5w"]
 [ext_resource type="Texture2D" uid="uid://bo5wj776nk4qv" path="res://assets/images/ui/cross.png" id="8_788ek"]
 [ext_resource type="PackedScene" uid="uid://d1svbwfd616gq" path="res://scenes/custom_image_container/custom_image_container.tscn" id="10_h0iti"]
-[ext_resource type="Shader" uid="uid://bly5g5qb230lh" path="res://resources/animated_gradient.gdshader" id="11_f5qad"]
 [ext_resource type="Texture2D" uid="uid://ctw2nn0xept7i" path="res://assets/images/ui/image.png" id="13_7p3a7"]
-
-[sub_resource type="Resource" id="Resource_odyjv"]
-script = ExtResource("5_gy250")
-metadata/_custom_type_script = "uid://bioj5i5qmage3"
-
-[sub_resource type="Resource" id="Resource_gy250"]
-script = ExtResource("4_j4tui")
-metadata/_custom_type_script = "uid://b62o6v8rcf85k"
 
 [sub_resource type="Gradient" id="Gradient_v07qs"]
 interpolation_mode = 2
@@ -40,16 +28,6 @@ gradient = SubResource("Gradient_v07qs")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0iqnq"]
 shader = ExtResource("5_v07qs")
 shader_parameter/gradient = SubResource("GradientTexture1D_0iqnq")
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_gy250"]
-gradient = ExtResource("4_odyjv")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_f5qad"]
-resource_local_to_scene = true
-shader = ExtResource("11_f5qad")
-shader_parameter/gradient = SubResource("GradientTexture1D_gy250")
-shader_parameter/angle = 1.0
-shader_parameter/speed = 0.6
 
 [node name="Card" type="AspectRatioContainer" unique_id=1166143910 node_paths=PackedStringArray("editable_text", "static_text", "card_texture", "static_text_container", "buttons_container", "confirm_edit_button", "edit_button", "cancel_edit_button", "card_border", "texture_container", "custom_image")]
 anchors_preset = 8
@@ -79,7 +57,7 @@ texture_container = NodePath("TextureContainer")
 custom_image = NodePath("TextureContainer/CardTextureAnchor/CardTexture/CustomImage")
 text = "Lésbicas."
 editable = true
-card_modifiers = Array[ExtResource("3_7p3a7")]([SubResource("Resource_odyjv"), SubResource("Resource_gy250")])
+card_modifiers = Array[ExtResource("3_7p3a7")]([null])
 
 [node name="TextureContainer" type="Control" parent="." unique_id=1504185996 node_paths=PackedStringArray("drag_target")]
 layout_mode = 2
@@ -114,7 +92,6 @@ script = ExtResource("7_esy5w")
 
 [node name="StaticTextContainer" type="SubViewportContainer" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=1576088520]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_f5qad")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -145,7 +122,7 @@ mouse_filter = 2
 theme = ExtResource("1_6u4wf")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = ",e¨;=$#;<,g_"
+text = "Lésbicas."
 fit_content = true
 scroll_active = false
 
