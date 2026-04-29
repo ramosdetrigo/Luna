@@ -8,8 +8,8 @@ const MAIN_TEXTURES: Dictionary[String, Texture2D] = {
 }
 
 var CARD_MODS: Dictionary[String, GDScript] = {
-	"basic": CardModifier,
+	"basic": BasicMod,
 	"glitch": GlitchMod,
 	"gradient": GradientMod,
-	"3dobj": CubeMod,
+	"obj3d": Obj3DMod,
 }

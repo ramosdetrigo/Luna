@@ -31,13 +31,15 @@ const GRADIENTS: Dictionary[String, Gradient] = {
 
 @export var target: GradientTarget = GradientTarget.TEXT:
 	set(t):
-		target = t
 		if _target_card:
 			remove(_target_card)
+		target = t
+		if _target_card:
 			apply(_target_card)
 @export var gradient: Gradient:
 	set(g):
 		gradient = g
+		update_gradient_texture()
 		if _target_card:
 			apply(_target_card)
 @export var speed: float = 0.6:
@@ -51,15 +53,17 @@ const GRADIENTS: Dictionary[String, Gradient] = {
 		if _target_card:
 			apply(_target_card)
 
+var _target_card: Card
+
 var _shader_material: ShaderMaterial = GRADIENT_SHADER.duplicate()
-var _gradient_texture: GradientTexture1D
+var _gradient_texture: GradientTexture1D = GradientTexture1D.new()
 
 
 ## Constructor from a dict following the mod's schema, usually obtained from a json.
 func _init(mod_data = null):
+	update_gradient_texture() # Prevents missing texture in editor
 	if mod_data is not Dictionary:
 		return
-	super(mod_data)
 
 	var gradient_data = mod_data.get("gradient")
 	if gradient_data is String: # Case 1: pre-defined gradient
@@ -80,17 +84,18 @@ func _init(mod_data = null):
 	if a is float:
 		angle = a / 180.0
 
-	_gradient_texture = gen_gradient_texture()
+	update_gradient_texture()
 
 
-func gen_gradient_texture() -> GradientTexture1D:
-	var g = GradientTexture1D.new()
-	g.gradient = gradient
-	return g
+func update_gradient_texture() -> void:
+	if gradient == null:
+		_gradient_texture.gradient = Gradient.new()
+	else:
+		_gradient_texture.gradient = gradient
 
 
 func apply(card: Card) -> void:
-	super(card)
+	_target_card = card
 	match target:
 		GradientTarget.TEXT:
 			_apply_to_text(card)
@@ -102,7 +107,6 @@ func apply(card: Card) -> void:
 
 
 func remove(card: Card) -> void:
-	super(card)
 	match target:
 		GradientTarget.TEXT:
 			card.static_text_container.material = null

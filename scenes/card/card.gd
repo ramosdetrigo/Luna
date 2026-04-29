@@ -61,7 +61,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	for mod: CardModifier in card_modifiers:
-		mod.process(self, delta)
+		if mod != null:
+			mod.process(self, delta)
 
 
 ## Makes the card editable or not - Shows or hides the edit buttons

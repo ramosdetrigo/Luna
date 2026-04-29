@@ -17,14 +17,12 @@ var _timer: float = 0.0
 func _init(mod_data = null):
 	if mod_data is not Dictionary:
 		return
-	super(mod_data)
 	var character_pool = mod_data.get("character_pool")
 	if character_pool is String:
 		characters = character_pool
 
 
 func apply(card: Card) -> void:
-	super(card)
 	card.static_text.text = _random_text()
 
 
@@ -36,7 +34,6 @@ func process(card: Card, delta: float) -> void:
 
 
 func remove(card: Card) -> void:
-	super(card)
 	card.static_text.text = card.text
 
 

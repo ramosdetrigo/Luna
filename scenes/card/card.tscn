@@ -2,7 +2,6 @@
 
 [ext_resource type="Theme" uid="uid://b101sm3jedmg4" path="res://resources/card_theme.tres" id="1_6u4wf"]
 [ext_resource type="Script" uid="uid://cryliejmytiwb" path="res://scenes/card/card.gd" id="2_0iqnq"]
-[ext_resource type="Script" uid="uid://622qavx66gx4" path="res://scenes/card_modifier/card_modifier.gd" id="3_7p3a7"]
 [ext_resource type="Script" uid="uid://udl8i042xjh5" path="res://scenes/card/texture_container.gd" id="3_s65g1"]
 [ext_resource type="Texture2D" uid="uid://du0agvqxdn2oy" path="res://assets/images/cards/white_front.svg" id="4_s65g1"]
 [ext_resource type="Theme" uid="uid://cqtwf6mg2wos5" path="res://resources/themes/theme_ui2.tres" id="5_2ufkr"]
@@ -55,9 +54,8 @@ cancel_edit_button = NodePath("TextureContainer/CardTextureAnchor/CardTexture/Bu
 card_border = NodePath("TextureContainer/CardTextureAnchor/CardTexture/CardBorder")
 texture_container = NodePath("TextureContainer")
 custom_image = NodePath("TextureContainer/CardTextureAnchor/CardTexture/CustomImage")
-text = "Lésbicas."
+text = "Trans Rights!"
 editable = true
-card_modifiers = Array[ExtResource("3_7p3a7")]([null])
 
 [node name="TextureContainer" type="Control" parent="." unique_id=1504185996 node_paths=PackedStringArray("drag_target")]
 layout_mode = 2
@@ -122,7 +120,7 @@ mouse_filter = 2
 theme = ExtResource("1_6u4wf")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "Lésbicas."
+text = "Trans Rights!"
 fit_content = true
 scroll_active = false
 
@@ -137,7 +135,7 @@ theme = ExtResource("1_6u4wf")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_readonly_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -21
-text = "Lésbicas."
+text = "Trans Rights!"
 placeholder_text = "Carta editável"
 backspace_deletes_composite_character_enabled = true
 wrap_mode = 1

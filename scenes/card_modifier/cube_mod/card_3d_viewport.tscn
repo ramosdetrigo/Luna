@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bu0q0do8jxixj"]
+
+[ext_resource type="Script" uid="uid://ewqrpl8o0qdx" path="res://scenes/card_modifier/cube_mod/card_3d_viewport.gd" id="1_51yaa"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_51yaa"]
+
+[node name="Card3DViewport" type="SubViewportContainer" unique_id=2023387789]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -176.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("1_51yaa")
+mesh = SubResource("BoxMesh_51yaa")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1713177413]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(400, 400)
+render_target_update_mode = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewport" unique_id=1236359636]
+unique_name_in_owner = true
+mesh = SubResource("BoxMesh_51yaa")
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport" unique_id=2094622181]
+transform = Transform3D(1, 0, 0, 0, 0.9286996, 0.370833, 0, -0.370833, 0.9286996, 0, 0.6360141, 1.5816011)
+cull_mask = 1047553
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport" unique_id=1904527131]
+transform = Transform3D(0.98951316, -0.08524145, 0.11660853, 0, 0.8073004, 0.5901408, -0.14444256, -0.5839521, 0.7988344, 0.92670244, 1.649117, 2.6745086)
+light_color = Color(0.7000725, 0.70007217, 0.7000722, 1)
+light_bake_mode = 0
+light_cull_mask = 4294966273
+sky_mode = 1
