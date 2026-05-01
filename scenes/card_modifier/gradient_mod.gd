@@ -129,3 +129,25 @@ func _apply_to_texture(card: Card) -> void:
 	card.card_texture.material.set_shader_parameter("gradient", _gradient_texture)
 	card.card_texture.material.set_shader_parameter("speed", speed)
 	card.card_texture.material.set_shader_parameter("angle", angle)
+
+
+func serialize() -> Dictionary:
+	# Converts the target enum into a string
+	var t: String = ""
+	match target:
+		GradientTarget.TEXT: t = "text"
+		GradientTarget.TEXTURE: t = "texture"
+		GradientTarget.BOTH: t = "both"
+	
+	# Converts the gradient into a array of hex colors
+	var gradient_hexes: Array[String] = []
+	for color: Color in gradient.colors:
+		gradient_hexes.push_back("#" + color.to_html(true))
+	
+	return {
+		"mod_type": "gradient",
+		"target": t,
+		"gradient": gradient_hexes,
+		"gradient_speed": speed,
+		"gradient_angle": angle
+	}

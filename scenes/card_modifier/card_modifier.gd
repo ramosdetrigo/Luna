@@ -20,3 +20,7 @@ func process(_card: Card, _delta: float) -> void:
 
 func remove(_card: Card) -> void:
 	pass
+
+
+@abstract
+func serialize() -> Dictionary

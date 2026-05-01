@@ -96,3 +96,15 @@ func remove(card: Card) -> void:
 
 	if override_text_color:
 		card.set_card_type(card.type)
+
+func serialize() -> Dictionary:
+	var dict: Dictionary = {"mod_type": "basic"}
+	if override_text:
+		dict.set("text_override", text)
+	if override_text_color:
+		dict.set("text_color_override", "#" + text_color.to_html(true))
+	if override_texture:
+		dict.set("texture_override", texture_path)
+	if override_height:
+		dict.set("height_override", height)
+	return dict

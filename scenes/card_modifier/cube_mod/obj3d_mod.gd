@@ -12,7 +12,6 @@ var mesh: Mesh = BoxMesh.new():
 		if _mesh_node:
 			_mesh_node.mesh = mesh
 
-
 func _init(mod_data = null) -> void:
 	if mod_data is not Dictionary:
 		return
@@ -38,3 +37,8 @@ func process(_card: Card, delta: float) -> void:
 
 func remove(_card: Card) -> void:
 	_mesh_node.queue_free()
+
+
+func serialize() -> Dictionary:
+	# TODO: define parameters and implement serialize
+	return {}

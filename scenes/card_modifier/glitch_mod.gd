@@ -4,6 +4,7 @@ extends CardModifier
 ## Glitch mod schema:
 ## "mod_type": "glitch"
 ## "character_pool": String
+## "delay": float
 
 @export var characters: String = "!@#$%¨&*()-=+_[]{}/?;:<>.,~^´`abcdefghijklmnopqrstuvwxyz"
 @export var min_text_length: int = 8
@@ -43,3 +44,11 @@ func _random_text() -> String:
 		var c = characters[randi_range(0, len(characters) - 1)]
 		output += c
 	return output
+
+
+func serialize() -> Dictionary:
+	return {
+		"mod_type": "glitch",
+		"character_pool": characters,
+		"delay": delay,
+	}
