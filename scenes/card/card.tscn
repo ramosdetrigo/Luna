@@ -36,8 +36,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -323.0
 offset_top = -228.0
-offset_right = 390.0
-offset_bottom = 265.0
+offset_right = 35.0
+offset_bottom = 43.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_6u4wf")
@@ -76,7 +76,7 @@ mouse_filter = 2
 
 [node name="CardTexture" type="Sprite2D" parent="TextureContainer/CardTextureAnchor" unique_id=1252523938]
 unique_name_in_owner = true
-scale = Vector2(0.54634476, 0.54634476)
+scale = Vector2(0.3003234, 0.3003234)
 texture = ExtResource("4_s65g1")
 
 [node name="CardBorder" type="Sprite2D" parent="TextureContainer/CardTextureAnchor/CardTexture" unique_id=1858501268]

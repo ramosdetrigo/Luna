@@ -9,8 +9,10 @@ signal drag_stopped
 @export_range(0.0, 1.0) var min_drag_cos: float = 0.0
 @export_range(0.0, 1.0) var max_drag_cos: float = 1.0
 @export var drag_threshold: float = 20.0
+@export var follow_time: float = 0.2
 @export var rotation_amount: float = 0.25
-@export var rotation_min_speed: float = 250.0
+@export var rotation_drag: float = 200.0
+@export var rotation_time: float = 0.2
 
 var trying_drag: bool = false
 var dragging: bool = false
@@ -34,28 +36,28 @@ func _process(_delta: float) -> void:
 		# Applies a small rotation to the card depending on drag speed
 		var drag_dx: float = get_local_mouse_position().x - previous_mouse_position.x;
 		var s: float = sign(drag_dx)
-		var amount: float = abs(drag_dx) / rotation_min_speed
+		var amount: float = abs(drag_dx) / rotation_drag
 		tween_rotation( clamp(amount, 0.0, rotation_amount) * s )
 	previous_mouse_position = get_local_mouse_position()
 
 
-func tween_position(target: Vector2, time: float = 0.2) -> void:
+func tween_position(target: Vector2) -> void:
 	if pos_tween:
 		pos_tween.kill()
 	pos_tween = create_tween()
 	pos_tween.set_ease(Tween.EASE_OUT)
 	pos_tween.set_trans(Tween.TRANS_BACK)
-	pos_tween.tween_property(drag_target, "position", target, time)
+	pos_tween.tween_property(drag_target, "position", target, follow_time)
 
 
 # TODO: card rotation?
-func tween_rotation(target: float, time: float = 0.2) -> void:
+func tween_rotation(target: float) -> void:
 	if rot_tween:
 		rot_tween.kill()
 	rot_tween = create_tween()
 	rot_tween.set_ease(Tween.EASE_OUT)
 	rot_tween.set_trans(Tween.TRANS_BACK)
-	rot_tween.tween_property(drag_target, "rotation", target, time)
+	rot_tween.tween_property(drag_target, "rotation", target, rotation_time)
 
 
 func _on_gui_input(event: InputEvent) -> void:
