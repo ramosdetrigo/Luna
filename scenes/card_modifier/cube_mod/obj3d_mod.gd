@@ -1,3 +1,4 @@
+# TODO: support for basic meshes, including text mesh ;)
 @tool
 class_name Obj3DMod
 extends CardModifier
